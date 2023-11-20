@@ -1,0 +1,13 @@
+package com.fitness.gymsup;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class GymsupApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}

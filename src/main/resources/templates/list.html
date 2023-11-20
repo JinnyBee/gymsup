@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+
+        <!-- ======= Post Grid Section ======= -->
+        <section id="posts" class="posts">
+            <div class="container" data-aos="fade-up">
+                <div class="row g-5"> <!-- row -->
+                    <div class="col-lg-4"> <!-- col(4)-->
+                        <div class="post-entry-1 lg">
+                            <div class="card mb-5">
+                                <div class="card-body">
+                                    <h2 style="margin-bottom: 10px">로그인</h2>
+                                    <div class="row mb-5">
+                                        <div class="d-grid">
+                                            <button class="btn btn-dark" type="button" style="height: 50px; font-size: 25px"
+                                                    onclick="location.href='/login'">로그인 하러 가기</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2><a href="single-post.html">운동기구 사용방법</a></h2>
+                            <p class="mb-4 d-block">운동기구 사용방법 설명</p>
+                        </div>
+                    </div> <!-- End .col(4)-->
+                    <div class="col-lg-8"> <!-- col(8) -->
+                        <div class="row g-5">
+                            <div class="col-lg-4 border-start custom-border">
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-2.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta">
+                                        <span class="date">운동팁</span><span class="mx-1">&bullet;</span><span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-5.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">운동팁</span><span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4 border-start custom-border">
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-3.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">일기(자랑글)</span><span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-6.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">일기(자랑글)</span><span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="trending">
+                                    <ul class="trending-post">
+                                        <li>
+                                            <a href="single-post.html">
+                                                <h3>BMI 계산</h3>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="single-post.html">
+                                                <h3>운동 칼로리 계산</h3>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="single-post.html">
+                                                <h3>음식 칼로리 계산</h3>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> <!-- End Trending Section -->
+                        </div>
+                    </div> <!-- End .col(8) -->
+                </div> <!-- End .row -->
+            </div>
+        </section> <!-- End Post Grid Section -->
+
+        <!-- ======= Hero Slider Section ======= -->
+        <section id="hero-slider" class="hero-slider">
+            <div class="container-md" data-aos="fade-in">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="swiper sliderFeaturedPosts">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a href="single-post.html" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-1.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="single-post.html" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-2.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="single-post.html" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-3.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="single-post.html" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-4.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="custom-swiper-button-next">
+                                <span class="bi-chevron-right"></span>
+                            </div>
+                            <div class="custom-swiper-button-prev">
+                                <span class="bi-chevron-left"></span>
+                            </div>
+
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End Hero Slider Section -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

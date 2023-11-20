@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div class="footer" th:fragment="footer">
+    <footer id="footer" class="footer">
+        <div class="footer-content">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-4">
+                        <h3 class="footer-heading">헬스장 소개</h3>
+                        <p><a th:href="@{/gyminfo_about}" class="footer-link-more">헬스장 소개 링크</a></p>
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                    <div class="col-lg-4">
+                        <h3 class="footer-heading">문의하기</h3>
+                        <ul class="footer-links footer-blog-entry list-unstyled">
+                            <li>
+                                <p><a th:href="@{/board_contact_register}" class="footer-link-more">문의하러가기</a></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-legal">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <div class="copyright">
+                            © Copyright <strong><span>ZenBlog</span></strong>. All Rights Reserved 저작권 관련 작성
+                        </div>
+                        <div class="credits">
+                            <!-- All the links in the footer should remain intact. -->
+                            <!-- You can delete the links only if you purchased the pro version. -->
+                            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/herobiz-bootstrap-business-template/ -->
+                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+</html>
