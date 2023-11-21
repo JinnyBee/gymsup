@@ -25,8 +25,12 @@
                                 <textarea class="form-control" rows="5" id="content" name="content"
                                           th:field="*{content}"></textarea>
                             </div>
-                            <input type="hidden" name="categoryId" value="2">
-                            <input type="hidden" name="userId" value="2">
+                            <div class="mb-3">
+                                <label for="img" class="form-label">사진:</label>
+                                <input type="file" class="form-control" id="img" name="imgFile">
+                            </div>
+                            <input type="hidden" name="categoryId" value="3">
+                            <input type="hidden" name="userId" value="10">
                             <input type="hidden" name="viewCnt" value="0">
                             <input type="hidden" name="goodCnt" value="0">
                             <button type="submit" class="btn btn-primary">등록</button>

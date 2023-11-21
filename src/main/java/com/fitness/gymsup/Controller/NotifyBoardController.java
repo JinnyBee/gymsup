@@ -1,16 +1,23 @@
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.DTO.BoardDTO;
+import com.fitness.gymsup.Service.BoardService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
+@Log4j2
 public class NotifyBoardController {
-    @GetMapping("/board_list")
-    public String listAllForm(Model model) throws Exception {
-        return "board/list";
-    }
+    private final BoardService boardService;
+
     @GetMapping("/board_notify_list")
     public String listForm(Model model) throws Exception {
         return "board/notify/list";
