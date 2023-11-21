@@ -21,45 +21,6 @@ public class NotifyBoardController {
     @GetMapping("/board_list")
     public String listAllForm(@PageableDefault(page = 1) Pageable pageable,
                               Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(3, pageable);
-        int blockLimit = 5;
-        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
-
-        if(boardDTOS.isEmpty()) {
-            startPage = 0;
-            endPage = 0;
-            prevPage = 0;
-            currentPage = 0;
-            nextPage = 0;
-            lastPage = 0;
-        } else {
-            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
-            //endPage = Math.min(startPage+blockLimit-1, boardDTOS.getTotalPages());
-            endPage = ((startPage+blockLimit-1)<boardDTOS.getTotalPages()) ? startPage+blockLimit-1 : boardDTOS.getTotalPages();
-
-            prevPage = boardDTOS.getNumber();
-            currentPage = boardDTOS.getNumber() + 1;
-            nextPage = boardDTOS.getNumber() + 2;
-            lastPage = boardDTOS.getTotalPages();
-        }
-
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("prevPage", prevPage);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("lastPage", lastPage);
-
-        log.info("getTotalPages : " + boardDTOS.getTotalPages());
-        log.info("startPage : "+startPage);
-        log.info("endPage : "+endPage);
-        log.info("prevPage : "+prevPage);
-        log.info("currentPage : "+currentPage);
-        log.info("nextPage : "+nextPage);
-        log.info("lastPage : "+lastPage);
-
-        model.addAttribute("boardDTOS", boardDTOS);
-
         return "board/list";
     }
     @GetMapping("/board_notify_list")
