@@ -6,15 +6,56 @@
 <body>
 <div layout:fragment="content">
     <main id="main">
-        <!-- ======= Search Results ======= -->
-        <section id="search-result" class="search-result">
+        <section id="posts" class="posts">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
-
-                    </div> <!-- End 작업공간 -->
-                    <div class="col-md-2">
+                <div class="row g-5">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3"> <!-- 작업공간 1 -->
+                        <div class="post-entry-1 lg">
+                            <div class="card mb-5"> <!-- 로그인 -->
+                                <div class="card-body">
+                                    <h3 style="margin-bottom: 10px">로그인</h3>
+                                    <div>
+                                        <button class="btn btn-dark" type="button" style="height: 50px; font-size: 15px"
+                                                th:onclick="|location.href='@{/user_login}'|">로그인 하러 가기</button>
+                                    </div>
+                                </div>
+                            </div> <!-- End 로그인 -->
+                            <div class="card mb-5"> <!-- 운동기구 사용법 링크 -->
+                                <h3><a href="single-post.html">운동기구 사용법</a></h3>
+                                <p class="mb-4 d-block">운동기구 사용방법 설명</p>
+                            </div> <!-- End 운동기구 사용법 링크 -->
+                        </div>
+                    </div> <!-- End 작업공간 1 -->
+                    <div class="col-md-5"> <!-- 작업공간 2 -->
+                        <div class="row g-5">
+                            <div class="col-lg-6 border-start custom-border">
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-2.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">운동팁</span> <span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-5.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">운동팁</span> <span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 border-start custom-border">
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-3.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">일기(자랑글)</span> <span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                                <div class="post-entry-1">
+                                    <a href="single-post.html"><img src="/assets/img/post-landscape-6.jpg" alt="" class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">일기(자랑글)</span> <span class="mx-1">&bullet;</span> <span>작성일</span></div>
+                                    <h2><a href="single-post.html">인기글 제목</a></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End 작업공간 2 -->
+                    <div class="col-md-2"> <!-- 작업공간 3 -->
                         <div class="trending">
                             <ul class="trending-post">
                                 <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
@@ -22,11 +63,65 @@
                                 <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
                             </ul>
                         </div>
+                    </div> <!-- End 작업공간 3 -->
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Hero Slider Section ======= -->
+        <section id="hero-slider" class="hero-slider">
+            <div class="container-md">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="swiper sliderFeaturedPosts">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a th:href="@{/gyminfo_about}" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-1.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a th:href="@{/gyminfo_about}" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-1.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a th:href="@{/gyminfo_about}" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-1.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a th:href="@{/gyminfo_about}" class="img-bg d-flex align-items-end" style="background-image: url('/assets/img/post-slide-1.jpg');">
+                                        <div class="img-bg-inner">
+                                            <h2>헬스장 소개(프로그램, 내부시설)</h2>
+                                            <p>헬스장 소개(프로그램, 내부시설) 내용</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="custom-swiper-button-next">
+                                <span class="bi-chevron-right"></span>
+                            </div>
+                            <div class="custom-swiper-button-prev">
+                                <span class="bi-chevron-left"></span>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section> <!-- End Search Result -->
-    </main><!-- End #main -->
+        </section><!-- End Hero Slider Section -->
+    </main>
 </div>
 </body>
 </html>
