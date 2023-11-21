@@ -57,6 +57,8 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     //맵퍼
     implementation 'org.modelmapper:modelmapper:3.1.0'
+    // AWS S3
+    compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 }
 
 tasks.named('bootBuildImage') {
