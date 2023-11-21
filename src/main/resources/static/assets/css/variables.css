@@ -45,10 +45,16 @@
   font-weight: 700;
   font-style: normal;
 }
+@font-face {
+  font-family: 'JeonjuCraftGoR';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/JeonjuCraftGoR.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 :root {
 
   /* Fonts */
-  --font-default: 'JalnanGothic', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-default: 'JeonjuCraftGoR', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-primary: 'HakgyoansimWoojuR', serif; /*'Playfair Display', serif;*/
   --font-secondary: 'Inter', sans-serif;
   --font-head: 'JalnanGothic', sans-serif;

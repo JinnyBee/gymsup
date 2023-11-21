@@ -138,6 +138,12 @@ section {
   color: var(--color-white);
   border-color: var(--color-black);
 }
+.btn.btn-primary.active {
+  background-color: var(--color-black) !important;
+  background-color: transparent !important;
+  color: var(--color-black);
+  border-bottom: 2px solid var(--color-black);
+}
 
 /*--------------------------------------------------------------
 # Header
@@ -240,12 +246,10 @@ section {
     display: flex;
     list-style: none;
     align-items: center;
-    font-family: var(--font-nav-ul);
   }
 
   .navbar li {
     position: relative;
-    font-family: var(--font-nav-li);
   }
 
   .navbar a,
@@ -316,10 +320,12 @@ section {
     font-size: 15px;
     text-transform: none;
     font-weight: 400;
+    font-family: var(--font-nav-ul);
   }
 
   .navbar .dropdown ul a i {
     font-size: 12px;
+    font-family: var(--font-nav-li);
   }
 
   .navbar .dropdown ul a:hover,
