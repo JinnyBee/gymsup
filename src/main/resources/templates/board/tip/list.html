@@ -10,9 +10,66 @@
         <section id="search-result" class="search-result">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
-
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
+                        <div class="container mt-3"> <!--게시판 시작-->
+                            <h2>팁 게시판</h2>
+                            <hr>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr style="text-align: center">
+                                    <th style="width: 10%">게시판</th>
+                                    <th style="width: 35%">제목</th>
+                                    <th style="width: 20%">작성자</th>
+                                    <th style="width: 10%">조회수</th>
+                                    <th style="width: 15%">작성일</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr> <!--th:each="data:${DTO}"-->
+                                    <td>[팁]</td>
+                                    <td><a th:href="@{/board_tip_detail}">테스트1</a>&nbsp;&nbsp;<span style=" color: #ff4930">9</span></td> <!-- 댓글수 (id=${데이터.값})-->
+                                    <td style="text-align: center">홍길동</td>
+                                    <td style="text-align: center">21</td>
+                                    <td style="text-align: center">2021-11-29</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6 text-center">
+                                    <div class="custom-pagination py-4"><!-- Paging -->
+                                        <a href="#" class="prev"><</a>
+                                        <a href="#" class="active">1</a>
+                                        <a href="#">2</a>
+                                        <a href="#">3</a>
+                                        <a href="#">4</a>
+                                        <a href="#">5</a>
+                                        <a href="#" class="next">></a>
+                                    </div><!-- End Paging -->
+                                </div>
+                                <div class="col-md-3">
+                                    <div><!--게시글 작성 버튼-->
+                                        <button type="button" class="btn btn-secondary float-end btn-sm"
+                                                th:onclick="|location.href='@{/board_tip_register}'|">글쓰기
+                                        </button>
+                                    </div><!--게시글 작성 버튼 끝-->
+                                </div>
+                            </div>
+                            <form class="d-flex justify-content-center"><!--검색-->
+                                <select style="width: 100px; height: 31px;" class="form-select form-select-sm">
+                                    <option>제목</option>
+                                    <option>내용</option>
+                                    <option>작성자</option>
+                                </select>
+                                <div class="ms-1">
+                                    <input size="20" type="text" class="form-control form-control-sm" id="email" name="email">
+                                </div>
+                                <div class="ms-1">
+                                    <button type="submit" class="btn btn-dark btn-sm">검색</button>
+                                </div>
+                            </form><!--검색 끝-->
+                        </div><!--게시판 끝-->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
