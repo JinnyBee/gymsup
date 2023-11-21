@@ -68,19 +68,19 @@ section .signin .content .form .inputBox input
   outline: none;
   padding: 25px 10px 7.5px;
   border-radius: 4px;
-  color: #fff;
-  font-weight: 500;
-  font-size: 1em;
-}
-section .signin .content .form .inputBox i 
-{
-  position: absolute;
-  left: 0;
-  padding: 15px 10px;
-  font-style: normal;
   color: #000000;
-  transition: 0.5s;
-  pointer-events: none;
+  font-weight: 500 !important;
+  font-size: 1em !important;
+}
+section .signin .content .form .inputBox i
+{
+  position: absolute ;
+  left: 0;
+  padding: 15px 10px !important;
+  font-style: normal !important;
+  color: #000000 !important;
+  transition: 0.5s !important;
+  pointer-events: none !important;
 }
 .signin .content .form .inputBox input:focus ~ i,
 .signin .content .form .inputBox input:valid ~ i
@@ -108,13 +108,13 @@ section .signin .content .form .inputBox i
 }
 .signin .content .form .inputBox input[type="submit"]
 {
-  padding: 10px;
-  background: #000000;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 1.35em;
-  letter-spacing: 0.05em;
-  cursor: pointer;
+  padding: 10px !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 1.35em !important;
+  letter-spacing: 0.05em !important;
+  cursor: pointer !important;
 }
 input[type="submit"]:active
 {
