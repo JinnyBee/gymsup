@@ -51,6 +51,42 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'NPSfontBold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/NPSfontBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'EarlyFontDiary';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'omyu_pretty';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bazzi';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'KNPSKkomi-Regular00';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KNPSKkomi-Regular00.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 :root {
 
   /* Fonts */
@@ -66,9 +102,9 @@
   --font-nav-ul: 'DNFForgedBlade', sans-serif;
   /*상단 네비바 내부 드롭박스 글꼴*/
   --font-nav-li: 'KimjungchulMyungjo-Bold', sans-serif;
-  /*게시판 테이블 상단 글꼴*/
-  --font-table-td: 'KimjungchulMyungjo-Bold', sans-serif;
   /*게시판 테이블 내부 글꼴*/
+  --font-table-td: 'Bazzi', sans-serif;
+  /*게시판 테이블 상단 글꼴*/
   --font-table-th: 'HakgyoansimWoojuR', sans-serif;
   /*푸터쪽 진한 하얀색 글자 글꼴*/
   --font-footer-heading: 'DNFForgedBlade', sans-serif;
