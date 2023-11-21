@@ -26,26 +26,57 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr> <!--th:each="data:${DTO}"-->
+                                <tr th:each="data:${boardDTOS}"> <!--th:each="data:${DTO}"-->
                                     <td>[팁]</td>
-                                    <td><a th:href="@{/board_tip_detail}">테스트1</a>&nbsp;&nbsp;<span style=" color: #ff4930">9</span></td> <!-- 댓글수 (id=${데이터.값})-->
-                                    <td style="text-align: center">홍길동</td>
-                                    <td style="text-align: center">21</td>
-                                    <td style="text-align: center">2021-11-29</td>
+                                    <td><a th:href="@{/board_tip_detail(id=${data.id})}" th:text="${data.title}">테스트1</a>&nbsp;&nbsp;<span style=" color: #ff4930">9</span></td> <!-- 댓글수 (id=${데이터.값})-->
+                                    <td style="text-align: center" th:text="${data.userNickname}">홍길동</td>
+                                    <td style="text-align: center" th:text="${data.viewCnt}">21</td>
+                                    <td style="text-align: center" th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">2021-11-29</td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="row">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6 text-center">
-                                    <div class="custom-pagination py-4"><!-- Paging -->
-                                        <a href="#" class="prev"><</a>
-                                        <a href="#" class="active">1</a>
-                                        <a href="#">2</a>
-                                        <a href="#">3</a>
-                                        <a href="#">4</a>
-                                        <a href="#">5</a>
-                                        <a href="#" class="next">></a>
+                                    <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
+                                        <!--시작 페이지-->
+                                        <div class="start" th:unless="${startPage==1}">
+                                            <a th:href="@{/board_tip_list(page=1)}">
+                                                <<
+                                            </a>
+                                        </div>
+                                        <!--이전 페이지-->
+                                        <div class="prev" th:unless="${currentPage==1}">
+                                            <a th:href="@{board_tip_list(page=${prevPage})}">
+                                                <
+                                            </a>
+                                        </div>
+                                        <span th:each="page:${#numbers.sequence(startPage, endPage)}">
+                                            <!--현재페이지 아닐시-->
+                                            <div th:unless="${page==currentPage}">
+                                        <a th:href="@{/board_tip_list(page=${page})}">
+                                            [[${page}]]
+                                        </a>
+                                            </div>
+                                            <!--현재 페이지-->
+                                            <div class="active" th:if="${page==currentPage}">
+                                        <a href="#">
+                                            [[${page}]]
+                                        </a>
+                                                </div>
+                                            </span>
+                                        <!--다음페이지-->
+                                        <div class="next" th:unless="${currentPage==lastPage}">
+                                            <a th:href="@{/board_tip_list(page=${nextPage})}">
+                                                >
+                                            </a>
+                                        </div>
+                                        <!--마지막 페이지-->
+                                        <div class="last" th:unless="${endPage==lastPage}">
+                                            <a th:href="@{/board_tip_list(page=${lastPage})}">
+                                                >>
+                                            </a>
+                                        </div>
                                     </div><!-- End Paging -->
                                 </div>
                                 <div class="col-md-3">

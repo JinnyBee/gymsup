@@ -16,14 +16,49 @@
 */
 
 /*--------------------------------------------------------------
-# 1. ZenBlog template variables 
+# 1. ZenBlog template variables
 --------------------------------------------------------------*/
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SOYOMapleBoldTTF';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face{
+  font-family:'DNFForgedBlade';font-style:normal;font-weight:500;
+  src:url('//cdn.df.nexon.com/img/common/font/DNFForgedBlade-Medium.otf')format('opentype')}
+@font-face {
+  font-family: 'HakgyoansimWoojuR';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimWoojuR.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'KimjungchulMyungjo-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
 :root {
 
   /* Fonts */
-  --font-default: 'EB Garamond', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-primary: 'EB Garamond', serif; /*'Playfair Display', serif;*/
+  --font-default: 'JalnanGothic', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-primary: 'HakgyoansimWoojuR', serif; /*'Playfair Display', serif;*/
   --font-secondary: 'Inter', sans-serif;
+  --font-head: 'JalnanGothic', sans-serif;
+  --font-nav-ul: 'DNFForgedBlade', sans-serif;
+  --font-nav-li: 'KimjungchulMyungjo-Bold', sans-serif;
+  --font-table-td: 'KimjungchulMyungjo-Bold', sans-serif;
+  --font-table-th: 'HakgyoansimWoojuR', sans-serif;
+
+
+
 
   /* Colors */
   /* The *-rgb color names are simply the RGB converted value of the corresponding color for use in the rgba() function */
@@ -159,6 +194,11 @@
 .font-default { font-family: var(--font-default) !important; }
 .font-primary { font-family: var(--font-primary) !important;}
 .font-secondary { font-family: var(--font-secondary) !important; }
+.font-head { font-family: var(--font-head) !important; }
+.font-nav-ul { font-family: var(--font-nav-ul) !important; }
+.font-nav-li { font-family: var(--font-nav-li) !important; }
+.font-table-td { font-family: var(--font-table-td) !important; }
+.font-table-th { font-family: var(--font-table-th) !important; }
 
 /* Text Colors */
 .color-default { color: var(--color-default) !important; }

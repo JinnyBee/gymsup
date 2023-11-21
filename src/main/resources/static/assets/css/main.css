@@ -36,12 +36,27 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-primary);
+  font-family: var(--font-head);
 }
 
 #main {
   margin-top: 30px;
 }
+/*--------------------------------------------------------------
+# table
+--------------------------------------------------------------*/
+.table {
+
+}
+
+.table td {
+  font-family: var(--font-table-td);
+}
+
+.table th {
+  font-family: var(--font-table-th);
+}
+
 
 /*--------------------------------------------------------------
 # Sections & Section Header
@@ -225,10 +240,12 @@ section {
     display: flex;
     list-style: none;
     align-items: center;
+    font-family: var(--font-nav-ul);
   }
 
   .navbar li {
     position: relative;
+    font-family: var(--font-nav-li);
   }
 
   .navbar a,
@@ -802,7 +819,7 @@ section {
   border-bottom: none;
 }
 
-.custom-pagination a {
+.custom-pagination div {
   display: inline-block;
   width: 40px;
   height: 40px;
@@ -814,29 +831,42 @@ section {
   transition: 0.3s all ease;
 }
 
-.custom-pagination a.active {
+.custom-pagination div.active {
   background: var(--color-black);
   color: var(--color-white);
 }
 
-.custom-pagination a.active:hover {
+.custom-pagination div.active:hover {
   background: rgba(var(--color-black-rgb), 0.9);
 }
 
-.custom-pagination a:hover {
+.custom-pagination div:hover {
   background: rgba(var(--color-black-rgb), 0.1);
 }
 
-.custom-pagination a.prev,
-.custom-pagination a.next {
+.custom-pagination div.prev,
+.custom-pagination div.next {
   width: auto !important;
   border-radius: 4px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
-.custom-pagination a.prev:hover,
-.custom-pagination a.next:hover {
+.custom-pagination div.start,
+.custom-pagination div.last {
+  width: auto !important;
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.custom-pagination div.prev:hover,
+.custom-pagination div.next:hover {
+  background: rgba(var(--color-black-rgb), 0.1);
+}
+
+.custom-pagination div.start:hover,
+.custom-pagination div.last:hover {
   background: rgba(var(--color-black-rgb), 0.1);
 }
 
