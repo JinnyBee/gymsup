@@ -576,6 +576,7 @@ section {
 
 .trending .trending-post li a h3 {
   font-size: 18px;
+  font-family: var(--font-trending-post);
   color: rgba(var(--color-black-rgb), 0.9);
 }
 
@@ -1246,6 +1247,7 @@ section {
   color: rgba(var(--color-white-rgb), 0.7);
   display: inline-block;
   position: relative;
+  font-family: var(--font-footer-blog-entry);
 }
 
 .footer a.footer-link-more:before {
@@ -1267,6 +1269,7 @@ section {
   margin-bottom: 20px;
   padding-bottom: 10px;
   font-size: 18px;
+  font-family: var(--font-footer-heading);
 }
 
 .footer .footer-blog-entry li {
@@ -1279,7 +1282,6 @@ section {
   letter-spacing: 0.07rem;
   text-transform: uppercase;
   font-weight: 400;
-  font-family: var(--font-secondary);
   color: rgba(var(--color-white-rgb), 0.4);
   margin-bottom: 0px;
 }

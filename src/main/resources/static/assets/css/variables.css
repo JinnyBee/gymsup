@@ -54,14 +54,28 @@
 :root {
 
   /* Fonts */
+  /*기본 글꼴 설정*/
   --font-default: 'JeonjuCraftGoR', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /*중요한(?) 글꼴 */
   --font-primary: 'HakgyoansimWoojuR', serif; /*'Playfair Display', serif;*/
+  /* ? 글꼴*/
   --font-secondary: 'Inter', sans-serif;
+  /*상단 로고 글꼴*/
   --font-head: 'JalnanGothic', sans-serif;
+  /*상단 네비바 글꼴*/
   --font-nav-ul: 'DNFForgedBlade', sans-serif;
+  /*상단 네비바 내부 드롭박스 글꼴*/
   --font-nav-li: 'KimjungchulMyungjo-Bold', sans-serif;
+  /*게시판 테이블 상단 글꼴*/
   --font-table-td: 'KimjungchulMyungjo-Bold', sans-serif;
+  /*게시판 테이블 내부 글꼴*/
   --font-table-th: 'HakgyoansimWoojuR', sans-serif;
+  /*푸터쪽 진한 하얀색 글자 글꼴*/
+  --font-footer-heading: 'DNFForgedBlade', sans-serif;
+  /*푸터쪽 하얀 글자 글꼴*/
+  --font-footer-blog-entry: 'JalnanGothic', sans-serif;
+  /*오른쪽 BMI메뉴 글꼴*/
+  --font-trending-post: 'DNFForgedBlade', sans-serif;
 
 
 
@@ -205,6 +219,9 @@
 .font-nav-li { font-family: var(--font-nav-li) !important; }
 .font-table-td { font-family: var(--font-table-td) !important; }
 .font-table-th { font-family: var(--font-table-th) !important; }
+.font-trending-post { font-family: var(--font-trending-post) !important; }
+.font-footer-heading { font-family: var(--font-footer-heading) !important; }
+.font-footer-blog-entry { font-family: var(--font-footer-blog-entry) !important; }
 
 /* Text Colors */
 .color-default { color: var(--color-default) !important; }
