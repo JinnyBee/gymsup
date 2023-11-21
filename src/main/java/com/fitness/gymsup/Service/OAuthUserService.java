@@ -38,24 +38,34 @@ public class OAuthUserService extends DefaultOAuth2UserService {
         }
 
 
-        String type =null;
+        String nickType =null;
 
         //Ouath2 자동 닉네임 설정
         if(oauthType.equals("kakao")){
-            type = "카" + email;
+            nickType = "카" + email;
         }else if (oauthType.equals("naver")){
-            type = "네"+ email;
+            nickType = "네"+ email;
         }else if (oauthType.equals("google")){
-            type = "구"+ email;
+            nickType = "구"+ email;
         }
-        log.info("======================================================");
+
+        String mailType = null;
+
+
+        if(oauthType.equals("kakao")){
+            mailType = "(kakao)" + email;
+        }else if (oauthType.equals("naver")){
+            mailType = "(naver)" + email;
+        }else if (oauthType.equals("google")){
+            mailType = "(google)" + email;
+        }
 
 
 
-        if (getUserByEmailAndOAuthType(type, oauthType) == null){
+        if (getUserByEmailAndOAuthType(mailType, oauthType) == null){
             UserEntity user = new UserEntity();
-            user.setEmail(type);
-            user.setNickname(type);
+            user.setEmail(mailType);
+            user.setNickname(nickType);
             user.setOauthType(oauthType);
             user.setRole(Role.USER);
             save(user);

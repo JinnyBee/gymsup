@@ -15,7 +15,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h2>유저 정보</h2>
-                                <p>유저이메일 : <span th:text="${userEntity.email}"></span></p>
+                                <p th:if="${userEntity.oauthType != null}">(로그인 정보)유저이메일 : <span th:text="${userEntity.email}"></span></p>
+                                <p th:if="${userEntity.oauthType == null}">유저이메일 : <span th:text="${userEntity.email}"></span></p>
                                 <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>
                             </div>
                         </div>

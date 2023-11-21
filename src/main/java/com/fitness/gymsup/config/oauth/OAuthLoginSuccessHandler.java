@@ -42,18 +42,18 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         log.info("LOGIN SUCCESS : {} FROM {}", email, oauthType);
 
-        String type =null;
+        String mailType = null;
 
-        //Ouath2 자동 닉네임 설정
+
         if(oauthType.equals("kakao")){
-            type = "카" + email;
+            mailType = "(kakao)" + email;
         }else if (oauthType.equals("naver")){
-            type = "네"+ email;
+            mailType = "(naver)" + email;
         }else if (oauthType.equals("google")){
-            type = "구"+ email;
+            mailType = "(google)" + email;
         }
 
-        UserEntity user = oAuthUserService.getUserByEmailAndOAuthType(type, oauthType);
+        UserEntity user = oAuthUserService.getUserByEmailAndOAuthType(mailType, oauthType);
 
         log.info("USER SAVED IN SESSION");
         HttpSession session = request.getSession();
