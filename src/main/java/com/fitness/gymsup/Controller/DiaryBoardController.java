@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -122,12 +123,15 @@ public class DiaryBoardController {
     @PostMapping("/board_diary_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
-                               MultipartFile imgFile,
+                               List<MultipartFile> imgFiles,
                                Model model) throws Exception {
+        for(int i=0;i< imgFiles.size();i++) {
+            log.info("imgFiles("+i+") : " + imgFiles.get(i));
+        }
         if(bindingResult.hasErrors()) {
             return "board/diary/register";
         }
-        boardService.register(boardDTO, imgFile);
+        boardService.register(boardDTO, imgFiles);
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_detail")
@@ -161,12 +165,12 @@ public class DiaryBoardController {
     @PostMapping("/board_diary_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
-                             MultipartFile imgFile,
+                             List<MultipartFile> imgFiles,
                              Model model) throws Exception {
         if(bindingResult.hasErrors()) {
             return "board/diary/modify";
         }
-        boardService.modify(boardDTO, imgFile);
+        boardService.modify(boardDTO, imgFiles);
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_remove")

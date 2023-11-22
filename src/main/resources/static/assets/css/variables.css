@@ -54,7 +54,7 @@
 @font-face {
   font-family: 'NPSfontBold';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/NPSfontBold.woff2') format('woff2');
-  font-weight: 700;
+  font-weight: normal;
   font-style: normal;
 }
 @font-face {
@@ -101,9 +101,9 @@
   /*상단 네비바 글꼴*/
   --font-nav-ul: 'DNFForgedBlade', sans-serif;
   /*상단 네비바 내부 드롭박스 글꼴*/
-  --font-nav-li: 'KimjungchulMyungjo-Bold', sans-serif;
+  --font-nav-li: 'EarlyFontDiary', sans-serif;
   /*게시판 테이블 내부 글꼴*/
-  --font-table-td: 'Bazzi', sans-serif;
+  --font-table-td: 'GmarketSansMedium', sans-serif;
   /*게시판 테이블 상단 글꼴*/
   --font-table-th: 'HakgyoansimWoojuR', sans-serif;
   /*푸터쪽 진한 하얀색 글자 글꼴*/

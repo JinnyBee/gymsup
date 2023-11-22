@@ -15,40 +15,41 @@
                         <div class="row" style="border-bottom: 3px solid black">
                             <div class="col-lg-12"><h2>팁 게시판</h2></div>
                         </div>
-
                         <div class="row mt-4 mb-3" >
-                            <div class="col-lg-12"><p style="font-size: 30px" th:text="${boardDTO.title}">제목</p></div>
-                        </div>
-
+                            <div class="col-lg-12">
+                                <p style="font-size: 30px; margin-bottom: 0px;" th:text="${boardDTO.title}">제목</p></div>
+                            </div>
                         <div class="row mb-3 text-start" style="border-bottom: 1px solid black; border-top: 1px solid black; height: 45px; background-color: #f2f2f2">
                             <div class="col-lg-5 mt-2">닉네임 : <div style="display: inline-block" th:text="${boardDTO.userNickname}"></div></div>
                             <div class="col-lg-2 mt-2"></div>
                             <div class="col-lg-3 mt-2 text-end">날짜 : <div style="display: inline-block" th:text="${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div></div>
                             <div class="col-lg-2 mt-2 text-end">조회수 : <div style="display: inline-block" th:text="${boardDTO.viewCnt}"></div></div>
                         </div>
-
                         <div class="row">
-                            <div class="col-lg-12" th:text="${boardDTO.content}" style="height: auto; min-height: 700px">
+                            <div class="col-lg-12" th:each="data:${boardDTO.imgFileList}">
+                                <p th:text="${data}"></p>
+                                <img th:src="|/images/@{${data}}|" alt="상품 이미지">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12" th:text="${boardDTO.content}" style="height: auto; min-height: 500px">
                                 내용
                             </div>
                         </div>
-
                         <div class="row mb-3">
-                            <div class="col-lg-10 text-end">
-                                <button type="button" class="btn btn-outline-dark">
-                                    <img src="/assets/img/bookmark_off.png" alt="" width="50" height="40">
+                            <div class="col-lg-10 text-end" style="padding-right: 0px;">
+                                <button type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block">
+                                    <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
                                     북마크
                                 </button>
                             </div>
-                            <div class="col-lg-2 text-center">
-
-                                <button type="button" class="btn btn-outline-dark rounded-pill" width="">
-                                    <img src="/assets/img/suggestion_off.png" alt="" width="50" height="40">
+                            <div class="col-lg-2 text-end">
+                                <button type="button" class="btn btn-outline-dark rounded-pill" style="width: 110px; height:50px; display: inline-block" >
+                                    <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
                                     추천
                                 </button>
                             </div>
                         </div>
-
                         <div class="row" style="border-top: 1px solid black; height: 100px;">
                             <div class="col-lg-4 mt-2"></div>
                             <div class="col-lg-4 mt-2"></div>
@@ -66,7 +67,7 @@
                         <div class="row mt-1">
                             <form action="/board/tip/detail" method="post">
                             <div style="float: left">
-                                <textarea class="form-control" name="" id="" rows="3" style="height: 70px; width: 760px"></textarea>
+                                <textarea class="form-control" name="" id="" rows="3" style="height: 70px; width: 890px"></textarea>
                             </div>
                             <div style="float: right">
                                 <button class="btn btn-dark" style="height: 70px; width: 60px">등록</button>
