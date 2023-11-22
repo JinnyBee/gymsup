@@ -3,7 +3,6 @@ package com.fitness.gymsup.Controller;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.Service.BoardService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
