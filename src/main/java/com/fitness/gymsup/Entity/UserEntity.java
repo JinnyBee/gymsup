@@ -1,5 +1,6 @@
 package com.fitness.gymsup.Entity;
 
+import com.fitness.gymsup.Constant.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ import javax.persistence.*;
         allocationSize = 1
 )
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
                     generator = "user_SEQ")
@@ -30,6 +31,12 @@ public class UserEntity {
     @Column(name = "nickname", nullable = false, length = 200)
     private String nickname;        //유저 닉네임
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;        //유저 비밀번호
+
+    @Column(name = "oauth_type", columnDefinition = "VARCHAR(50)")
+    private String oauthType;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

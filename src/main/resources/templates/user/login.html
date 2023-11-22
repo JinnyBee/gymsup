@@ -2,31 +2,53 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+      layout:decorate="~{layouts/loginlayout}">
 <body>
 <div layout:fragment="content">
-    <main id="main">
-        <!-- ======= Search Results ======= -->
-        <section id="search-result" class="search-result">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
+    <section>
 
-                    </div> <!-- End 작업공간 -->
-                    <div class="col-md-2">
-                        <div class="trending">
-                            <ul class="trending-post">
-                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
-                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
-                                <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
-                            </ul>
+        <div class="signin">
+
+            <div class="content">
+
+                <h2>로그인</h2>
+                <form action="/user_login" method="post">
+                    <div class="form">
+
+                        <div class="inputBox">
+
+                            <input type="text" name="email" required> <i>이메일</i>
+
                         </div>
+
+                        <div class="inputBox">
+
+                            <input type="password" name="password" required> <i>비밀번호</i>
+
+                        </div>
+
+                        <div class="links"> <a href="#">비밀번호 재설정</a> <a href="/user_join">회원가입</a>
+
+                        </div>
+
+                        <div class="inputBox">
+
+                            <input type="submit" value="로그인">
+
+                        </div>
+                        <img src="/assets/img/kakaologin2.png" alt="" onclick="location.href='/'"
+                             style="cursor: pointer">
+                        <a class="btn btn-google" th:href="@{/oauth2/authorization/google}">Google Login</a>
+                        <a class="btn btn-naver" th:href="@{/oauth2/authorization/naver}">Naver Login</a>
+                        <a class="btn btn-kakao" th:href="@{/oauth2/authorization/kakao}">Kakao Login</a>
                     </div>
-                </div>
+                </form>
+
             </div>
-        </section> <!-- End Search Result -->
-    </main><!-- End #main -->
+
+        </div>
+
+    </section> <!-- partial -->
 </div>
 </body>
 </html>

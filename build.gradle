@@ -26,9 +26,9 @@ dependencies {
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //OAuth2 인증
-    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     //보안인증(디자인 작업시에 생략)
-    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     //타임리프
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     //검증

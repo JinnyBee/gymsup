@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div class="header" th:fragment="header">
     <header id="header" class="header d-flex align-items-center fixed-top">
@@ -46,7 +47,8 @@
             </nav><!-- .navbar -->
 
             <div class="position-relative">
-                <a th:href="@{/user_login}">로그인</a>
+                <a th:href="@{/user_login}" sec:authorize="isAnonymous()">로그인</a>
+                <a th:href="@{/user_login}" sec:authorize="isAuthenticated()">로그아웃</a>
                 <!--<a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
                 <i class="bi bi-list mobile-nav-toggle"></i>
                 &lt;!&ndash; ======= Search Form ======= &ndash;&gt;

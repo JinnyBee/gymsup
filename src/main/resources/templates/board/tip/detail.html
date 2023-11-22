@@ -12,25 +12,88 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-                        <div class="container mt-3"> <!--게시판 시작-->
-                            <h2>제목...</h2> <!--제목-->
-                            <hr> <!--경계선-->
-                            <div>
-                                내용 들어갈 공간 (이미지)포함
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-outline-secondary btn-lg float-end"><img src="" alt="">북마크</button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-outline-secondary btn-lg">추천</button>
-                                </div>
-                            </div>
-                            <hr>
-                            <div>
-                                 댓글 들어갈 공간
+                        <div class="row" style="border-bottom: 3px solid black">
+                            <div class="col-lg-12"><h2 th:text="${boardDTO.title}">게시판 이름</h2></div>
+                        </div>
+
+                        <div class="row mt-4 mb-3" >
+                            <div class="col-lg-12"><p style="font-size: 30px">제목</p></div>
+                        </div>
+
+                        <div class="row mb-3" style="border-bottom: 1px solid black; border-top: 1px solid black; height: 50px;
+background-color: #f2f2f2">
+                            <div class="col-lg-4 mt-2"><p th:text="${boardDTO.userNickname}">닉네임</p></div>
+                            <div class="col-lg-4 mt-2"></div>
+                            <div class="col-lg-4 mt-2"><p th:text="|${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')} ${boardDTO.viewCnt}|"></p></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12" th:text="${boardDTO.content}" style="height: auto; min-height: 700px">
+                                내용
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <div class="col-lg-4">
+                                <button type="button">
+                                    <img src="assets/img/bookmark_off" alt="img/bookmark_off" width="74" height="50">
+                                즐겨찾기
+                                </button>
+                            </div>
+                            <div class="col-lg-4" style="text-align: center">
+                                추천</div>
+                            <div class="col-lg-4"></div>
+                        </div>
+
+                        <div class="row" style="border-top: 1px solid black; height: 100px;">
+                            <div class="col-lg-4 mt-2"></div>
+                            <div class="col-lg-4 mt-2"></div>
+                            <div class="col-lg-4 mt-2" style="text-align: right">수정 삭제, 목록으로</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 mt-2">댓글 작성: </div>
+                            <div class="col-lg-4 mt-2"></div>
+                            <div class="col-lg-4 mt-2"></div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-lg-10">
+                                <textarea class="form-control" name="" id="" rows="4" style="resize: none"></textarea>
+                            </div>
+                            <div class="col-lg-2" style="text-align: right">
+                                <button class="btn btn-dark" style="height: 110px; width: 80px">등록</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5" style="border-bottom: 2px solid black">
+                            <div class="col-lg-12 mb-2">댓글(0)</div>
+                        </div>
+
+                        <!--댓글 시작-->
+
+                        <div>
+                            <div class="row mt-2">
+                                <div class="col-lg-2 mb-2">작성자</div>
+                                <div class="col-lg-6 mb-2">내용</div>
+                                <div class="col-lg-4 mb-2">작성일,</div>
+                            </div>
+                            <div class="row mt-2" style="border-bottom: 1px solid black;">
+                                <div class="col-lg-2 mb-2"><button type="button" class="btn btn-light border">답글</button>
+                                    <div id="divToggle" style="display: none;">
+                                        asd
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-2"></div>
+                                <div class="col-lg-4 mb-2"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--댓글 끝-->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

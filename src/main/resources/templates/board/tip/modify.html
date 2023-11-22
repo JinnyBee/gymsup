@@ -12,7 +12,26 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8"> <!-- 작업공간 -->
-
+                        <form th:action="@{/board_diary_modify}" method="post" th:object="${boardDTO}">
+                            <input type="hidden" name="id" th:field="*{id}">
+                            <div class="mb-3 mt-3">
+                                <label for="title" class="form-label">제목:</label>
+                                <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
+                                <p class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="content">내용:</label>
+                                <textarea class="form-control" rows="5" id="content" name="content"
+                                          th:field="*{content}"></textarea>
+                            </div>
+                            <input type="hidden" name="categoryId" th:field="*{categoryId}">
+                            <input type="hidden" name="userId" th:field="*{userId}">
+                            <input type="hidden" name="viewCnt" th:field="*{viewCnt}">
+                            <input type="hidden" name="goodCnt" th:field="*{goodCnt}">
+                            <button type="submit" class="btn btn-primary">수정</button>
+                            <button type="button" class="btn btn-secondary"
+                                    th:onclick="|location.href='@{/board_diary_list}'|">취소</button>
+                        </form>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
