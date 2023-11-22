@@ -23,6 +23,51 @@ import javax.validation.Valid;
 public class DiaryBoardController {
     private final BoardService boardService;
 
+    @GetMapping("/board_list")
+    public String listAllForm(@PageableDefault(page = 1) Pageable pageable,
+                           Model model) throws Exception {
+        Page<BoardDTO> boardDTOS = boardService.listAll(pageable);
+        int blockLimit = 5;
+        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
+
+        if(boardDTOS.isEmpty()) {
+            startPage = 0;
+            endPage = 0;
+            prevPage = 0;
+            currentPage = 0;
+            nextPage = 0;
+            lastPage = 0;
+        } else {
+            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
+            //endPage = Math.min(startPage+blockLimit-1, boardDTOS.getTotalPages());
+            endPage = ((startPage+blockLimit-1)<boardDTOS.getTotalPages()) ? startPage+blockLimit-1 : boardDTOS.getTotalPages();
+
+            prevPage = boardDTOS.getNumber();
+            currentPage = boardDTOS.getNumber() + 1;
+            nextPage = boardDTOS.getNumber() + 2;
+            lastPage = boardDTOS.getTotalPages();
+        }
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("prevPage", prevPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("lastPage", lastPage);
+
+        log.info("getTotalPages : " + boardDTOS.getTotalPages());
+        log.info("startPage : "+startPage);
+        log.info("endPage : "+endPage);
+        log.info("prevPage : "+prevPage);
+        log.info("currentPage : "+currentPage);
+        log.info("nextPage : "+nextPage);
+        log.info("lastPage : "+lastPage);
+
+        model.addAttribute("boardDTOS", boardDTOS);
+
+        return "board/list";
+    }
+
     @GetMapping("/board_diary_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
@@ -82,12 +127,13 @@ public class DiaryBoardController {
         if(bindingResult.hasErrors()) {
             return "board/diary/register";
         }
-        boardService.register(boardDTO);
+        boardService.register(boardDTO, imgFile);
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_detail")
     public String detailForm(Integer id, Model model) throws Exception {
         BoardDTO boardDTO = boardService.detail(id, "R");
+        log.info(boardDTO);
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/diary/detail";
@@ -115,11 +161,12 @@ public class DiaryBoardController {
     @PostMapping("/board_diary_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
+                             MultipartFile imgFile,
                              Model model) throws Exception {
         if(bindingResult.hasErrors()) {
             return "board/diary/modify";
         }
-        boardService.modify(boardDTO);
+        boardService.modify(boardDTO, imgFile);
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_remove")

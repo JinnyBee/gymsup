@@ -1,4 +1,4 @@
-package com.fitness.gymsup.Service;
+package com.fitness.gymsup.Util;
 
 import org.springframework.stereotype.Service;
 
@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.util.UUID;
 
 @Service
-public class FileService {
+public class FileUploader {
     //파일 저장
     public String uploadFile(String uploadPth,
                              String originalFileName,

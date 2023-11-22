@@ -82,7 +82,7 @@ public class TipBoardController {
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
-        boardService.register(boardDTO);
+        boardService.register(boardDTO, imgFile);
         return "redirect:/board/tip/list";
     }
     @GetMapping("/board_tip_detail")

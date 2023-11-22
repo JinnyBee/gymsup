@@ -12,9 +12,9 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-7"> <!-- 작업공간 -->
-                        <div class="container mt-3"> <!-- 목록 -->
+                        <div class="container mt-3"> <!-- 전체목록 -->
                             <h3 class="text-center">운동+식단 일기</h3>
-                            <div class="mt-3 text-end"> <!-- 글쓰기 -->
+                            <div class="mt-3 mb-3 text-end"> <!-- 글쓰기 -->
                                 <button type="button" class="btn btn-primary"
                                         th:onclick="|location.href='@{/board_diary_register}'|">글쓰기</button>
                             </div> <!-- End 글쓰기 -->
@@ -38,9 +38,8 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div> <!-- End 목록 -->
-                        <!-- 페이지 -->
-                        <ul class="pagination justify-content-center" th:if="${lastPage>0}">
+                        </div> <!-- End 전체목록 -->
+                        <ul class="pagination justify-content-center" th:if="${lastPage>0}"> <!-- 페이지 -->
                             <!-- startPage가 1번 페이지가 아니면 나타낸다. -->
                             <li class="page-item" th:unless="${startPage==1}"> <!-- 첫페이지 이동 -->
                                 <a class="page-link" th:href="@{/board_diary_list(page=1)}">첫페이지</a>
