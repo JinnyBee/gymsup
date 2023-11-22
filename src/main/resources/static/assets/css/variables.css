@@ -98,10 +98,10 @@
   --font-secondary: 'Inter', sans-serif;
   /*상단 로고 글꼴*/
   --font-head: 'JalnanGothic', sans-serif;
-  /*상단 네비바 글꼴*/
-  --font-nav-ul: 'DNFForgedBlade', sans-serif;
   /*상단 네비바 내부 드롭박스 글꼴*/
-  --font-nav-li: 'EarlyFontDiary', sans-serif;
+  --font-nav-ul: 'JeonjuCraftGoR', sans-serif;
+  /*상단 네비바 글꼴*/
+  --font-nav-li: 'JeonjuCraftGoR', sans-serif;
   /*게시판 테이블 내부 글꼴*/
   --font-table-td: 'GmarketSansMedium', sans-serif;
   /*게시판 테이블 상단 글꼴*/
