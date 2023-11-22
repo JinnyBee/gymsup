@@ -130,7 +130,7 @@ public class TipBoardController {
     public String removeProc(Integer id,
                              Model model) throws Exception {
         boardService.remove(id);
-        return "board/tip/remove";
+        return "redirect:/board_tip_list";
     }
     @PostMapping("/board_tip_commentregister")
     public String commentRegisterProc(Model model) throws Exception {

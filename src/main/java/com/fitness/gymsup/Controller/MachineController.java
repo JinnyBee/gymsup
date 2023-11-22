@@ -35,7 +35,7 @@ public class MachineController {
     }
     @PostMapping("/machine_register")
     public String registerProc(Model model) throws Exception {
-        return "redirect:/machine/list";
+        return "redirect:/machine_list";
     }
     @GetMapping("/machine_modify")
     public String modifyForm(Model model) throws Exception {
@@ -43,10 +43,10 @@ public class MachineController {
     }
     @PostMapping("/machine_modify")
     public String modifyProc(Model model) throws Exception {
-        return "redirect:/machine/list";
+        return "redirect:/machine_list";
     }
     @GetMapping("/machine_remove")
     public String removeProc(Model model) throws Exception {
-        return "machine/remove";
+        return "redirect:/machine_list";
     }
 }
