@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,12 +78,12 @@ public class TipBoardController {
     @PostMapping("/board_tip_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
-                               MultipartFile imgFile,
+                               List<MultipartFile> imgFiles,
                                Model model) throws Exception {
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
-        boardService.register(boardDTO, imgFile);
+        boardService.register(boardDTO, imgFiles);
         return "redirect:/board/tip/list";
     }
     @GetMapping("/board_tip_detail")

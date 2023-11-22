@@ -97,14 +97,16 @@ public class BoardService {
         return boardDTOS;
     }
     //게시글 등록
-    public void register(BoardDTO boardDTO, MultipartFile imgFile) throws Exception {
+    public void register(BoardDTO boardDTO, List<MultipartFile> imgFiles) throws Exception {
         BoardEntity boardEntity = modelMapper.map(boardDTO, BoardEntity.class);
-        String originalFileName = imgFile.getOriginalFilename();
+        String originalFileName = "";
         String newFileName = "";
 
+        //BoardCategory, User Entity 가져오기
         BoardCategoryEntity category = boardCategoryRepository.findById(boardDTO.getCategoryId()).orElseThrow();
         UserEntity user = userRepository.findById(boardDTO.getUserId()).orElseThrow();
 
+        //board 테이블에 새 게시글 저장
         boardEntity.setCategory(category);
         boardEntity.setUser(user);
         BoardEntity newBoard = boardRepository.save(boardEntity);
@@ -115,21 +117,27 @@ public class BoardService {
         log.info(user.toString());
         log.info(newBoard.toString());
 
-        if(originalFileName != null) { //파일이 존재하면 이미지를 업로드, 데이터베이스 저장
-            newFileName = fileUploader.uploadFile(
-                    imgUploadLocation,
-                    originalFileName,
-                    imgFile.getBytes()
-            );
-            log.info("newFileName : "+newFileName);
-            BoardImageEntity boardImageEntity = BoardImageEntity.builder()
-                            .board(newBoard)
-                            .imgFile(newFileName)
-                            .build();
-            log.info(boardImageEntity.toString());
-            log.info(boardImageEntity.getImgFile());
+        for(MultipartFile imgFile : imgFiles) {
+            originalFileName = imgFile.getOriginalFilename();
 
-            boardImageRepository.save(boardImageEntity);
+            //파일이 존재하면 이미지를 업로드 후 board_image 테이블에 저장
+            if(originalFileName.length() != 0) {
+                //이미지파일을 이미지 저장경로에 업로드
+                newFileName = fileUploader.uploadFile(imgUploadLocation,
+                                                      originalFileName,
+                                                      imgFile.getBytes());
+                log.info("newFileName : "+newFileName);
+
+                //board_image 테이블에 이미지파일 정보 저장
+                BoardImageEntity boardImageEntity = BoardImageEntity.builder()
+                        .board(newBoard)
+                        .imgFile(newFileName)
+                        .build();
+                log.info(boardImageEntity.toString());
+                log.info(boardImageEntity.getImgFile());
+
+                boardImageRepository.save(boardImageEntity);
+            }
         }
     }
     //게시글 상세보기
@@ -157,17 +165,13 @@ public class BoardService {
     public void modify(BoardDTO boardDTO) throws Exception {
         modify(boardDTO, null);
     }
-    public void modify(BoardDTO boardDTO, MultipartFile imgFile) throws Exception {
-        String originalFileName = "";
+    public void modify(BoardDTO boardDTO, List<MultipartFile> imgFiles) throws Exception {
         BoardEntity boardEntity = boardRepository.findById(boardDTO.getId()).orElseThrow();
+        String originalFileName = "";
+        String newFileName = "";
 
-        if(imgFile != null) {
-            originalFileName = imgFile.getOriginalFilename();
-        }
-
-        //새로 업로드할 파일이 존재하면 기존 파일 삭제 후 새로운 파일 업로드
-        if(originalFileName.length() != 0) {
-            List<String> newFileList = new ArrayList<>();
+        //이미지파일이 존재한다면 기존 이미지파일 삭제 후 새 이미지파일 업로드
+        if(imgFiles.size() > 0) {
             List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(boardDTO.getId());
 
             //기존 파일 삭제
@@ -175,26 +179,28 @@ public class BoardService {
                 log.info(boardImageEntity);
                 fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
             }
-            //board_image 테이블에서 해당 이미지 데이터 삭제
+            //board_image 테이블에서 해당게시판에 올라간 이미지 데이터 모두 삭제
             boardImageRepository.deleteAllByBoardId(boardDTO.getId());
 
-            //새로운 파일 업로드
-            newFileList.add(fileUploader.uploadFile(imgUploadLocation,
-                    originalFileName,
-                    imgFile.getBytes()));
-            //board_image 테이블에 새 이미지 데이터 저장
-            for (String newFile : newFileList) {
+            //이미지 업로드 후 board_image 테이블에 저장
+            for(MultipartFile imgFile : imgFiles) {
+                originalFileName = imgFile.getOriginalFilename();
+                newFileName = fileUploader.uploadFile(imgUploadLocation,
+                                                      originalFileName,
+                                                      imgFile.getBytes());
+                log.info(newFileName);
+
+                //board_image 테이블에 이미지파일 정보 저장
                 BoardImageEntity boardImageEntity = BoardImageEntity.builder()
                         .board(boardEntity)
-                        .imgFile(newFile)
+                        .imgFile(newFileName)
                         .build();
-                log.info(newFile);
                 boardImageRepository.save(boardImageEntity);
             }
-            boardDTO.setId(boardEntity.getId());
         }
 
-        //수정된 게시판 데이터 업데이트
+        //수정된 게시글 내용 업데이트
+        boardDTO.setId(boardEntity.getId());
         BoardEntity update = modelMapper.map(boardDTO, boardEntity.getClass());
         boardRepository.save(update);
     }
