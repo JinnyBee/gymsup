@@ -54,8 +54,8 @@ public class BoardService {
         Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
                 .id(data.getId())
                 .categoryType(data.getCategoryType())
-                .userId(data.getUser().getId())
-                .userNickname(data.getUser().getNickname())
+                .userId(data.getUserEntity().getId())
+                .userNickname(data.getUserEntity().getNickname())
                 .title(data.getTitle())
                 .content(data.getContent())
                 .viewCnt(data.getViewCnt())
@@ -79,8 +79,8 @@ public class BoardService {
         Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
                 .id(data.getId())
                 .categoryType(data.getCategoryType())
-                .userId(data.getUser().getId())
-                .userNickname(data.getUser().getNickname())
+                .userId(data.getUserEntity().getId())
+                .userNickname(data.getUserEntity().getNickname())
                 .title(data.getTitle())
                 .content(data.getContent())
                 .viewCnt(data.getViewCnt())
@@ -99,15 +99,15 @@ public class BoardService {
         String newFileName = "";
 
         //BoardCategory 가져오기
-        UserEntity user = userRepository.findById(boardDTO.getUserId()).orElseThrow();
+        UserEntity userEntity = userRepository.findById(boardDTO.getUserId()).orElseThrow();
 
         //board 테이블에 새 게시글 저장
         //boardEntity.setCategory(category);
-        boardEntity.setUser(user);
+        boardEntity.setUserEntity(userEntity);
         BoardEntity newBoard = boardRepository.save(boardEntity);
 
         log.info("userId : " + boardDTO.getUserId());
-        log.info(user.toString());
+        log.info(userEntity.toString());
         log.info(newBoard.toString());
 
         for(MultipartFile imgFile : imgFiles) {
@@ -123,7 +123,7 @@ public class BoardService {
 
                 //board_image 테이블에 이미지파일 정보 저장
                 BoardImageEntity boardImageEntity = BoardImageEntity.builder()
-                        .board(newBoard)
+                        .boardEntity(newBoard)
                         .imgFile(newFileName)
                         .build();
                 log.info(boardImageEntity.toString());
@@ -142,7 +142,7 @@ public class BoardService {
         }
 
         BoardDTO boardDTO = modelMapper.map(boardRepository.findById(id), BoardDTO.class);
-        List<BoardImageDTO> boardImageDTOS = Arrays.asList(modelMapper.map(boardImageRepository.findAllByBoardId(id), BoardImageDTO[].class));
+        List<BoardImageDTO> boardImageDTOS = Arrays.asList(modelMapper.map(boardImageRepository.findAllByBoardEntity(id), BoardImageDTO[].class));
 
         List<String> imgFileList = new ArrayList<>();
         for(BoardImageDTO boardImageDTO : boardImageDTOS) {
@@ -165,7 +165,7 @@ public class BoardService {
 
         //이미지파일이 존재한다면 기존 이미지파일 삭제 후 새 이미지파일 업로드
         if(imgFiles.size() > 0) {
-            List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(boardDTO.getId());
+            List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardEntity(boardDTO.getId());
 
             //기존 파일 삭제
             for (BoardImageEntity boardImageEntity : boardImageEntities) {
@@ -173,7 +173,7 @@ public class BoardService {
                 fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
             }
             //board_image 테이블에서 해당게시판에 올라간 이미지 데이터 모두 삭제
-            boardImageRepository.deleteAllByBoardId(boardDTO.getId());
+            boardImageRepository.deleteAllByBoardEntity(boardDTO.getId());
 
             //이미지 업로드 후 board_image 테이블에 저장
             for(MultipartFile imgFile : imgFiles) {
@@ -185,7 +185,7 @@ public class BoardService {
 
                 //board_image 테이블에 이미지파일 정보 저장
                 BoardImageEntity boardImageEntity = BoardImageEntity.builder()
-                        .board(boardEntity)
+                        .boardEntity(boardEntity)
                         .imgFile(newFileName)
                         .build();
                 boardImageRepository.save(boardImageEntity);
@@ -200,7 +200,7 @@ public class BoardService {
     //게시글 삭제
     public void remove(Integer id) throws Exception {
         //물리적 위치에 저장된 이미지를 삭제
-        List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(id);
+        List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardEntity(id);
         log.info("boardImageEntities.size() : " + boardImageEntities.size());
         for(int i=0; i<boardImageEntities.size(); i++) {
             log.info(boardImageEntities.get(i).getImgFile());
