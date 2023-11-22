@@ -1,6 +1,6 @@
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.Constant.Role;
+import com.fitness.gymsup.Constant.UserRole;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.UserRepository;
@@ -36,7 +36,7 @@ public class BasicUserService implements UserDetailsService {
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setNickname(userDTO.getNickname());
         userEntity.setPassword(password);
-        userEntity.setRole(Role.USER);
+        userEntity.setRole(UserRole.USER);
 
         validateDuplicateUser(userEntity);
         userRepository.save(userEntity);
@@ -77,5 +77,37 @@ public class BasicUserService implements UserDetailsService {
         }
     }
 
+    public String dupNickname(UserDTO userDTO) throws Exception{
+        String nickname = userDTO.getNickname();
+        String message="";
+        if (nickname.length() != 0){
+            Long dup = userRepository.countByNickname(nickname);
+            if (dup == 1){
+                message = "닉네임이 중복입니다.";
+            }else if(dup==0){
+                message = "닉네임 사용이 가능합니다.";
+            }
+        }else{
+            message = "닉네임을 입력해 주세요.";
+        }
+        return message;
+    }
+
+
+    public String dupEmail(UserDTO userDTO)throws Exception{
+        String email = userDTO.getEmail();
+        String eMessage="";
+        if (email.length() != 0){
+            Long dup = userRepository.countByEmail(email);
+            if (dup == 1){
+                eMessage = "이메일이 중복입니다.";
+            }else if(dup==0){
+                eMessage = "이메일 사용이 가능합니다.";
+            }
+        }else{
+            eMessage = "이메일을 입력해 주세요.";
+        }
+        return eMessage;
+    }
 
 }

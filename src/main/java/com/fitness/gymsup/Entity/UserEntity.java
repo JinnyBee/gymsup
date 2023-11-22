@@ -1,6 +1,6 @@
 package com.fitness.gymsup.Entity;
 
-import com.fitness.gymsup.Constant.Role;
+import com.fitness.gymsup.Constant.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,5 +38,5 @@ public class UserEntity extends BaseEntity{
     private String oauthType;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 }

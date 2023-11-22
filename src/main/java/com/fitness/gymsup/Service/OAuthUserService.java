@@ -1,6 +1,6 @@
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.Constant.Role;
+import com.fitness.gymsup.Constant.UserRole;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
             user.setEmail(mailType);
             user.setNickname(nickType);
             user.setOauthType(oauthType);
-            user.setRole(Role.USER);
+            user.setRole(UserRole.USER);
             save(user);
         }
 

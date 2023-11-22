@@ -51,6 +51,15 @@
     <script src="assets/js/main.js"></script>
     <!--js 끝-->
 
+    <script type="text/javascript">
+        $(document).ready(function (){
+            var errorMessage = "[[${errorMessage}]]";  //서버로부터 errorMessage값을 받아서
+
+            if (errorMessage != null && errorMessage.length>0){  //전달받은 오류메세지가 있으면
+                alert(errorMessage);    //메세지창
+            }
+        });
+    </script>
     <!--자바스크립트 jquery : 스크립트를 이용한 효과-->
     <th:block layout:fragment="script"></th:block>
     <th:block layout:fragment="css"></th:block>

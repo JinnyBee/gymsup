@@ -1,5 +1,5 @@
 package com.fitness.gymsup.Constant;
 
-public enum Role {
+public enum UserRole {
     USER, ADMIN
 }

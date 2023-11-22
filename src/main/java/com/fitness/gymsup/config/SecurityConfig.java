@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .loginPage("/user_login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("email")
-                .failureUrl("/user_login");
+                .failureUrl("/user_login_error");
         http.csrf().disable();
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user_logout"))
