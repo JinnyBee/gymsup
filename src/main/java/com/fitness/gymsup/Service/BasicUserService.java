@@ -96,18 +96,19 @@ public class BasicUserService implements UserDetailsService {
 
     public String dupEmail(UserDTO userDTO)throws Exception{
         String email = userDTO.getEmail();
-        String eMessage="";
+        String emessage="";
         if (email.length() != 0){
             Long dup = userRepository.countByEmail(email);
             if (dup == 1){
-                eMessage = "이메일이 중복입니다.";
+                emessage = "이메일이 중복입니다.";
             }else if(dup==0){
-                eMessage = "이메일 사용이 가능합니다.";
+                emessage = "이메일 사용이 가능합니다.";
             }
         }else{
-            eMessage = "이메일을 입력해 주세요.";
+            emessage = "이메일을 입력해 주세요.";
         }
-        return eMessage;
+        return emessage;
     }
+
 
 }
