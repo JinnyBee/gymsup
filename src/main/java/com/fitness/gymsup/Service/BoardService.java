@@ -1,12 +1,11 @@
 package com.fitness.gymsup.Service;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
-import com.fitness.gymsup.Entity.BoardCategoryEntity;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BoardImageEntity;
 import com.fitness.gymsup.Entity.UserEntity;
-import com.fitness.gymsup.Repository.BoardCategoryRepository;
 import com.fitness.gymsup.Repository.BoardImageRepository;
 import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.UserRepository;
@@ -23,11 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +37,6 @@ public class BoardService {
 
     //주입 : Repository, ModelMapper, 파일업로드 클래스
     private final UserRepository userRepository;
-    private final BoardCategoryRepository boardCategoryRepository;
     private final BoardRepository boardRepository;
     private final BoardImageRepository boardImageRepository;
     private final FileUploader fileUploader;
@@ -57,7 +53,7 @@ public class BoardService {
         Page<BoardEntity> boardEntities = boardRepository.findAll(pageable);
         Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
                 .id(data.getId())
-                .categoryId(data.getCategory().getId())
+                .categoryType(data.getCategoryType())
                 .userId(data.getUser().getId())
                 .userNickname(data.getUser().getNickname())
                 .title(data.getTitle())
@@ -72,17 +68,17 @@ public class BoardService {
         return boardDTOS;
     }
     //특정게시글 전체목록
-    public Page<BoardDTO> list(Integer categoryId, Pageable page) throws Exception {
+    public Page<BoardDTO> list(BoardCategoryType categoryType, Pageable page) throws Exception {
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
 
         Pageable pageable = PageRequest.of(curPage, pageLimit,
                 Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<BoardEntity> boardEntities = boardRepository.findAllByCategoryId(pageable, categoryId);
+        Page<BoardEntity> boardEntities = boardRepository.findAllByCategoryType(pageable, categoryType);
         Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
                 .id(data.getId())
-                .categoryId(data.getCategory().getId())
+                .categoryType(data.getCategoryType())
                 .userId(data.getUser().getId())
                 .userNickname(data.getUser().getNickname())
                 .title(data.getTitle())
@@ -102,18 +98,15 @@ public class BoardService {
         String originalFileName = "";
         String newFileName = "";
 
-        //BoardCategory, User Entity 가져오기
-        BoardCategoryEntity category = boardCategoryRepository.findById(boardDTO.getCategoryId()).orElseThrow();
+        //BoardCategory 가져오기
         UserEntity user = userRepository.findById(boardDTO.getUserId()).orElseThrow();
 
         //board 테이블에 새 게시글 저장
-        boardEntity.setCategory(category);
+        //boardEntity.setCategory(category);
         boardEntity.setUser(user);
         BoardEntity newBoard = boardRepository.save(boardEntity);
 
-        log.info("categoryId : " + boardDTO.getCategoryId());
         log.info("userId : " + boardDTO.getUserId());
-        log.info(category.toString());
         log.info(user.toString());
         log.info(newBoard.toString());
 
