@@ -1,5 +1,6 @@
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.Service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class TipBoardController {
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(3, pageable);
+        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_DIARY, pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 

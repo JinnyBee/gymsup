@@ -1,5 +1,6 @@
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.Service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -68,11 +69,10 @@ public class DiaryBoardController {
 
         return "board/list";
     }
-
     @GetMapping("/board_diary_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(3, pageable);
+        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_DIARY, pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -116,6 +116,9 @@ public class DiaryBoardController {
     @GetMapping("/board_diary_register")
     public String registerForm(Model model) throws Exception {
         BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setCategoryType(BoardCategoryType.BTYPE_DIARY);
+        log.info(boardDTO.getCategoryType().name());
+        log.info(boardDTO.getCategoryType().getDescription());
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/diary/register";
@@ -131,7 +134,9 @@ public class DiaryBoardController {
         if(bindingResult.hasErrors()) {
             return "board/diary/register";
         }
+        boardDTO.setCategoryType(BoardCategoryType.BTYPE_DIARY);
         boardService.register(boardDTO, imgFiles);
+
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_detail")

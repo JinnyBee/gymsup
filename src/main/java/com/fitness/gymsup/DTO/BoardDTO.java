@@ -1,10 +1,13 @@
 package com.fitness.gymsup.DTO;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +17,7 @@ import java.util.List;
 @Builder
 public class BoardDTO {
     private Integer id;                 //게시판 id
-    private Integer categoryId;         //게시판 카테고리 id
+    private BoardCategoryType categoryType;   //게시판 카테고리 분류
     private Integer userId;             //유저테이블 id
     private String  userNickname;       //유저테이블 닉네임
     @NotEmpty(message = "제목을 적어주세요.")
