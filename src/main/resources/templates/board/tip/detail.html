@@ -54,7 +54,15 @@
                             <div class="col-lg-4 mt-2"></div>
                             <div class="col-lg-4 mt-2"></div>
                             <div class="col-lg-4 mt-2" style="text-align: right">
-                                수정 삭제 목록으로
+                                <button class="btn btn-outline-dark" type="button" th:onclick="|location.href='@{/board_tip_modify(id=${boardDTO.id})}'|">
+                                    수정
+                                </button>
+                                <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/board_tip_remove(id=${boardDTO.id})}'|">
+                                    삭제
+                                </button>
+                                <button class="btn btn-outline-primary" type="button" th:onclick="|location.href='@{/board_tip_list}'|">
+                                    목록으로
+                                </button>
                             </div>
                         </div>
 

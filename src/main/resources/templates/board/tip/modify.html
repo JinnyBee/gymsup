@@ -12,7 +12,9 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8"> <!-- 작업공간 -->
-                        <form th:action="@{/board_diary_modify}" method="post" th:object="${boardDTO}">
+                        <form th:action="@{/board_tip_modify}" method="post"
+                              enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 가입폼 -->
+                            <h3 class="text-center">[팁] 글 수정</h3>
                             <input type="hidden" name="id" th:field="*{id}">
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
@@ -24,14 +26,18 @@
                                 <textarea class="form-control" rows="5" id="content" name="content"
                                           th:field="*{content}"></textarea>
                             </div>
+                            <div class="mb-3">
+                                <label for="img1" class="form-label">사진1:</label>
+                                <input type="file" class="form-control" id="img1" name="imgFiles">
+                                <label for="img2" class="form-label">사진2:</label>
+                                <input type="file" class="form-control" id="img2" name="imgFiles">
+                            </div>
                             <input type="hidden" name="categoryId" th:field="*{categoryId}">
                             <input type="hidden" name="userId" th:field="*{userId}">
                             <input type="hidden" name="viewCnt" th:field="*{viewCnt}">
                             <input type="hidden" name="goodCnt" th:field="*{goodCnt}">
-                            <button type="submit" class="btn btn-primary">수정</button>
-                            <button type="button" class="btn btn-secondary"
-                                    th:onclick="|location.href='@{/board_diary_list}'|">취소</button>
-                        </form>
+                            <button type="submit" class="btn btn-primary">등록</button>
+                        </form> <!-- End 가입폼 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

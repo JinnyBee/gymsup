@@ -31,10 +31,10 @@
                                 <label for="img2" class="form-label">사진2:</label>
                                 <input type="file" class="form-control" id="img2" name="imgFiles">
                             </div>
-                            <input type="hidden" name="categoryId" value="2">
-                            <input type="hidden" name="userId" value="33">
-                            <input type="hidden" name="viewCnt" value="0">
-                            <input type="hidden" name="goodCnt" value="0">
+                            <input type="hidden" name="categoryId" th:field="">
+                            <input type="hidden" name="userId" th:field="*{userId}">
+                            <input type="hidden" name="viewCnt" th:field="*{userId}">
+                            <input type="hidden" name="goodCnt" th:field="*{userId}">
                             <button type="submit" class="btn btn-primary">등록</button>
                         </form> <!-- End 가입폼 -->
                     </div> <!-- End 작업공간 -->
