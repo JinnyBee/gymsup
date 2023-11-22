@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
     <main id="main">
         <!-- ======= Search Results ======= -->
-        <section id="search-result" class="search-result">
+        <section class="search-result" id="search-result">
             <div class="container">
                 <div class="row">
                     <div class="col-md-1"></div>
@@ -54,17 +54,15 @@
                                         <span th:each="page:${#numbers.sequence(startPage, endPage)}">
                                             <!--현재페이지 아닐시-->
                                             <div th:unless="${page==currentPage}">
-                                        <a th:href="@{/board_tip_list(page=${page})}">
-                                            [[${page}]]
-                                        </a>
+                                                <a th:href="@{/board_tip_list(page=${page})}">
+                                                    [[${page}]]
+                                                </a>
                                             </div>
                                             <!--현재 페이지-->
                                             <div class="active" th:if="${page==currentPage}">
-                                        <a href="#">
-                                            [[${page}]]
-                                        </a>
-                                                </div>
-                                            </span>
+                                                [[${page}]]
+                                            </div>
+                                        </span>
                                         <!--다음페이지-->
                                         <div class="next" th:unless="${currentPage==lastPage}">
                                             <a th:href="@{/board_tip_list(page=${nextPage})}">
@@ -81,23 +79,23 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div><!--게시글 작성 버튼-->
-                                        <button type="button" class="btn btn-primary float-end btn-sm"
-                                                th:onclick="|location.href='@{/board_tip_register}'|">글쓰기
+                                        <button class="btn btn-primary float-end btn-sm" th:onclick="|location.href='@{/board_tip_register}'|"
+                                                type="button">글쓰기
                                         </button>
                                     </div><!--게시글 작성 버튼 끝-->
                                 </div>
                             </div>
                             <form class="d-flex justify-content-center"><!--검색-->
-                                <select style="width: 100px; height: 31px;" class="form-select form-select-sm">
+                                <select class="form-select form-select-sm" style="width: 100px; height: 31px;">
                                     <option>제목</option>
                                     <option>내용</option>
                                     <option>작성자</option>
                                 </select>
                                 <div class="ms-1">
-                                    <input size="20" type="text" class="form-control form-control-sm" id="email" name="email">
+                                    <input class="form-control form-control-sm" id="email" name="email" size="20" type="text">
                                 </div>
                                 <div class="ms-1">
-                                    <button type="submit" class="btn btn-dark btn-sm">검색</button>
+                                    <button class="btn btn-dark btn-sm" type="submit">검색</button>
                                 </div>
                             </form><!--검색 끝-->
                         </div><!--게시판 끝-->

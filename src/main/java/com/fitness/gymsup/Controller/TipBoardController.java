@@ -26,7 +26,7 @@ public class TipBoardController {
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(3, pageable);
+        Page<BoardDTO> boardDTOS = boardService.list(2, pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -79,15 +79,19 @@ public class TipBoardController {
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
                                Model model) throws Exception {
+        for(int i=0;i< imgFiles.size();i++) {
+            log.info("imgFiles("+i+") : " + imgFiles.get(i));
+        }
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
         boardService.register(boardDTO, imgFiles);
-        return "redirect:/board/tip/list";
+        return "redirect:/board_tip_list";
     }
     @GetMapping("/board_tip_detail")
     public String detailForm(Integer id, Model model) throws Exception {
         BoardDTO boardDTO = boardService.detail(id, "R");
+        log.info(boardDTO)  ;
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/tip/detail";
@@ -120,7 +124,7 @@ public class TipBoardController {
             return "board/tip/modify";
         }
         boardService.modify(boardDTO);
-        return "redirect:/board/tip/list";
+        return "redirect:/board_tip_list";
     }
     @GetMapping("/board_tip_remove")
     public String removeProc(Integer id,
@@ -130,7 +134,7 @@ public class TipBoardController {
     }
     @PostMapping("/board_tip_commentregister")
     public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board/tip/detail";
+        return "redirect:/board_tip_detail";
     }
     @GetMapping("/board_tip_commentremove")
     public String commentRemoveProc(Model model) throws Exception {
@@ -138,7 +142,7 @@ public class TipBoardController {
     }
     @PostMapping("/board_tip_replyregister")
     public String replyRegisterProc(Model model) throws Exception {
-        return "redirect:/board/tip/detail";
+        return "redirect:/board_tip_detail";
     }
     @GetMapping("/board_tip_replyremove")
     public String replyRemoveProc(Model model) throws Exception {
