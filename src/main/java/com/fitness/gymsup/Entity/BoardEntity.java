@@ -1,5 +1,6 @@
 package com.fitness.gymsup.Entity;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -25,13 +26,13 @@ public class BoardEntity extends BaseEntity {
                     generator = "board_SEQ")
     private Integer id;         //게시판 id
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private BoardCategoryEntity category; //board_category 테이블의 id
+    @Column(name = "category_type", length = 50, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BoardCategoryType categoryType; //카테고리 타입
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;    //user 테이블의 id
+    @JoinColumn(name = "user")
+    private UserEntity user;    //user Entity
 
     @Column(name = "title", length = 100, nullable = false)
     private String  title;      //제목

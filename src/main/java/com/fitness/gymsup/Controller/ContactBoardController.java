@@ -13,7 +13,7 @@ public class ContactBoardController {
     }
     @PostMapping("/board_contact_register")
     public String registerProc(Model model) throws Exception {
-        return "redirect:/board/contact/list";
+        return "redirect:/board_contact_list";
     }
     @GetMapping("/board_contact_list")
     public String listForm(Model model) throws Exception {
@@ -29,10 +29,10 @@ public class ContactBoardController {
     }
     @PostMapping("/board_contact_commentregister")
     public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
+        return "redirect:/board_diary_detail";
     }
     @GetMapping("/board_contact_commentremove")
     public String commentRemoveProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
+        return "redirect:/board_diary_detail";
     }
 }

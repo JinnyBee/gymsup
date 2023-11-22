@@ -37,7 +37,7 @@ public class GyminfoController {
     }
     @PostMapping("/gyminfo_register")
     public String registerProc(Model model) throws Exception {
-        return "redirect:/gyminfo/list";
+        return "redirect:/gyminfo_list";
     }
     @GetMapping("/gyminfo_detail")
     public String detailForm(Model model) throws Exception {
@@ -49,10 +49,10 @@ public class GyminfoController {
     }
     @PostMapping("/gyminfo_modify")
     public String modifyProc(Model model) throws Exception {
-        return "redirect:/gyminfo/list";
+        return "redirect:/gyminfo_list";
     }
     @GetMapping("/gyminfo_remove")
     public String removeProc(Model model) throws Exception {
-        return "gyminfo/remove";
+        return "gyminfo_remove";
     }
 }

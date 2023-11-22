@@ -17,7 +17,7 @@ public class QnaBoardController {
     }
     @PostMapping("/board_qna_register")
     public String registerProc(Model model) throws Exception {
-        return "redirect:/board/qna/list";
+        return "redirect:/board_qna_list";
     }
     @GetMapping("/board_qna_detail")
     public String detailForm(Model model) throws Exception {
@@ -25,15 +25,15 @@ public class QnaBoardController {
     }
     @GetMapping("/board_qna_goodcnt")
     public String goodcntProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
     @GetMapping("/board_qna_bookmarkon")
     public String bookmarkOnProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
     @GetMapping("/board_qna_bookmarkoff")
     public String bookmarkOffProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
     @GetMapping("/board_qna_modify")
     public String modifyForm(Model model) throws Exception {
@@ -41,26 +41,26 @@ public class QnaBoardController {
     }
     @PostMapping("/board_qna_modify")
     public String modifyProc(Model model) throws Exception {
-        return "redirect:/board/qna/list";
+        return "redirect:/board_qna_list";
     }
     @GetMapping("/board_qna_remove")
     public String removeProc(Model model) throws Exception {
-        return "board/qna/remove";
+        return "redirect:/board_qna_list";
     }
     @PostMapping("/board_qna_commentregister")
     public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
     @GetMapping("/board_qna_commentremove")
     public String commentRemoveProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
     @PostMapping("/board_qna_replyregister")
     public String replyRegisterProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
     @GetMapping("/board_qna_replyremove")
     public String replyRemoveProc(Model model) throws Exception {
-        return "redirect:/board/qna/detail";
+        return "redirect:/board_qna_detail";
     }
 }

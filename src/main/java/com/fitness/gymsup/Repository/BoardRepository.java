@@ -1,5 +1,6 @@
 package com.fitness.gymsup.Repository;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import org.springframework.data.domain.Page;
@@ -17,5 +18,6 @@ public interface BoardRepository extends
             nativeQuery = true)
     void viewcnt(@Param("id") Integer id);
 
-    Page<BoardEntity> findAllByCategoryId(Pageable pageable, Integer categoryId);
+    //Page<BoardEntity> findAllByCategoryId(Pageable pageable, Integer categoryId);
+    Page<BoardEntity> findAllByCategoryType(Pageable pageable, BoardCategoryType categoryType);
 }

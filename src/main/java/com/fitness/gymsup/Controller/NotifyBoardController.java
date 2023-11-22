@@ -28,7 +28,7 @@ public class NotifyBoardController {
     }
     @PostMapping("/board_notify_register")
     public String registerProc(Model model) throws Exception {
-        return "redirect:/board/notify/list";
+        return "redirect:/board_notify_list";
     }
     @GetMapping("/board_notify_detail")
     public String detailForm(Model model) throws Exception {
@@ -36,15 +36,15 @@ public class NotifyBoardController {
     }
     @GetMapping("/board_notify_goodcnt")
     public String goodCntProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
     @GetMapping("/board_notify_bookmarkon")
     public String bookmarkOnProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
     @GetMapping("/board_notify_bookmarkoff")
     public String bookmarkOffProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
     @GetMapping("/board_notify_modify")
     public String modifyForm(Model model) throws Exception {
@@ -52,26 +52,26 @@ public class NotifyBoardController {
     }
     @PostMapping("/board_notify_modify")
     public String modifyProc(Model model) throws Exception {
-        return "redirect:/board/notify/list";
+        return "redirect:/board_notify_list";
     }
     @GetMapping("/board_notify_remove")
     public String removeProc(Model model) throws Exception {
-        return "board/notify/remove";
+        return "redirect:/board_notify_list";
     }
     @PostMapping("/board_notify_commentregister")
     public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
     @GetMapping("/board_notify_commentremove")
     public String commentRemoveProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
     @PostMapping("/board_notify_replyregister")
     public String replyRegisterProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
     @GetMapping("/board_notify_replyremove")
     public String replyRemoveProc(Model model) throws Exception {
-        return "redirect:/board/notify/detail";
+        return "redirect:/board_notify_detail";
     }
 }
