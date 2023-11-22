@@ -13,18 +13,18 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="row" style="border-bottom: 3px solid black">
-                            <div class="col-lg-12"><h2 th:text="${boardDTO.title}">게시판 이름</h2></div>
+                            <div class="col-lg-12"><h2>팁 게시판</h2></div>
                         </div>
 
                         <div class="row mt-4 mb-3" >
-                            <div class="col-lg-12"><p style="font-size: 30px">제목</p></div>
+                            <div class="col-lg-12"><p style="font-size: 30px" th:text="${boardDTO.title}">제목</p></div>
                         </div>
 
-                        <div class="row mb-3" style="border-bottom: 1px solid black; border-top: 1px solid black; height: 50px;
-background-color: #f2f2f2">
-                            <div class="col-lg-4 mt-2"><p th:text="${boardDTO.userNickname}">닉네임</p></div>
-                            <div class="col-lg-4 mt-2"></div>
-                            <div class="col-lg-4 mt-2"><p th:text="|${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')} ${boardDTO.viewCnt}|"></p></div>
+                        <div class="row mb-3 text-start" style="border-bottom: 1px solid black; border-top: 1px solid black; height: 45px; background-color: #f2f2f2">
+                            <div class="col-lg-5 mt-2">닉네임 : <div style="display: inline-block" th:text="${boardDTO.userNickname}"></div></div>
+                            <div class="col-lg-2 mt-2"></div>
+                            <div class="col-lg-3 mt-2 text-end">날짜 : <div style="display: inline-block" th:text="${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div></div>
+                            <div class="col-lg-2 mt-2 text-end">조회수 : <div style="display: inline-block" th:text="${boardDTO.viewCnt}"></div></div>
                         </div>
 
                         <div class="row">
@@ -34,21 +34,27 @@ background-color: #f2f2f2">
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-lg-4">
-                                <button type="button">
-                                    <img src="assets/img/bookmark_off" alt="img/bookmark_off" width="74" height="50">
-                                즐겨찾기
+                            <div class="col-lg-10 text-end">
+                                <button type="button" class="btn btn-outline-dark">
+                                    <img src="/assets/img/bookmark_off.png" alt="" width="50" height="40">
+                                    북마크
                                 </button>
                             </div>
-                            <div class="col-lg-4" style="text-align: center">
-                                추천</div>
-                            <div class="col-lg-4"></div>
+                            <div class="col-lg-2 text-center">
+
+                                <button type="button" class="btn btn-outline-dark rounded-pill" width="">
+                                    <img src="/assets/img/suggestion_off.png" alt="" width="50" height="40">
+                                    추천
+                                </button>
+                            </div>
                         </div>
 
                         <div class="row" style="border-top: 1px solid black; height: 100px;">
                             <div class="col-lg-4 mt-2"></div>
                             <div class="col-lg-4 mt-2"></div>
-                            <div class="col-lg-4 mt-2" style="text-align: right">수정 삭제, 목록으로</div>
+                            <div class="col-lg-4 mt-2" style="text-align: right">
+                                수정 삭제 목록으로
+                            </div>
                         </div>
 
                         <div class="row">
@@ -57,13 +63,15 @@ background-color: #f2f2f2">
                             <div class="col-lg-4 mt-2"></div>
                         </div>
 
-                        <div class="row mt-2">
-                            <div class="col-lg-10">
-                                <textarea class="form-control" name="" id="" rows="4" style="resize: none"></textarea>
+                        <div class="row mt-1">
+                            <form action="/board/tip/detail" method="post">
+                            <div style="float: left">
+                                <textarea class="form-control" name="" id="" rows="3" style="height: 70px; width: 760px"></textarea>
                             </div>
-                            <div class="col-lg-2" style="text-align: right">
-                                <button class="btn btn-dark" style="height: 110px; width: 80px">등록</button>
+                            <div style="float: right">
+                                <button class="btn btn-dark" style="height: 70px; width: 60px">등록</button>
                             </div>
+                            </form>
                         </div>
 
                         <div class="row mt-5" style="border-bottom: 2px solid black">
@@ -76,7 +84,7 @@ background-color: #f2f2f2">
                             <div class="row mt-2">
                                 <div class="col-lg-2 mb-2">작성자</div>
                                 <div class="col-lg-6 mb-2">내용</div>
-                                <div class="col-lg-4 mb-2">작성일,</div>
+                                <div class="col-lg-4 mb-2">작성일</div>
                             </div>
                             <div class="row mt-2" style="border-bottom: 1px solid black;">
                                 <div class="col-lg-2 mb-2"><button type="button" class="btn btn-light border">답글</button>
