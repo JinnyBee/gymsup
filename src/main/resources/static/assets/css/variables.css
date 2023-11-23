@@ -113,6 +113,7 @@
   --font-footer-blog-entry: 'JalnanGothic', sans-serif;
   /*오른쪽 BMI메뉴 글꼴*/
   --font-trending-post: 'DNFForgedBlade', sans-serif;
+  --font-custom: 'HakgyoansimWoojuR', sans-serif;
 
 
 
@@ -259,6 +260,8 @@
 .font-trending-post { font-family: var(--font-trending-post) !important; }
 .font-footer-heading { font-family: var(--font-footer-heading) !important; }
 .font-footer-blog-entry { font-family: var(--font-footer-blog-entry) !important; }
+.font-custom { font-family: var(--font-custom) !important; }
+
 
 /* Text Colors */
 .color-default { color: var(--color-default) !important; }
