@@ -49,7 +49,7 @@ public class CommentService {
     //댓글 전체목록
     public List<CommentDTO> list(int boardId) throws Exception {
         log.info("boardId : " + boardId);
-        List<CommentEntity> commentEntities = commentRepository.findByBoardEntity(boardId);
+        List<CommentEntity> commentEntities = commentRepository.findByBoardId(boardId);
         List<CommentDTO> commentDTOS = new ArrayList<>();
 
         for(CommentEntity commentEntity : commentEntities) {

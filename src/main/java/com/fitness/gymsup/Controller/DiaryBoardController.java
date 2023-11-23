@@ -70,6 +70,7 @@ public class DiaryBoardController {
         log.info("nextPage : "+nextPage);
         log.info("lastPage : "+lastPage);
 
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_ALL.getDescription());
         model.addAttribute("boardDTOS", boardDTOS);
 
         return "board/list";
@@ -114,8 +115,12 @@ public class DiaryBoardController {
         log.info("nextPage : "+nextPage);
         log.info("lastPage : "+lastPage);
 
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
         model.addAttribute("boardDTOS", boardDTOS);
 
+        for(BoardDTO dto : boardDTOS) {
+            log.info(dto);
+        }
         return "board/diary/list";
     }
     @GetMapping("/board_diary_register")
@@ -154,6 +159,7 @@ public class DiaryBoardController {
         log.info(boardDTO);
         log.info(commentDTOS);
 
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
 
