@@ -105,18 +105,16 @@ public class BoardService {
         BoardEntity boardEntity = modelMapper.map(boardDTO, BoardEntity.class);
         String originalFileName = "";
         String newFileName = "";
-        //BoardCategory 가져오기
-        //현재 접속중인 UserEntity 가져오기
 
+        //현재 접속중인 UserEntity 가져오기
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        if (user == null){
+        if(user == null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
 
         //board 테이블에 새 게시글 저장
-        //boardEntity.setCategory(category);
         boardEntity.setUserEntity(user);
         BoardEntity newBoard = boardRepository.save(boardEntity);
 
@@ -124,23 +122,23 @@ public class BoardService {
         log.info(user.toString());
         log.info(newBoard.toString());
 
-        if(imgFiles != null) {
+        if(imgFiles != null) { //게시글에 첨부된 이미지파일이 존재하면
             for(MultipartFile imgFile : imgFiles) {
                 originalFileName = imgFile.getOriginalFilename();
 
-                //파일이 존재하면 이미지를 업로드 후 board_image 테이블에 저장
                 if(originalFileName.length() != 0) {
                     //이미지파일을 이미지 저장경로에 업로드
                     newFileName = fileUploader.uploadFile(imgUploadLocation,
-                                                        originalFileName,
-                                                        imgFile.getBytes());
-                    log.info("newFileName : "+newFileName);
+                                                          originalFileName,
+                                                          imgFile.getBytes());
+                    log.info("newFileName : "+ newFileName);
 
                     //board_image 테이블에 이미지파일 정보 저장
                     BoardImageEntity boardImageEntity = BoardImageEntity.builder()
                             .boardEntity(newBoard)
                             .imgFile(newFileName)
                             .build();
+
                     log.info(boardImageEntity.toString());
                     log.info(boardImageEntity.getImgFile());
 
@@ -208,7 +206,7 @@ public class BoardService {
             }
         }
 
-        //수정된 게시글 내용 업데이트
+        //수정된 게시글 업데이트
         boardDTO.setId(boardEntity.getId());
         BoardEntity update = modelMapper.map(boardDTO, boardEntity.getClass());
         boardRepository.save(update);
