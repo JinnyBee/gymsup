@@ -2,7 +2,9 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
+import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.Service.BoardService;
+import com.fitness.gymsup.Service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import java.util.List;
 @Log4j2
 public class TipBoardController {
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
@@ -73,6 +76,9 @@ public class TipBoardController {
     @GetMapping("/board_tip_register")
     public String registerForm(Model model) throws Exception {
         BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setCategoryType(BoardCategoryType.BTYPE_TIP);
+        log.info(boardDTO.getCategoryType().name());
+        log.info(boardDTO.getCategoryType().getDescription());
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/tip/register";
@@ -83,16 +89,28 @@ public class TipBoardController {
                                List<MultipartFile> imgFiles,
                                Model model, Principal principal,
                                HttpServletRequest request) throws Exception {
+        log.info(boardDTO.getCategoryType().name());
+        for(int i=0;i< imgFiles.size();i++) {
+            log.info("imgFiles("+i+") : " + imgFiles.get(i));
+        }
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
         boardService.register(boardDTO, imgFiles,request,principal);
+
         return "redirect:/board/tip/list";
     }
     @GetMapping("/board_tip_detail")
     public String detailForm(Integer id, Model model) throws Exception {
+        //해당게시글 상세조히
         BoardDTO boardDTO = boardService.detail(id, "R");
+        //댓글목록 조회
+        List<CommentDTO> commentDTOS = commentService.list(id);
+        log.info(boardDTO);
+        log.info(commentDTOS);
+
         model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("commentDTOS", commentDTOS);
 
         return "board/tip/detail";
     }
