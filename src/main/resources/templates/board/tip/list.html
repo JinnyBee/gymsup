@@ -28,7 +28,12 @@
                                 <tbody>
                                 <tr th:each="data:${boardDTOS}"> <!--th:each="data:${DTO}"-->
                                     <td th:text="${data.getCategoryType().getDescription()}">게시판</td>
-                                    <td><a th:href="@{/board_tip_detail(id=${data.id})}" th:text="${data.title}">테스트1</a>&nbsp;&nbsp;<span style=" color: #ff4930">9</span></td> <!-- 댓글수 (id=${데이터.값})-->
+                                    <td>
+                                        <a class="d-inline-block text-truncate" th:href="@{/board_tip_detail(id=${data.id})}" th:text="${data.title}"  style="max-width: 180px;">
+                                            테스트1
+                                        </a>&nbsp;&nbsp;
+                                        <span style=" color: #ff4930">9</span>
+                                    </td>
                                     <td style="text-align: center" th:text="${data.userNickname}">홍길동</td>
                                     <td style="text-align: center" th:text="${data.viewCnt}">21</td>
                                     <td style="text-align: center" th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">2021-11-29</td>
