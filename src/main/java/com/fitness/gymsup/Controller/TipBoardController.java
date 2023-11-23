@@ -98,7 +98,7 @@ public class TipBoardController {
         }
         boardService.register(boardDTO, imgFiles,request,principal);
 
-        return "redirect:/board/tip/list";
+        return "redirect:/board_tip_list";
     }
     @GetMapping("/board_tip_detail")
     public String detailForm(Integer id, Model model) throws Exception {

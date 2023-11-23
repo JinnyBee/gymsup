@@ -1,12 +1,19 @@
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.UserRole;
+import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.UserDTO;
+import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.UserEntity;
+import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +34,7 @@ import java.security.Principal;
 public class BasicUserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
     private final ModelMapper modelMapper = new ModelMapper();
     private final PasswordEncoder passwordEncoder;
 
@@ -110,5 +118,33 @@ public class BasicUserService implements UserDetailsService {
         return emessage;
     }
 
+    public Page<BoardDTO> myWrite(Pageable page, HttpServletRequest request, Principal principal)throws Exception{
+        int curPage = page.getPageNumber()-1;
+        int pageLimit = 5;
 
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user ==null){
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+
+        Pageable pageable = PageRequest.of
+                (curPage, pageLimit, Sort.by(Sort.Direction.DESC,"id"));
+        Page<BoardEntity> boardEntities = boardRepository.findAllByUserEntity(pageable, user);
+        Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
+                .id(data.getId())
+                .categoryType(data.getCategoryType())
+                .userId(data.getUserEntity().getId())
+                .userNickname(data.getUserEntity().getNickname())
+                .title(data.getTitle())
+                .content(data.getContent())
+                .viewCnt(data.getViewCnt())
+                .goodCnt(data.getGoodCnt())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build()
+        );
+        return boardDTOS;
+    }
 }

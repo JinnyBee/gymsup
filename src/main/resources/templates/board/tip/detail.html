@@ -38,10 +38,15 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-lg-10 text-end" style="padding-right: 0px;">
-                                <button type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block">
-                                    <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
-                                    북마크
-                                </button>
+                                <form action="/bookmark_register" method="post">
+                                    <input type="hidden" th:value="${boardDTO.id}" name="boardId">
+                                    <input type="hidden" name="categoryType" value="BTYPE_TIP">
+                                    <button type="submit" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block">
+                                        <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
+                                        북마크
+                                    </button>
+                                </form>
+
                             </div>
                             <div class="col-lg-2 text-end">
                                 <button type="button" class="btn btn-outline-dark rounded-pill" style="width: 110px; height:50px; display: inline-block" >

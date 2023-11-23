@@ -11,15 +11,55 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
-                        <div class="card">
-                            <div class="card-body">
-                                <h2>유저 정보</h2>
-                                <p th:if="${userEntity.oauthType != null}">(로그인 정보)유저이메일 : <span th:text="${userEntity.email}"></span></p>
-                                <p th:if="${userEntity.oauthType == null}">유저이메일 : <span th:text="${userEntity.email}"></span></p>
-                                <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>
+                    <div class="col-md-7"> <!-- 작업공간 -->
+                        <div class="row">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
+                                <p class="mt-1" style="text-align: center;">마이페이지</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                            onclick="location.href='/bookmark_list'">
+                                <p class="mt-1" style="text-align: center;">북마크</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                            onclick="location.href='/user_mywrite'">
+                                <p class="mt-1" style="text-align: center;">내 게시물</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;">내 댓글</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;">내 문의</p>
+                            </div>
+                            <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 500px">
+                                <h2 class="mt-4">유저 정보</h2>
+                                <table class="table table-bordered mt-4">
+                                    <tbody>
+                                    <tr>
+                                        <td style=" background-color: #f2f2f2">
+                                            <p th:if="${userEntity.oauthType != null}">(로그인 정보)계정 : </p>
+                                            <p th:if="${userEntity.oauthType == null}">계정 : </p>
+                                        </td>
+                                        <td><span th:text="${userEntity.email}"></span></td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                    <tr style="height: auto; min-height: 200px">
+                                        <td style="background-color: #f2f2f2;">닉네임</td>
+                                        <td><span th:text="${userEntity.nickname}"></span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+<!--                                <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>-->
                             </div>
                         </div>
+
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
@@ -30,6 +70,7 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="col-md-1"></div>
                 </div>
             </div>
         </section> <!-- End Search Result -->

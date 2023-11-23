@@ -13,20 +13,22 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-7"> <!-- 작업공간 -->
                         <div class="row">
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/user_detail'">
                                 <p class="mt-1" style="text-align: center;">마이페이지</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2 "
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer "
                                  onclick="location.href='/bookmark_list'">
                                 <p class="mt-1" style="text-align: center;">북마크</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
+                                 onclick="location.href='/user_mywrite'">
                                 <p class="mt-1" style="text-align: center;">내 게시물</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
                                 <p class="mt-1" style="text-align: center;">내 댓글</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
                                 <p class="mt-1" style="text-align: center;">내 문의</p>
                             </div>
                             <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
@@ -38,7 +40,22 @@
                         <div class="row">
                             <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 500px">
                                 <h2 class="mt-4">유저 정보</h2>
-
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>카테고리</th>
+                                        <th>제목</th>
+                                        <th>조회수</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="data:${boardDTOS}">
+                                        <td th:text="${data.categoryType}">John</td>
+                                        <td th:text="${data.title}">John</td>
+                                        <td th:text="${data.viewCnt}">John</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 <!--                                <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>-->
                             </div>
                         </div>
