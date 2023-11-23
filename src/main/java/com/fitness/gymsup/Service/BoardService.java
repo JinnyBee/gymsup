@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,21 +96,28 @@ public class BoardService {
         return boardDTOS;
     }
     //게시글 등록
-    public void register(BoardDTO boardDTO, List<MultipartFile> imgFiles) throws Exception {
+    public void register(BoardDTO boardDTO, List<MultipartFile> imgFiles,
+                         HttpServletRequest request, Principal principal) throws Exception {
         BoardEntity boardEntity = modelMapper.map(boardDTO, BoardEntity.class);
         String originalFileName = "";
         String newFileName = "";
-
         //BoardCategory 가져오기
-        UserEntity userEntity = userRepository.findById(boardDTO.getUserId()).orElseThrow();
+        //현재 접속중인 UserEntity 가져오기
+
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if (user == null){
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
 
         //board 테이블에 새 게시글 저장
         //boardEntity.setCategory(category);
-        boardEntity.setUserEntity(userEntity);
+        boardEntity.setUserEntity(user);
         BoardEntity newBoard = boardRepository.save(boardEntity);
 
         log.info("userId : " + boardDTO.getUserId());
-        log.info(userEntity.toString());
+        log.info(user.toString());
         log.info(newBoard.toString());
 
         for(MultipartFile imgFile : imgFiles) {

@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -130,7 +132,8 @@ public class DiaryBoardController {
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model) throws Exception {
+                               Model model, Principal principal,
+                               HttpServletRequest request) throws Exception {
         log.info(boardDTO.getCategoryType().name());
         for(int i=0;i< imgFiles.size();i++) {
             log.info("imgFiles("+i+") : " + imgFiles.get(i));
@@ -138,7 +141,7 @@ public class DiaryBoardController {
         if(bindingResult.hasErrors()) {
             return "board/diary/register";
         }
-        boardService.register(boardDTO, imgFiles);
+        boardService.register(boardDTO, imgFiles, request, principal);
 
         return "redirect:/board_diary_list";
     }

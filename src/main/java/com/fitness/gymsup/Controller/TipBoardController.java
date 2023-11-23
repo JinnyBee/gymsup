@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -27,7 +29,7 @@ public class TipBoardController {
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_TIP, pageable);
+        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_DIARY, pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -71,9 +73,6 @@ public class TipBoardController {
     @GetMapping("/board_tip_register")
     public String registerForm(Model model) throws Exception {
         BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setCategoryType(BoardCategoryType.BTYPE_TIP);
-        log.info(boardDTO.getCategoryType().name());
-        log.info(boardDTO.getCategoryType().getDescription());
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/tip/register";
@@ -82,21 +81,17 @@ public class TipBoardController {
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model) throws Exception {
-        for(int i=0;i< imgFiles.size();i++) {
-            log.info("imgFiles("+i+") : " + imgFiles.get(i));
-        }
+                               Model model, Principal principal,
+                               HttpServletRequest request) throws Exception {
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
-        boardDTO.setCategoryType(BoardCategoryType.BTYPE_TIP);
-        boardService.register(boardDTO, imgFiles);
-        return "redirect:/board_tip_list";
+        boardService.register(boardDTO, imgFiles,request,principal);
+        return "redirect:/board/tip/list";
     }
     @GetMapping("/board_tip_detail")
     public String detailForm(Integer id, Model model) throws Exception {
         BoardDTO boardDTO = boardService.detail(id, "R");
-        log.info(boardDTO);
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/tip/detail";
@@ -129,7 +124,7 @@ public class TipBoardController {
             return "board/tip/modify";
         }
         boardService.modify(boardDTO);
-        return "redirect:/board_tip_list";
+        return "redirect:/board/tip/list";
     }
     @GetMapping("/board_tip_remove")
     public String removeProc(Integer id,
@@ -139,18 +134,18 @@ public class TipBoardController {
     }
     @PostMapping("/board_tip_commentregister")
     public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board_tip_detail";
+        return "redirect:/board/tip/detail";
     }
     @GetMapping("/board_tip_commentremove")
     public String commentRemoveProc(Model model) throws Exception {
-        return "redirect:/board_tip_detail";
+        return "redirect:/board/tip/detail";
     }
     @PostMapping("/board_tip_replyregister")
     public String replyRegisterProc(Model model) throws Exception {
-        return "redirect:/board_tip_detail";
+        return "redirect:/board/tip/detail";
     }
     @GetMapping("/board_tip_replyremove")
     public String replyRemoveProc(Model model) throws Exception {
-        return "redirect:/board_tip_detail";
+        return "redirect:/board/tip/detail";
     }
 }

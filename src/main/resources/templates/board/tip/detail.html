@@ -83,31 +83,38 @@
                             </form>
                         </div>
 
-                        <div class="row mt-5" style="border-bottom: 2px solid black">
+                        <div class="row mt-5">
                             <div class="col-lg-12 mb-2">댓글(0)</div>
                         </div>
 
                         <!--댓글 시작-->
 
-                        <div>
+                        <div style="border-bottom: 2px solid black; border-top: 2px solid black">
                             <div class="row mt-2">
                                 <div class="col-lg-2 mb-2">작성자</div>
                                 <div class="col-lg-6 mb-2">내용</div>
                                 <div class="col-lg-4 mb-2">작성일</div>
                             </div>
-                            <div class="row mt-2" style="border-bottom: 1px solid black;">
-                                <div class="col-lg-2 mb-2"><button type="button" class="btn btn-light border">답글</button>
-                                    <div id="divToggle" style="display: none;">
-                                        asd
-                                    </div>
-                                </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-2 mb-2"><button type="button" class="btn btn-light border" onclick="replyBtn()">답글</button></div>
                                 <div class="col-lg-6 mb-2"></div>
                                 <div class="col-lg-4 mb-2"></div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-12">
+                            <form action="">
+                                <div style="display: none" id="reply">
+                                    <div class="row">
+                                        <div class="col-lg-10" >
+                                            <div class="mb-3">
+                                                <textarea class="form-control" name="reply"  rows="2" style=" resize: none"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button type="submit" class="btn btn-dark">등록</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+
                         </div>
 
                         <!--댓글 끝-->
