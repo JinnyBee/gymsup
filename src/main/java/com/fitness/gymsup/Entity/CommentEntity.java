@@ -33,8 +33,8 @@ public class CommentEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;      //참조 테이블 Entity명 (user 테이블 - 댓글 작성자)
 
-    @Column(name = "content", length = 200, nullable = false)
-    private String  content;            //댓글 내용
+    @Column(name = "comment", length = 200, nullable = false)
+    private String  comment;            //댓글 내용
 
     @Column(name = "good_cnt")
     @ColumnDefault("0")

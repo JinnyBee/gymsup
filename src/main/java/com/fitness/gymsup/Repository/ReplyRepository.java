@@ -10,12 +10,12 @@ import java.util.List;
 
 
 @Repository
-public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
-    @Query(value = "SELECT * FROM comment WHERE board_id = :boardId ORDER BY mod_date DESC",
+public interface ReplyRepository extends JpaRepository<ReplyEntity, Integer> {
+    @Query(value = "SELECT * FROM reply WHERE comment_id = :commentId ORDER BY mod_date ASC",
             nativeQuery = true)
-    List<CommentEntity> findByBoardId(Integer boardId);
+    List<ReplyEntity> findByCommentId(Integer commentId);
 
-    @Query(value = "DELETE FROM comment WHERE board_id = :boardId",
+    @Query(value = "DELETE FROM reply WHERE comment_id = :commentId",
             nativeQuery = true)
-    void deleteAllByBoardId(Integer boardId);
+    void deleteAllByCommentId(Integer commentId);
 }
