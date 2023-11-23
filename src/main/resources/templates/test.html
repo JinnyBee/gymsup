@@ -5,6 +5,17 @@
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=fmzziwzoty&callback=initMap"></script>
+    <script type="text/javascript">
+        var map = null;
+
+        function initMap() {
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                zoom: 10
+            });
+        }
+    </script>
     <main id="main">
         <!-- ======= Search Results ======= -->
         <div class="container">
@@ -150,6 +161,22 @@
                         </div> <!--내부시설 끝-->
                     </div>
 
+                    <div class="container pt-5 pb-5"> <!--내부시설 시작-->
+                        <div class="row mt-3" style="border-bottom: 3px solid black">
+                            <div class="col-lg-12"><h2>오시는 길</h2></div>
+                        </div>
+                        <div class="pt-5 pb-5">
+                            <div id="map" style="width:100%; height:550px;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
+                    </div>
                 </div> <!-- End 작업공간 -->
                 <div class="col-md-2">
                     <div class="trending">
