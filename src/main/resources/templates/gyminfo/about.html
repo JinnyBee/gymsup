@@ -5,26 +5,190 @@
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=fmzziwzoty&callback=initMap"></script>
+    <script type="text/javascript">
+        var map = null;
+
+        function initMap() {
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(37.3595704, 127.105399),
+                zoom: 10
+            });
+        }
+    </script>
     <main id="main">
         <!-- ======= Search Results ======= -->
-        <section id="search-result" class="search-result">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
-
-                    </div> <!-- End 작업공간 -->
-                    <div class="col-md-2">
-                        <div class="trending">
-                            <ul class="trending-post">
-                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
-                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
-                                <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
-                            </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-9"> <!-- 작업공간 -->
+                    <div class="container pt-5 pb-5">
+                        <div class="row" style="border-bottom: 3px solid black"> <!--강사소개 시작-->
+                            <div class="col-lg-12"><h2>강사 소개</h2></div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="card" style="width:270px">
+                                    <img class="card-img-top" src="/assets/img/person-1.jpg" alt="Card image">
+                                    <div class="card-body">
+                                        <h4 class="card-title">John Doe</h4>
+                                        <p class="card-text">
+                                            <b>강사이력</b>
+                                        <p>스포츠케틀벨 선수자격</p>
+                                        <p>생활스포츠지도사 2급</p>
+                                        <p>관악구청 사내헬스장 위촉강사</p>
+                                        <b>담당강습반</b>
+                                        <p>주말(토)위촉강사</p>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card" style="width:270px">
+                                    <img class="card-img-top" src="/assets/img/person-2.jpg" alt="Card image">
+                                    <div class="card-body">
+                                        <h4 class="card-title">July Dooley</h4>
+                                        <p class="card-text">
+                                            <b>강사이력</b>
+                                        <p>생활스포츠지도사 1급(보디빌딩)</p>
+                                        <p>노인스포츠지도사(보디빌딩)</p>
+                                        <p>유소년스포츠지도사(보디빌딩)</p>
+                                        <b>담당강습반</b>
+                                        <p>헬스장 13:30~22:00</p>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card" style="width:270px">
+                                    <img class="card-img-top" src="/assets/img/person-3.jpg" alt="Card image">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Mary Moe</h4>
+                                        <p class="card-text">
+                                            <b>강사이력</b>
+                                        <p>생활스포츠지도사 2급(보디빌딩)</p>
+                                        <p>유아스포츠지도사(보디빌딩)</p>
+                                        <p>노인스포츠지도사(보디빌딩)</p>
+                                        <b>담당강습반</b>
+                                        <p>헬스장 06:00~14:30</p>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--강사시작 끝-->
+                    </div>
+
+                    <div class="container pt-5 pb-5"> <!--프로그램 시작-->
+                        <div class="row mt-3" style="border-bottom: 3px solid black">
+                            <div class="col-lg-12"><h2>프로그램 소개</h2></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 text-start">
+                                <br>
+                                <p><b>맞춤형 바디 코칭 프로그램</b></p>
+                                <p class="pt">Customizing Body Coaching Program</p>
+                                <p>현재의 체형과 몸 상태에 만족하지 못하는 분들을 위해<br>
+                                    효과적인 운동 방법과 노하우를 지도합니다.</p>
+                                <p>일정 시간 내에 원하는 목표를 달성하기 원하시는 분,<br>
+                                    개인화된 운동 코칭을 필요로 하시는 분들께 적합합니다.</p>
+                                <p>회원님의 운동 목표와 신체 컨디션에 부합하는<br>
+                                    맞춤형 프로그램을 설계하여<br>
+                                    삶의 질을 높일 수 있도록 도와드립니다.</p>
+                                <p>전문기관에서 체계적인 교육을 이수하고 <br>
+                                    각종 분야에서의 지도경험 및 여러 자격증 취득한 <br>
+                                    JY 전문 트레이너와 함께 멋진 몸 만들기에 도전하세요!</p>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <img src="/assets/img/pt-img1.jpg" alt="pt-img1" height="400" width="400">
+                            </div>
+                        </div>
+
+                        <div class="row pt-5">
+                            <div class="col-md-12 text-center">
+                                <h2>SEMI P.T</h2>
+                                <p>P.T를 진행하지 않더라도 정확한 기구 사용법이 궁금하실 땐<br>
+                                    웨이트존 상담데스크 트레이너에게 언제든지 문의주세요.</p>
+                                <img src="/assets/img/pt-img2.png" alt="pt-img2" height="400" width="400">
+                                <img src="/assets/img/pt-img3.png" alt="pt-img3" height="400" width="400">
+                            </div>
+                        </div>
+                    </div> <!--프로그램 끝-->
+
+                    <div class="container pt-5 pb-5"> <!--내부시설 시작-->
+                        <div class="row mt-3" style="border-bottom: 3px solid black">
+                            <div class="col-lg-12"><h2>내부시설 소개</h2></div>
+                        </div>
+                        <div id="demo" class="carousel slide mt-3" data-bs-ride="carousel">
+                            <!-- Indicators/dots -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                            </div>
+
+                            <!-- The slideshow/carousel -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="assets/img/gym_img1.jpg" alt="gym_img1" class="d-block" style="width:100%">
+                                    <div class="carousel-caption">
+                                        <h3>헬스장</h3>
+                                        <p>다양한 운동기구 구비</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/img/gym_img2.jpg" alt="gym_img2" class="d-block" style="width:100%">
+                                    <div class="carousel-caption">
+                                        <h3>요가 및 맨몸운동</h3>
+                                        <p>요가매트와 맨몸운동 관련 기구 구비</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/img/gym_img3.jpg" alt="gym_img3" class="d-block" style="width:100%">
+                                    <div class="carousel-caption">
+                                        <h3>헬스장 샤워 시설</h3>
+                                        <p>청결한 헬스생활 가능</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Left and right controls/icons -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div> <!--내부시설 끝-->
+                    </div>
+
+                    <div class="container pt-5 pb-5"> <!--내부시설 시작-->
+                        <div class="row mt-3" style="border-bottom: 3px solid black">
+                            <div class="col-lg-12"><h2>오시는 길</h2></div>
+                        </div>
+                        <div class="pt-5 pb-5">
+                            <div id="map" style="width:100%; height:550px;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End 작업공간 -->
+                <div class="col-md-2">
+                    <div class="trending">
+                        <ul class="trending-post">
+                            <li><a href="#"><h3>BMI 계산</h3></a></li>
+                            <li><a href="#"><h3>운동 칼로리 계산</h3></a></li>
+                            <li><a href="#"><h3>음식 칼로리 계산</h3></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
         </section> <!-- End Search Result -->
     </main><!-- End #main -->
 </div>
