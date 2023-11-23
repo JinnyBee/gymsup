@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-7"> <!-- 작업공간 -->
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>게시글 번호</th>
+                                <th>제목</th>
+                                <th>카테고리</th>
+                                <th>조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="data:${bookmarkDTOS}">
+                                <td th:if="${data.isBookmark}==true" th:text="${data.id}"></td>
+                                <td th:if="${data.isBookmark}==true" th:text="${data.boardTitle}">Doe</td>
+                                <td th:if="${data.isBookmark}==true" th:text="${data.categoryType}">john@example.com</td>
+                                <td th:if="${data.isBookmark}==true" th:text="${data.boardViewCnt}">john@example.com</td>
+<!--                                <td th:if="${data.isBookmark}==true" th:text="${title}">john@example.com</td>-->
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2">
+                        <div class="trending">
+                            <ul class="trending-post">
+                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

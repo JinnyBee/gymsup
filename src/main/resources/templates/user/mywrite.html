@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-7"> <!-- 작업공간 -->
+                        <div class="row">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
+                                <p class="mt-1" style="text-align: center;">마이페이지</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2 "
+                                 onclick="location.href='/bookmark_list'">
+                                <p class="mt-1" style="text-align: center;">북마크</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2">
+                                <p class="mt-1" style="text-align: center;">내 게시물</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2">
+                                <p class="mt-1" style="text-align: center;">내 댓글</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2">
+                                <p class="mt-1" style="text-align: center;">내 문의</p>
+                            </div>
+                            <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 500px">
+                                <h2 class="mt-4">유저 정보</h2>
+
+                                <!--                                <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>-->
+                            </div>
+                        </div>
+
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2">
+                        <div class="trending">
+                            <ul class="trending-post">
+                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>
