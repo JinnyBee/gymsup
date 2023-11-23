@@ -52,6 +52,10 @@ h6 {
 .table td {
   font-family: var(--font-table-td);
   font-size: 17px;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  white-space:nowrap;
+  max-width: 80px;
 }
 
 .table th {
