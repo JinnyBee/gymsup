@@ -172,15 +172,25 @@ public class BoardService {
     public void modify(BoardDTO boardDTO) throws Exception {
         modify(boardDTO, null);
     }
+    //게시글 수정
     public void modify(BoardDTO boardDTO, List<MultipartFile> imgFiles) throws Exception {
         BoardEntity boardEntity = boardRepository.findById(boardDTO.getId()).orElseThrow();
+
         String originalFileName = "";
         String newFileName = "";
+        Boolean existUploadImgFile = false;
 
-        //이미지파일이 존재한다면 기존 이미지파일 삭제 후 새 이미지파일 업로드
-        if(imgFiles.size() > 0) {
+        log.info("DTO : " +boardDTO);
+        log.info("Entity : " +boardEntity);
+
+        for(MultipartFile imgFile : imgFiles) {
+            if( !imgFile.isEmpty() ) existUploadImgFile = true;
+        }
+
+        log.info("existUploadImgFile : "+existUploadImgFile);
+        //새로 업로드할 이미지파일이 존재한다면 기존 이미지파일을 삭제 후 새 이미지파일 업로드
+        if( existUploadImgFile ) {
             List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(boardDTO.getId());
-
             //기존 파일 삭제
             for (BoardImageEntity boardImageEntity : boardImageEntities) {
                 log.info(boardImageEntity);
@@ -189,26 +199,30 @@ public class BoardService {
             //board_image 테이블에서 해당게시판에 올라간 이미지 데이터 모두 삭제
             boardImageRepository.deleteAllByBoardId(boardDTO.getId());
 
-            //이미지 업로드 후 board_image 테이블에 저장
+            //새 이미지 업로드 후 board_image 테이블에 저장
             for(MultipartFile imgFile : imgFiles) {
                 originalFileName = imgFile.getOriginalFilename();
-                newFileName = fileUploader.uploadFile(imgUploadLocation,
-                                                      originalFileName,
-                                                      imgFile.getBytes());
-                log.info(newFileName);
+                if(originalFileName.length() != 0) {
+                    newFileName = fileUploader.uploadFile(imgUploadLocation,
+                            originalFileName,
+                            imgFile.getBytes());
+                    log.info(newFileName);
 
-                //board_image 테이블에 이미지파일 정보 저장
-                BoardImageEntity boardImageEntity = BoardImageEntity.builder()
-                        .boardEntity(boardEntity)
-                        .imgFile(newFileName)
-                        .build();
-                boardImageRepository.save(boardImageEntity);
+                    //board_image 테이블에 이미지파일 정보 저장
+                    BoardImageEntity boardImageEntity = BoardImageEntity.builder()
+                            .boardEntity(boardEntity)
+                            .imgFile(newFileName)
+                            .build();
+                    boardImageRepository.save(boardImageEntity);
+                }
             }
         }
 
         //수정된 게시글 업데이트
-        boardDTO.setId(boardEntity.getId());
         BoardEntity update = modelMapper.map(boardDTO, boardEntity.getClass());
+        update.setId(boardEntity.getId());
+        update.setUserEntity(boardEntity.getUserEntity());
+
         boardRepository.save(update);
     }
     //게시글 삭제
