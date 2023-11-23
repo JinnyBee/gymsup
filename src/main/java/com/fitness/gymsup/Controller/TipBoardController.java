@@ -32,7 +32,7 @@ public class TipBoardController {
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_DIARY, pageable);
+        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_TIP, pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
