@@ -14,9 +14,9 @@ public interface BoardImageRepository extends
         JpaRepository<BoardImageEntity, Integer> {
     @Query(value = "SELECT * FROM board_image WHERE board_id = :boardId",
            nativeQuery = true)
-    List<BoardImageEntity> findAllByBoardEntity(Integer boardId);
+    List<BoardImageEntity> findAllByBoardId(Integer boardId);
 
     @Query(value = "DELETE FROM board_image WHERE board_id = :boardId",
            nativeQuery = true)
-    void deleteAllByBoardEntity(Integer boardId);
+    void deleteAllByBoardId(Integer boardId);
 }

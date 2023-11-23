@@ -18,6 +18,5 @@ public interface BoardRepository extends
             nativeQuery = true)
     void viewcnt(@Param("id") Integer id);
 
-    //Page<BoardEntity> findAllByCategoryId(Pageable pageable, Integer categoryId);
     Page<BoardEntity> findAllByCategoryType(Pageable pageable, BoardCategoryType categoryType);
 }

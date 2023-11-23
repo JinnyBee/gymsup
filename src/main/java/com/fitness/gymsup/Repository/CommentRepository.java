@@ -13,5 +13,9 @@ public interface CommentRepository extends
         JpaRepository<CommentEntity, Integer> {
     @Query(value = "SELECT * FROM comment WHERE board_id = :boardId ORDER BY mod_date DESC",
            nativeQuery = true)
-    List<CommentEntity> findByBoardEntity(Integer boardId);
+    List<CommentEntity> findByBoardId(Integer boardId);
+
+    @Query(value = "DELETE FROM comment WHERE board_id = :boardId",
+           nativeQuery = true)
+    void deleteAllByBoardId(Integer boardId);
 }
