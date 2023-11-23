@@ -2,7 +2,9 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.CommentDTO;
+import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Service.CommentService;
+import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -16,31 +18,31 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class CommentController {
-    private final CommentService commentService;
+public class ReplyController {
+    private final ReplyService replyService;
 
-    @PostMapping("/comment_register")
-    public String registerProc(@Valid CommentDTO commentDTO,
+    @PostMapping("/reply_register")
+    public String registerProc(@Valid ReplyDTO replyDTO,
                                BindingResult bindingResult,
                                String categoryType,
                                RedirectAttributes redirectAttributes) throws Exception {
-        log.info("boardId : " + commentDTO.getBoardId() + ", userId : " + commentDTO.getUserId() + "categoryType : " + categoryType);
+        log.info("commentId : " + replyDTO.getCommentId() + ", userId : " + replyDTO.getUserId() + "categoryType : " + categoryType);
         if (bindingResult.hasErrors()) {
             log.info(getRedirectUrl(categoryType));
             return "redirect:" + getRedirectUrl(categoryType);
         }
 
-        commentService.register(commentDTO);
-        redirectAttributes.addAttribute("id", commentDTO.getBoardId());
+        replyService.register(replyDTO);
+        redirectAttributes.addAttribute("id", replyDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
-    @GetMapping("/comment_remove")
+    @GetMapping("/reply_remove")
     public String removeProc(int bid,
                              int id,
                              RedirectAttributes redirectAttributes) throws Exception {
-        commentService.remove(id);
+        replyService.remove(id);
         redirectAttributes.addAttribute("id", bid);
 
         return "redirect:/board_diary_detail";

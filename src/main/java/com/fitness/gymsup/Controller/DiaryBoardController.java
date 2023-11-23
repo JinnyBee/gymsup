@@ -3,8 +3,10 @@ package com.fitness.gymsup.Controller;
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
+import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
+import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -29,7 +31,9 @@ import java.util.List;
 public class DiaryBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+    private final ReplyService replyService;
 
+    //모든게시판 전체목록 조회
     @GetMapping("/board_list")
     public String listAllForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
@@ -75,6 +79,7 @@ public class DiaryBoardController {
 
         return "board/list";
     }
+    //특정게시판 전체목록 조회
     @GetMapping("/board_diary_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
@@ -140,8 +145,8 @@ public class DiaryBoardController {
                                Model model, Principal principal,
                                HttpServletRequest request) throws Exception {
         log.info(boardDTO.getCategoryType().name());
-        for(int i=0;i< imgFiles.size();i++) {
-            log.info("imgFiles("+i+") : " + imgFiles.get(i));
+        for(MultipartFile imgFile : imgFiles) {
+            log.info(imgFile);
         }
         if(bindingResult.hasErrors()) {
             return "board/diary/register";
@@ -156,6 +161,7 @@ public class DiaryBoardController {
         BoardDTO boardDTO = boardService.detail(id, "R");
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
+
         log.info(boardDTO);
         log.info(commentDTOS);
 

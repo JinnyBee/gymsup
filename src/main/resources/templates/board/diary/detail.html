@@ -58,39 +58,70 @@
                             <div class="card-body">
                                 <form th:action="@{/comment_register}" method="post">
                                     <div class="mb-3">
-                                        <lfabel for="content">댓글쓰기:</lfabel>
-                                        <textarea class="form-control" rows="5" id="content" name="content"></textarea>
+                                        <lfabel for="comment">댓글쓰기:</lfabel>
+                                        <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
                                     </div>
                                     <div class="mt-3 text-end">
                                         <button type="submit" class="btn btn-primary">입력</button>
                                     </div>
+                                    <!-- 댓글 등록 시 필요한 값들을 hidden으로 설정 -->
                                     <input type="hidden" name="boardId" th:value="${boardDTO.id}">
                                     <input type="hidden" name="userId" value="42">
                                     <input type="hidden" name="goodCnt" value="0">
-                                    <input type="hidden" name="categoryType" value="BTYPE_DIARY">
+                                    <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                                 </form>
                             </div>
                         </div> <!-- End 댓글 등록 -->
-                        <div class="card" th:each="data:${commentDTOS}"> <!-- 댓글목록 -->
-                            <table class="table table-borderless">
+                        <div class="card" th:each="data:${commentDTOS}"> <!-- 댓글 목록 -->
+                            <table class="table table-borderless"> <!-- 댓글 상세 내용 -->
                                 <tbody>
                                 <tr>
-                                    <td>
-                                        <span class="text-left" th:text="${data.userNickname}"></span>
+                                    <td> <!-- 댓글 작성자의 닉네임, 댓글 수정시간 -->
+                                        <span class="text-left" th:text="${data.userNickname}"></span>&nbsp;&nbsp;&nbsp;
                                         <span class="text-left" th:text="${#temporals.format(data.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                     </td>
                                     <td>
-                                        <!-- 댓글 삭제 (bid: 부모 게시글 id, id: 삭제할 댓글 id) -->
+                                        <!-- 댓글 삭제 (bid:부모 게시글 id, id:삭제할 댓글 id) -->
                                         <button class="text-right" type="button"
                                                 th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id})}'|">삭제</button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left" th:text="${data.content}"></td>
+                                    <td class="text-left" th:text="${data.comment}"></td>
                                 </tr>
                                 </tbody>
-                            </table>
-                        </div> <!-- End 댓글목록 -->
+                            </table> <!-- End 댓글 상세 내용 -->
+                            <div class="card-body"> <!-- 답글 등록 -->
+                                <form th:action="@{/reply_register}" method="post">
+                                    <div class="mt-3 text-end">
+                                        <button type="submit" class="btn btn-primary">답글등록</button>
+                                    </div>
+                                    <div class="mb-3">
+                                        <lfabel for="reply">답글쓰기:</lfabel>
+                                        <textarea class="form-control" rows="5" id="reply" name="reply"></textarea>
+                                    </div>
+
+                                    <!-- 답글 등록 시 필요한 값들을 hidden으로 설정 -->
+                                    <input type="hidden" name="commentId" th:value="${data.id}">
+                                    <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                    <input type="hidden" name="userId" value="52">
+                                    <input type="hidden" name="goodCnt" value="0">
+                                    <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                                </form>
+                            </div> <!-- End 답글 등록 -->
+                            <div class="card" th:each="replyDTO:${data.replyDTOList}"> <!-- 답글 목록 -->
+                                <div class="card-header">
+                                    <span class="text-left" th:text="${replyDTO.userNickname}"></span>&nbsp;&nbsp;&nbsp;
+                                    <span class="text-left" th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
+                                    <!-- 답글 삭제 (bid:부모 게시글 id, id:삭제할 답글 id) -->
+                                    <button class="text-right" type="button"
+                                            th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|">답글삭제</button>
+                                </div>
+                                <div class="card-body">
+                                    <span class="text-left" th:text="${replyDTO.reply}"></span>
+                                </div>
+                            </div> <!-- End 답글 목록 -->
+                        </div> <!-- End 댓글 목록 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
