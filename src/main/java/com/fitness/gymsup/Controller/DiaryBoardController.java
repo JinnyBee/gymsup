@@ -2,7 +2,9 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
+import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.Service.BoardService;
+import com.fitness.gymsup.Service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import java.util.List;
 @Log4j2
 public class DiaryBoardController {
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/board_list")
     public String listAllForm(@PageableDefault(page = 1) Pageable pageable,
@@ -128,22 +131,28 @@ public class DiaryBoardController {
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
                                Model model) throws Exception {
+        log.info(boardDTO.getCategoryType().name());
         for(int i=0;i< imgFiles.size();i++) {
             log.info("imgFiles("+i+") : " + imgFiles.get(i));
         }
         if(bindingResult.hasErrors()) {
             return "board/diary/register";
         }
-        boardDTO.setCategoryType(BoardCategoryType.BTYPE_DIARY);
         boardService.register(boardDTO, imgFiles);
 
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_detail")
     public String detailForm(Integer id, Model model) throws Exception {
+        //해당게시글 상세조히
         BoardDTO boardDTO = boardService.detail(id, "R");
+        //댓글목록 조회
+        List<CommentDTO> commentDTOS = commentService.list(id);
         log.info(boardDTO);
+        log.info(commentDTOS);
+
         model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("commentDTOS", commentDTOS);
 
         return "board/diary/detail";
     }
@@ -185,7 +194,7 @@ public class DiaryBoardController {
     }
     @PostMapping("/board_diary_commentregister")
     public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
+        return "redirect:/board_diary_detail";
     }
     @GetMapping("/board_diary_commentremove")
     public String commentRemoveProc(Model model) throws Exception {

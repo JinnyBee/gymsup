@@ -30,7 +30,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="data:${boardDTOS}">
-                                    <td>[운동+식단 일기]</td>
+                                    <td th:text="${data.getCategoryType().getDescription()}">게시판</td>
                                     <td><a th:href="@{/board_diary_detail(id=${data.id})}" th:text="${data.title}">11월 17일 운동</a></td>
                                     <td th:text="${data.userNickname}">Jinny</td>
                                     <td th:text="${data.viewCnt}">100</td>

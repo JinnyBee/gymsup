@@ -32,7 +32,8 @@
 }
 @font-face{
   font-family:'DNFForgedBlade';font-style:normal;font-weight:500;
-  src:url('//cdn.df.nexon.com/img/common/font/DNFForgedBlade-Medium.otf')format('opentype')}
+  src:url('//cdn.df.nexon.com/img/common/font/DNFForgedBlade-Medium.otf')format('opentype')
+}
 @font-face {
   font-family: 'HakgyoansimWoojuR';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimWoojuR.woff2') format('woff2');
@@ -97,15 +98,15 @@
   /* ? 글꼴*/
   --font-secondary: 'Inter', sans-serif;
   /*상단 로고 글꼴*/
-  --font-head: 'JalnanGothic', sans-serif;
+  --font-nav-ul: 'JeonjuCraftGoR', sans-serif;
   /*상단 네비바 글꼴*/
-  --font-nav-ul: 'DNFForgedBlade', sans-serif;
+  --font-head: 'JalnanGothic', sans-serif;
   /*상단 네비바 내부 드롭박스 글꼴*/
-  --font-nav-li: 'EarlyFontDiary', sans-serif;
-  /*게시판 테이블 내부 글꼴*/
-  --font-table-td: 'GmarketSansMedium', sans-serif;
+  --font-table-td: 'HakgyoansimWoojuR', sans-serif;
   /*게시판 테이블 상단 글꼴*/
-  --font-table-th: 'HakgyoansimWoojuR', sans-serif;
+  --font-nav-li: 'JeonjuCraftGoR', sans-serif;
+  /*게시판 테이블 내부 글꼴*/
+  --font-table-th: 'GmarketSansMedium', sans-serif;
   /*푸터쪽 진한 하얀색 글자 글꼴*/
   --font-footer-heading: 'DNFForgedBlade', sans-serif;
   /*푸터쪽 하얀 글자 글꼴*/
@@ -154,7 +155,7 @@
 
   --color-purple: #6f42c1;
   --color-purple-rgb: 111, 66, 193;
-  
+
   --color-pink: #f3268c;
   --color-pink-rgb: 243, 38, 140;
 

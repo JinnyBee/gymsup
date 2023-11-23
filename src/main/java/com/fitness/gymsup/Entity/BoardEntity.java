@@ -24,27 +24,27 @@ public class BoardEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
                     generator = "board_SEQ")
-    private Integer id;         //게시판 id
+    private Integer id;                     //게시판 id
 
     @Column(name = "category_type", length = 50, nullable = false)
     @Enumerated(EnumType.STRING)
     private BoardCategoryType categoryType; //카테고리 타입
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
-    private UserEntity user;    //user Entity
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;          //참조 테이블 Entity명 (user 테이블)
 
     @Column(name = "title", length = 100, nullable = false)
-    private String  title;      //제목
+    private String  title;                  //제목
 
     @Column(name = "content", length = 500, nullable = false)
-    private String  content;    //내용
+    private String  content;                //내용
 
     @Column(name = "good_cnt")
     @ColumnDefault("0")
-    private Integer goodCnt;    //추천수
+    private Integer goodCnt;                //추천수
 
     @Column(name = "view_cnt")
     @ColumnDefault("0")
-    private Integer viewCnt;    //조회수
+    private Integer viewCnt;                //조회수
 }

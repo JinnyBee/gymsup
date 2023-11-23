@@ -51,6 +51,7 @@ h6 {
 
 .table td {
   font-family: var(--font-table-td);
+  font-size: 17px;
 }
 
 .table th {
@@ -258,7 +259,7 @@ section {
     align-items: center;
     justify-content: space-between;
     padding: 10px 0 10px 30px;
-    font-family: var(--font-default);
+    font-family: var(--font-nav-li);
     font-size: 16px;
     font-weight: 500;
     color: rgba(var(--color-default-rgb), 1);
@@ -319,13 +320,11 @@ section {
     padding: 10px 20px;
     font-size: 15px;
     text-transform: none;
-    font-weight: 400;
     font-family: var(--font-nav-ul);
   }
 
   .navbar .dropdown ul a i {
     font-size: 12px;
-    font-family: var(--font-nav-li);
   }
 
   .navbar .dropdown ul a:hover,

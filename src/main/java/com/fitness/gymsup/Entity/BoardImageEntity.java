@@ -23,12 +23,12 @@ public class BoardImageEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
                     generator = "board_image_SEQ")
-    private Integer id;         //게시판 id
+    private Integer id;                 //게시판 id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
-    private BoardEntity board;  //참조 테이블명 (board 테이블)
+    private BoardEntity boardEntity;    //참조 테이블 Entity명 (board 테이블)
 
     @Column(name = "img_file", length = 255, nullable = false)
-    private String  imgFile;    //이미지 파일
+    private String  imgFile;            //이미지 파일
 }
