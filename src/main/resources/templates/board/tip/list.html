@@ -18,7 +18,7 @@
                             <table class="table table-hover">
                                 <thead>
                                 <tr style="text-align: center">
-                                    <th style="width: 10%">게시판</th>
+                                    <th style="width: 20%">게시판</th>
                                     <th style="width: 35%">제목</th>
                                     <th style="width: 20%">작성자</th>
                                     <th style="width: 10%">조회수</th>
@@ -27,7 +27,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="data:${boardDTOS}"> <!--th:each="data:${DTO}"-->
-                                    <td>[팁]</td>
+                                    <td th:text="${data.getCategoryType().getDescription()}">게시판</td>
                                     <td><a th:href="@{/board_tip_detail(id=${data.id})}" th:text="${data.title}">테스트1</a>&nbsp;&nbsp;<span style=" color: #ff4930">9</span></td> <!-- 댓글수 (id=${데이터.값})-->
                                     <td style="text-align: center" th:text="${data.userNickname}">홍길동</td>
                                     <td style="text-align: center" th:text="${data.viewCnt}">21</td>
