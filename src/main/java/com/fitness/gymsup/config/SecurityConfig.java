@@ -40,6 +40,8 @@ public class SecurityConfig {
                                         "/board_diary_list").hasRole("USER");
         });
 
+
+
         http.formLogin()
                 .loginPage("/user_login")
                 .defaultSuccessUrl("/")
