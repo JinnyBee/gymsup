@@ -1,8 +1,8 @@
-package com.fitness.gymsup.config;
+package com.fitness.gymsup.Config;
 
 import com.fitness.gymsup.Service.OAuthUserService;
-import com.fitness.gymsup.config.oauth.OAuthLoginFailureHandler;
-import com.fitness.gymsup.config.oauth.OAuthLoginSuccessHandler;
+import com.fitness.gymsup.Config.oauth.OAuthLoginFailureHandler;
+import com.fitness.gymsup.Config.oauth.OAuthLoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +35,9 @@ public class SecurityConfig {
             auth.antMatchers("/","/user_login", "/user_join") .permitAll();
             auth.antMatchers("/user_logout").hasRole("USER");
             auth.antMatchers("/user_logout").hasRole("ADMIN");
+            auth.antMatchers("/board_all_list", "board_notify_diary_list",
+                                        "/board_tip_list", "/board_qna_list",
+                                        "/board_diary_list").hasRole("USER");
         });
 
 
