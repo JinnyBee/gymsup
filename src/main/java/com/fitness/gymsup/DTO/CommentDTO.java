@@ -24,8 +24,8 @@ import java.util.List;
 public class CommentDTO {
     private Integer id;                     //댓글 id
     private Integer boardId;                //원 게시글 id
-    private Integer userId;                 //댓글 작성자 id
-    private String userNickname;            //댓글 작성자 닉네임
+    private Integer userId;                 //user 테이블의 댓글 작성자 id
+    private String userNickname;            //user 테이블의 댓글 작성자 닉네임
 
     @NotEmpty(message = "댓글을 적어주세요.")
     private String  comment;                //댓글 내용

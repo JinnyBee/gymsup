@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class CommentController {
+public class CommentController extends BaseController {
     private final CommentService commentService;
     private final ReplyService replyService;
 
@@ -74,21 +74,5 @@ public class CommentController {
         redirectAttributes.addAttribute("id", bid);
 
         return "redirect:/board_diary_detail";
-    }
-
-    private String getRedirectUrl(String categoryType) {
-        String redirectUrl = "";
-        if (categoryType.equals(BoardCategoryType.BTYPE_NOTIFY.name())) {
-            redirectUrl = "/board_notify_detail";
-        } else if (categoryType.equals(BoardCategoryType.BTYPE_TIP.name())) {
-            redirectUrl = "/board_tip_detail";
-        } else if (categoryType.equals(BoardCategoryType.BTYPE_DIARY.name())) {
-            redirectUrl = "/board_diary_detail";
-        } else if (categoryType.equals(BoardCategoryType.BTYPE_QNA.name())) {
-            redirectUrl = "/board_qna_detail";
-        } else {
-            redirectUrl = "/";
-        }
-        return redirectUrl;
     }
 }

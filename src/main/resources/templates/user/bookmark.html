@@ -52,10 +52,10 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="data:${bookmarkDTOS}">
-                                            <td th:if="${data.isBookmark}==true" th:text="${data.id}"></td>
-                                            <td th:if="${data.isBookmark}==true"><a th:href="@{/board_diary_detail(id=${data.boardId})}" th:text="${data.boardTitle}"></a></td>
-                                            <td th:if="${data.isBookmark}==true" th:text="${data.categoryType}">john@example.com</td>
-                                            <td th:if="${data.isBookmark}==true" th:text="${data.boardViewCnt}">john@example.com</td>
+                                            <td th:text="${data.id}"></td>
+                                            <td><a th:href="@{/board_diary_detail(id=${data.boardId})}" th:text="${data.boardTitle}"></a></td>
+                                            <td th:text="${data.categoryType.getDescription()}">john@example.com</td>
+                                            <td th:text="${data.boardViewCnt}">john@example.com</td>
                                             <!--                                <td th:if="${data.isBookmark}==true" th:text="${title}">john@example.com</td>-->
                                         </tr>
                                         </tbody>

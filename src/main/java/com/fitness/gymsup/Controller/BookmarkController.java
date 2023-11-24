@@ -1,6 +1,7 @@
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
+import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.Entity.BookmarkEntity;
 import com.fitness.gymsup.Service.BookmarkService;
@@ -23,32 +24,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 
-public class BookmarkController {
+public class BookmarkController extends BaseController {
     private final BookmarkService bookmarkService;
 
-    @PostMapping("/bookmark_register")
-    private String bookmarkRegisterProc(BookmarkDTO bookmarkDTO, HttpServletRequest request,
-                                Principal principal, RedirectAttributes redirectAttributes, String categoryType) throws Exception{
-        bookmarkService.saveBookmark(bookmarkDTO, request, principal);
-
-        redirectAttributes.addAttribute("id", bookmarkDTO.getBoardId());
-
-        if(categoryType.equals(BoardCategoryType.BTYPE_NOTIFY.name())) {
-            return "redirect:/board_notify_detail";
-        } else if(categoryType.equals(BoardCategoryType.BTYPE_TIP.name())) {
-            return "redirect:/board_tip_detail";
-        } else if(categoryType.equals(BoardCategoryType.BTYPE_DIARY.name())) {
-            return "redirect:/board_diary_detail";
-        } else if(categoryType.equals(BoardCategoryType.BTYPE_QNA.name())) {
-            return "redirect:/board_qna_detail";
-        }
-
-        return "redirect:/";
-    }
-
     @GetMapping("/bookmark_list")
-    private String bookmarkList(@PageableDefault(page = 1) Pageable pageable, Model model, HttpServletRequest request, Principal principal)throws Exception{
-        Page<BookmarkDTO> bookmarkDTOS = bookmarkService.bookmarkList(pageable, request, principal);
+    private String listForm(@PageableDefault(page = 1) Pageable pageable,
+                            Model model,
+                            HttpServletRequest request,
+                            Principal principal) throws Exception{
+        Page<BookmarkDTO> bookmarkDTOS = bookmarkService.list(BookmarkType.BOOKMARK, pageable, request, principal);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -80,5 +64,20 @@ public class BookmarkController {
         model.addAttribute("bookmarkDTOS",bookmarkDTOS);
 
         return "user/bookmark";
+    }
+
+    @PostMapping("/bookmark_register")
+    private String registerProc(BookmarkDTO bookmarkDTO,
+                                HttpServletRequest request,
+                                Principal principal,
+                                RedirectAttributes redirectAttributes,
+                                String categoryType) throws Exception{
+
+        bookmarkDTO.setBookmarkType(BookmarkType.BOOKMARK);
+        bookmarkService.register(bookmarkDTO, request, principal);
+
+        redirectAttributes.addAttribute("id", bookmarkDTO.getBoardId());
+
+        return "redirect:" + getRedirectUrl(categoryType);
     }
 }

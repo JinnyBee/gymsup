@@ -43,7 +43,8 @@
                             <div class="col-lg-12" th:text="${boardDTO.content}" style="height: auto; min-height: 500px">내용</div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-lg-10 text-end" style="padding-right: 0px;"> <!-- 북마크 버튼 -->
+                            <!-- 북마크 -->
+                            <div class="col-lg-10 text-end" style="padding-right: 0px;">
                                 <form th:action="@{/bookmark_register}" method="post">
                                     <input type="hidden" th:value="${boardDTO.id}" name="boardId">
                                     <input type="hidden" name="categoryType" value="BTYPE_DIARY">
@@ -52,7 +53,7 @@
                                         북마크
                                     </button>
                                 </form>
-                            </div>
+                            </div> <!-- End 북마크 -->
                             <div class="col-lg-2 text-end"> <!-- 추천 버튼 -->
                                 <button type="button" class="btn btn-outline-dark rounded-pill" style="width: 110px; height:50px; display: inline-block" >
                                     <img src="/assets/img/suggestion.png" alt="" width="25" height="20">

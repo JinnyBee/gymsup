@@ -1,30 +1,15 @@
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.Constant.BoardCategoryType;
-import com.fitness.gymsup.DTO.BoardDTO;
-import com.fitness.gymsup.DTO.BoardImageDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Entity.*;
 import com.fitness.gymsup.Repository.*;
-import com.fitness.gymsup.Util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -32,7 +17,7 @@ import java.util.List;
 @Transactional
 @Log4j2
 public class CommentService {
-    //주입 : Repository, ModelMapper, 파일업로드 클래스
+    //주입 : Repository, ModelMapper
     private final CommentRepository commentRepository;
     private final ReplyRepository replyRepository;
     private final UserRepository userRepository;
