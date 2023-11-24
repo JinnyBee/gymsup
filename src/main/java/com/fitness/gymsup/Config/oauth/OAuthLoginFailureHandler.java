@@ -2,7 +2,7 @@ package com.fitness.gymsup.Config.oauth;
 
 import com.fitness.gymsup.Service.OAuthUserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -12,10 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
-
+@Log4j2
 public class OAuthLoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     private final OAuthUserService oAuthUserService;
 

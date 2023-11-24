@@ -2,7 +2,7 @@ package com.fitness.gymsup.Config.oauth;
 
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Service.OAuthUserService;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 
 
-@Slf4j
+@Log4j2
 @Component
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 

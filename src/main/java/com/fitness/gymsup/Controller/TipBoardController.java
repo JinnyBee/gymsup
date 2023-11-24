@@ -108,9 +108,12 @@ public class TipBoardController {
         return "redirect:/board_tip_list";
     }
     @GetMapping("/board_tip_detail")
-    public String detailForm(Integer id, Model model) throws Exception {
+    public String detailForm(Integer id,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
         //해당게시글 상세조히
-        BoardDTO boardDTO = boardService.detail(id, "R");
+        BoardDTO boardDTO = boardService.detail(id, "R", request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
 
@@ -137,8 +140,10 @@ public class TipBoardController {
     }
     @GetMapping("/board_tip_modify")
     public String modifyForm(Integer id,
-                             Model model) throws Exception {
-        BoardDTO boardDTO = boardService.detail(id, "");
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+        BoardDTO boardDTO = boardService.detail(id, "", request, principal);
         model.addAttribute("boardDTO", boardDTO);
         log.info("111" + boardDTO.getCategoryType());
 
@@ -155,7 +160,7 @@ public class TipBoardController {
         if (bindingResult.hasErrors()) {
             return "board/tip/modify";
         }
-        boardService.modify(boardDTO);
+        boardService.modify(boardDTO, imgFiles);
         return "redirect:/board/tip/list";
     }
     @GetMapping("/board_tip_remove")

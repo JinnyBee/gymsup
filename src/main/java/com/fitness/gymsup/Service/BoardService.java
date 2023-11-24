@@ -1,16 +1,15 @@
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
+import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
+import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BoardImageEntity;
 import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Entity.UserEntity;
-import com.fitness.gymsup.Repository.BoardImageRepository;
-import com.fitness.gymsup.Repository.BoardRepository;
-import com.fitness.gymsup.Repository.CommentRepository;
-import com.fitness.gymsup.Repository.UserRepository;
+import com.fitness.gymsup.Repository.*;
 import com.fitness.gymsup.Util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -45,6 +44,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImageRepository boardImageRepository;
     private final CommentRepository commentRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final FileUploader fileUploader;
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -147,14 +147,18 @@ public class BoardService {
         }
     }
     //게시글 상세보기
-    public BoardDTO detail(Integer id, String pan) throws Exception {
+    public BoardDTO detail(Integer id, String pan,
+                           HttpServletRequest request,
+                           Principal principal) throws Exception {
         //조회수 증가 (개별읽기에만 증가)
         if(pan.equals("R")) {
             log.info("id : "+id);
             boardRepository.viewcnt(id);
         }
 
-        BoardDTO boardDTO = modelMapper.map(boardRepository.findById(id), BoardDTO.class);
+        //게시글 상세정보 및 첨부이미지 조회
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow();
+        BoardDTO boardDTO = modelMapper.map(boardEntity, BoardDTO.class);
         List<BoardImageDTO> boardImageDTOS = Arrays.asList(modelMapper.map(boardImageRepository.findAllByBoardId(id), BoardImageDTO[].class));
 
         List<String> imgFileList = new ArrayList<>();
@@ -166,10 +170,29 @@ public class BoardService {
 
         boardDTO.setImgFileList(imgFileList);
 
+        //게시글 조회하고 있는 사용자 Entity
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user ==null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+
+        //북마크, 좋아요 확인
+        if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
+                user, boardEntity, BookmarkType.BOOKMARK) >= 1) {
+            boardDTO.setBookmarkOn(true);
+        } else {
+            boardDTO.setBookmarkOn(false);
+        }
+        if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
+                user, boardEntity, BookmarkType.GOOD) >= 1) {
+            boardDTO.setGoodOn(true);
+        } else {
+            boardDTO.setGoodOn(false);
+        }
+
         return boardDTO;
-    }
-    public void modify(BoardDTO boardDTO) throws Exception {
-        modify(boardDTO, null);
     }
     //게시글 수정
     public void modify(BoardDTO boardDTO, List<MultipartFile> imgFiles) throws Exception {

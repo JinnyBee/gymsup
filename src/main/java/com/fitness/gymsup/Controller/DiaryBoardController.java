@@ -142,8 +142,9 @@ public class DiaryBoardController {
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model, Principal principal,
-                               HttpServletRequest request) throws Exception {
+                               Model model,
+                               HttpServletRequest request,
+                               Principal principal) throws Exception {
         log.info(boardDTO.getCategoryType().name());
         for(MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
@@ -156,9 +157,12 @@ public class DiaryBoardController {
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_detail")
-    public String detailForm(Integer id, Model model) throws Exception {
-        //해당게시글 상세조히
-        BoardDTO boardDTO = boardService.detail(id, "R");
+    public String detailForm(Integer id,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+        //해당게시글 상세조회
+        BoardDTO boardDTO = boardService.detail(id, "R", request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
 
@@ -173,10 +177,12 @@ public class DiaryBoardController {
     }
     @GetMapping("/board_diary_modify")
     public String modifyForm(Integer id,
-                             Model model) throws Exception {
-        BoardDTO boardDTO = boardService.detail(id, "");
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+        BoardDTO boardDTO = boardService.detail(id, "", request, principal);
         model.addAttribute("boardDTO", boardDTO);
-        log.info("111" + boardDTO.getCategoryType());
+        log.info(boardDTO);
 
         return "board/diary/modify";
     }

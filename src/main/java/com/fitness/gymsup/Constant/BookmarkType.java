@@ -2,7 +2,7 @@ package com.fitness.gymsup.Constant;
 
 public enum BookmarkType {
     BOOKMARK("북마크"),
-    LIKE("좋아요");
+    GOOD("좋아요");
 
     private String description;
 

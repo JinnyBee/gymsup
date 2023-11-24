@@ -66,18 +66,6 @@ public class BookmarkService {
                 .modDate(data.getModDate())
                 .build()
         );
-
-/*        Page<BookmarkDTO> bookmarkDTOS = bookmarkEntities.map(data->BookmarkDTO.builder()
-                .id(data.getId())
-                .isBookmark(data.isBookmark())
-                .boardId(data.getBoardEntity().getId())
-                .boardTitle(data.getBoardEntity().getTitle())
-                .boardViewCnt(data.getBoardEntity().getViewCnt())
-                .categoryType(data.getBoardEntity().getCategoryType())
-                .regDate(data.getRegDate())
-                .modDate(data.getModDate())
-                .build()
-        );*/
         return bookmarkDTOS;
     }
 
@@ -102,33 +90,9 @@ public class BookmarkService {
         bookmarkEntity.setBoardEntity(board);
         bookmarkEntity.setUserEntity(user);
 
-        bookmarkRepository.save(bookmarkEntity);
-
-
-/*        BookmarkEntity bookmarkEntity = modelMapper.map(bookmarkDTO, BookmarkEntity.class);
-        BoardEntity boardEntity = boardRepository.findById(bookmarkDTO.getBoardId()).orElseThrow();
-
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user ==null){
-            String email = principal.getName();
-            user = userRepository.findByEmail(email);
-        }
-
-        BookmarkEntity search = bookmarkRepository.findAllByBoardEntityAndUserEntity(boardEntity, user);
-        if (search != null){
-            if(search.isBookmark()==true){
-                search.setBookmark(false);
-                bookmarkRepository.save(search);
-            }else if(search.isBookmark()==false) {
-                search.setBookmark(true);
-                bookmarkRepository.save(search);
-            }
-        }else {
-            bookmarkEntity.setUserEntity(user);
-            bookmarkEntity.setBookmark(true);
-            bookmarkEntity.setBoardEntity(boardEntity);
+        if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
+                user, board, bookmarkDTO.getBookmarkType()) == 0) {
             bookmarkRepository.save(bookmarkEntity);
-        }*/
+        }
     }
 }
