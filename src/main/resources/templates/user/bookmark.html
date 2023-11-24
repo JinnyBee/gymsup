@@ -12,10 +12,14 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-7"> <!-- 작업공간 -->
+
+                        <div class="row mb-5" style="border-bottom: 3px solid black;">
+                            <h2>마이페이지</h2>
+                        </div>
                         <div class="row">
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2;cursor: pointer"
-                            onclick="location.href='/user_detail'">
-                                <p class="mt-1" style="text-align: center;">마이페이지</p>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/user_detail'">
+                                <p class="mt-1" style="text-align: center;">내 정보수정</p>
                             </div>
                             <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
                                  onclick="location.href='/bookmark_list'">
@@ -38,34 +42,14 @@
                         </div>
 
                         <div class="row">
-                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 500px">
-                                <h2 class="mt-4">북마크</h2>
-                                <table class="table table-bordered mt-4">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>게시글 번호</th>
-                                            <th>제목</th>
-                                            <th>카테고리</th>
-                                            <th>조회수</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="data:${bookmarkDTOS}">
-                                            <td th:text="${data.id}"></td>
-                                            <td><a th:href="@{/board_diary_detail(id=${data.boardId})}" th:text="${data.boardTitle}"></a></td>
-                                            <td th:text="${data.categoryType.getDescription()}">john@example.com</td>
-                                            <td th:text="${data.boardViewCnt}">john@example.com</td>
-                                            <!--                                <td th:if="${data.isBookmark}==true" th:text="${title}">john@example.com</td>-->
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </table>
-                                <!--                                <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>-->
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
+
+                                <div class="mt-5" style="height: auto;min-height: 160px">
+                                    <h4 class="mt-2">북마크</h4>
+                                </div>
+
                             </div>
                         </div>
-
-
 
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
