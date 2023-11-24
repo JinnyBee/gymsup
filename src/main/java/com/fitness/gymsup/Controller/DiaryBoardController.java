@@ -171,23 +171,12 @@ public class DiaryBoardController {
 
         return "board/diary/detail";
     }
-    @GetMapping("/board_diary_goodcnt")
-    public String goodcntProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
-    }
-    @GetMapping("/board_diary_bookmarkon")
-    public String bookmarkOnProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
-    }
-    @GetMapping("/board_diary_bookmarkoff")
-    public String bookmarkOffProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
-    }
     @GetMapping("/board_diary_modify")
     public String modifyForm(Integer id,
                              Model model) throws Exception {
         BoardDTO boardDTO = boardService.detail(id, "");
         model.addAttribute("boardDTO", boardDTO);
+        log.info("111" + boardDTO.getCategoryType());
 
         return "board/diary/modify";
     }
@@ -196,6 +185,9 @@ public class DiaryBoardController {
                              BindingResult bindingResult,
                              List<MultipartFile> imgFiles,
                              Model model) throws Exception {
+        log.info(boardDTO);
+        log.info(imgFiles);
+
         if(bindingResult.hasErrors()) {
             return "board/diary/modify";
         }
@@ -207,20 +199,16 @@ public class DiaryBoardController {
         boardService.remove(id);
         return "redirect:/board_diary_list";
     }
-    @PostMapping("/board_diary_commentregister")
-    public String commentRegisterProc(Model model) throws Exception {
-        return "redirect:/board_diary_detail";
-    }
-    @GetMapping("/board_diary_commentremove")
-    public String commentRemoveProc(Model model) throws Exception {
+    @GetMapping("/board_diary_goodcnt")
+    public String goodcntProc(Model model) throws Exception {
         return "redirect:/board/diary/detail";
     }
-    @PostMapping("/board_diary_replyregister")
-    public String replyRegisterProc(Model model) throws Exception {
+    @GetMapping("/board_diary_bookmarkon")
+    public String bookmarkOnProc(Model model) throws Exception {
         return "redirect:/board/diary/detail";
     }
-    @GetMapping("/board_diary_replyremove")
-    public String replyRemoveProc(Model model) throws Exception {
+    @GetMapping("/board_diary_bookmarkoff")
+    public String bookmarkOffProc(Model model) throws Exception {
         return "redirect:/board/diary/detail";
     }
 }
