@@ -23,7 +23,7 @@ public class CommentController extends BaseController {
     private final ReplyService replyService;
 
     @PostMapping("/comment_register")
-    public String registerProc(@Valid CommentDTO commentDTO,
+    public String registerCommentProc(@Valid CommentDTO commentDTO,
                                BindingResult bindingResult,
                                String categoryType,
                                RedirectAttributes redirectAttributes) throws Exception {
@@ -40,7 +40,7 @@ public class CommentController extends BaseController {
     }
 
     @GetMapping("/comment_remove")
-    public String removeProc(int bid,
+    public String removeCommentProc(int bid,
                              int id,
                              RedirectAttributes redirectAttributes) throws Exception {
         commentService.remove(id);
