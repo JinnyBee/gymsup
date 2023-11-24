@@ -79,23 +79,29 @@ public class UserController {
 
 
     }
+
     @GetMapping("/user_login")
     public String loginForm(String errorMessage, Model model) throws Exception {
         model.addAttribute("errorMessage",errorMessage);
         return "user/login";
     }
+
     @GetMapping("/user_login_error")
     public String loginError(Model model)throws Exception {
         model.addAttribute("errorMessage", "아이디 또는 비밀번호를 확인해 주세요.");
         return "user/login";
     }
+
     @GetMapping("/user_detail")
-    public String detailForm(HttpServletRequest request, Model model, Principal principal) throws Exception {
+    public String detailForm(HttpServletRequest request, Model model, Principal principal,
+                             String errorMessage) throws Exception {
         UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
 
+        model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("userEntity",userEntity);
         return "user/detail";
     }
+
     @GetMapping("/user_modify")
     public String modifyForm(Model model) throws Exception {
         return "user/modify";
@@ -151,10 +157,6 @@ public class UserController {
     public String myComment(Model model) throws Exception {
         return "redirect:/user/detail";
     }
-    @GetMapping("/user_mybookmark")
-    public String myBookmark(Model model) throws Exception {
-        return "redirect:/user/detail";
-    }
     @PostMapping("/user_regDupNickname")
     public String regDupNickname(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{
         String message = basicUserService.dupNickname(userDTO);
@@ -170,6 +172,46 @@ public class UserController {
         redirectAttributes.addAttribute("emessage", eMessage);
         redirectAttributes.addFlashAttribute("userDTO",userDTO);
         return "redirect:/user_join";
+    }
+
+    @GetMapping("/user_password_Confirm")
+    public String passwordConfirmForm(String errorMessage, Model model)throws Exception{
+        model.addAttribute("errorMessage",errorMessage);
+        return "user/passwordform";
+    }
+
+    @PostMapping("/user_password_Confirm")
+    public String passwordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
+
+        String errorMessage = "";
+        String bpassword = basicUserService.bringPassword(principal);
+
+        boolean result = passwordEncoder.matches(apassword, bpassword);
+        if(result){
+            errorMessage="현재 비밀번호와 일치합니다.";
+            model.addAttribute("errorMessage",errorMessage);
+            return "user/passwordproc";
+        }else {
+            errorMessage="현재 비밀번호와 다릅니다.";
+            redirectAttributes.addAttribute("errorMessage",errorMessage);
+            return "redirect:/user_password";
+        }
+
+    }
+
+
+    @PostMapping("/user_password_update")
+    public String passwordUpdateProc(@Valid UserDTO userDTO,BindingResult bindingResult,
+                                     Principal principal, Model model,
+                                     RedirectAttributes redirectAttributes)throws Exception{
+        if (bindingResult.hasErrors()){
+            return "user/passwordproc";
+        }
+
+        model.addAttribute("userDTO", userDTO);
+        redirectAttributes.addAttribute("errorMessage","비밀번호 변경에 성공했습니다.");
+        basicUserService.updatePassword(userDTO, principal);
+        return "redirect:/user_detail";
     }
 
 }
