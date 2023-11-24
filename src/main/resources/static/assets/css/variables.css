@@ -98,15 +98,15 @@
   /* ? 글꼴*/
   --font-secondary: 'Inter', sans-serif;
   /*상단 로고 글꼴*/
-  --font-nav-ul: 'JeonjuCraftGoR', sans-serif;
-  /*상단 네비바 글꼴*/
   --font-head: 'JalnanGothic', sans-serif;
+  /*상단 네비바 글꼴*/
+  --font-nav-ul: 'JeonjuCraftGoR', sans-serif;
   /*상단 네비바 내부 드롭박스 글꼴*/
-  --font-table-td: 'HakgyoansimWoojuR', sans-serif;
-  /*게시판 테이블 상단 글꼴*/
   --font-nav-li: 'JeonjuCraftGoR', sans-serif;
-  /*게시판 테이블 내부 글꼴*/
+  /*게시판 테이블 상단 글꼴*/
   --font-table-th: 'GmarketSansMedium', sans-serif;
+  /*게시판 테이블 내부 글꼴*/
+  --font-table-td: 'GmarketSansMedium', sans-serif;
   /*푸터쪽 진한 하얀색 글자 글꼴*/
   --font-footer-heading: 'DNFForgedBlade', sans-serif;
   /*푸터쪽 하얀 글자 글꼴*/

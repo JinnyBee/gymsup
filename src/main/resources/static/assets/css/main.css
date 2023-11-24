@@ -60,11 +60,13 @@ h6 {
 
 }
 
+/*테이블 내부*/
 .table td {
   font-family: var(--font-table-td);
-  font-size: 17px;
+  font-size: 16px;
 }
 
+/*테이블 상단*/
 .table th {
   font-family: var(--font-table-th);
 }
