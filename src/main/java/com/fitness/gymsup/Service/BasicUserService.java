@@ -147,4 +147,23 @@ public class BasicUserService implements UserDetailsService {
         );
         return boardDTOS;
     }
+
+    public String bringPassword(Principal principal)throws Exception{
+        String email = principal.getName();
+        UserEntity userEntity = userRepository.findByEmail(email);
+        String bpassword = userEntity.getPassword();
+        return bpassword;
+    }
+
+    public void updatePassword(UserDTO userDTO,Principal principal)throws Exception{
+        String email = principal.getName();
+
+        String npassword = userDTO.getPassword();
+
+        String newPassword = passwordEncoder.encode(npassword);
+        UserEntity userEntity = userRepository.findByEmail(email);
+        userEntity.setPassword(newPassword);
+
+        userRepository.save(userEntity);
+    }
 }
