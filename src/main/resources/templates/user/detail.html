@@ -57,7 +57,16 @@
                                     </tbody>
                                 </table>
 <!--                                <p>유저닉네임 : <span th:text="${userEntity.nickname}"></span></p>-->
-                                <button class="btn btn-dark" type="button" onclick="location.href='/user_password_Confirm'">비밀번호 변경</button>
+
+                                <form action="/user_nickname_dup" method="post">
+                                    <input type="text" class="form-control" name="nickname" th:if="${userDTO.nickname}==null" th:value="${userEntity.nickname}">
+                                    <input type="text" class="form-control" name="nickname" th:if="${userDTO.nickname}!=null" th:value="${userDTO.nickname}">
+                                    <button type="submit" class="btn btn-primary">중복체크</button>
+                                    <button type="submit" th:if="${message}=='닉네임 사용이 가능합니다.'" class="btn btn-primary" formaction="/user_nickname_update">수정</button>
+                                    <p th:text="${message}" style="color: red"></p>
+                                </form>
+
+                                <button class="btn btn-dark" type="button" th:if="${userEntity.oauthType}==null" onclick="location.href='/user_password_Confirm'">비밀번호 변경</button>
                             </div>
                         </div>
 

@@ -166,4 +166,19 @@ public class BasicUserService implements UserDetailsService {
 
         userRepository.save(userEntity);
     }
+
+    public void updateNickname(UserDTO userDTO, Principal principal, HttpServletRequest request)throws Exception{
+        HttpSession session = request.getSession();
+        String nickname = userDTO.getNickname();
+        UserEntity userEntity = (UserEntity) session.getAttribute("user");
+
+        if(userEntity != null){
+            userEntity.setNickname(nickname);
+        }else {
+            String loginId = principal.getName();
+            userEntity = userRepository.findByEmail(loginId);
+            userEntity.setNickname(nickname);
+        }
+        userRepository.save(userEntity);
+    }
 }

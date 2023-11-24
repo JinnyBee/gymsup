@@ -94,22 +94,32 @@ public class UserController {
 
     @GetMapping("/user_detail")
     public String detailForm(HttpServletRequest request, Model model, Principal principal,
-                             String errorMessage) throws Exception {
+                             String errorMessage, UserDTO userDTO, String message) throws Exception {
         UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
 
+        model.addAttribute("message",message);
+        model.addAttribute("userDTO", userDTO);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("userEntity",userEntity);
         return "user/detail";
     }
 
-    @GetMapping("/user_modify")
-    public String modifyForm(Model model) throws Exception {
-        return "user/modify";
+
+    @PostMapping("/user_nickname_update")
+    public String nicknameUpdate(UserDTO userDTO, Principal principal, HttpServletRequest request)throws Exception{
+        basicUserService.updateNickname(userDTO, principal, request);
+        return "redirect:/user_detail";
     }
-    @PostMapping("/user_modify")
-    public String modifyProc(Model model) throws Exception {
-        return "redirect:/user/detail";
+
+    @PostMapping("/user_nickname_dup")
+    public String nicknameDupt(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{
+        String message = basicUserService.dupNickname(userDTO);
+        redirectAttributes.addAttribute("message", message);
+        redirectAttributes.addFlashAttribute("userDTO", userDTO);
+
+        return "redirect:/user_detail";
     }
+
     @GetMapping("/user_cancel")
     public String cancelProc(Model model) throws Exception {
         return "redirect:/";
