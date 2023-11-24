@@ -1,10 +1,9 @@
 package com.fitness.gymsup.Config;
 
-import com.fitness.gymsup.Service.OAuthUserService;
 import com.fitness.gymsup.Config.oauth.OAuthLoginFailureHandler;
 import com.fitness.gymsup.Config.oauth.OAuthLoginSuccessHandler;
+import com.fitness.gymsup.Service.OAuthUserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,10 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@Log4j2
 @EnableWebSecurity
 @RequiredArgsConstructor
-
 public class SecurityConfig {
     private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
     private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
@@ -35,9 +32,9 @@ public class SecurityConfig {
             auth.antMatchers("/","/user_login", "/user_join") .permitAll();
             auth.antMatchers("/user_logout").hasRole("USER");
             auth.antMatchers("/user_logout").hasRole("ADMIN");
-            auth.antMatchers("/board_list", "/board_notify_list",
-                                        "/board_tip_list", "/board_qna_list",
-                                        "/board_diary_list").hasRole("USER");
+            auth.antMatchers("/board_all_detail", "/board_notify_detail",
+                                        "/board_tip_detail", "/board_qna_detail",
+                                        "/board_diary_detail").hasRole("USER");
         });
 
 
@@ -61,6 +58,5 @@ public class SecurityConfig {
                 .userInfoEndpoint()
                 .userService(oAuthUserService);
         return http.build();
-
     }
 }

@@ -84,7 +84,7 @@ public class BookmarkController extends BaseController {
                                 RedirectAttributes redirectAttributes,
                                 String categoryType) throws Exception{
 
-        bookmarkDTO.setBookmarkType(BookmarkType.LIKE);
+        bookmarkDTO.setBookmarkType(BookmarkType.GOOD);
         log.info(bookmarkDTO);
         bookmarkService.register(bookmarkDTO, request, principal);
 

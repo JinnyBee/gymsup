@@ -17,4 +17,5 @@ public interface BookmarkRepository extends JpaRepository<BookmarkEntity, Intege
     BookmarkEntity findAllByBoardEntityAndUserEntity(BoardEntity boardEntity, UserEntity userEntity);
     Page<BookmarkEntity> findAllByUserEntity(Pageable pageable, UserEntity userEntity);
     Page<BookmarkEntity> findAllByUserEntityAndBookmarkType(Pageable pageable, UserEntity userEntity, BookmarkType bookmarkType);
+    Long countAllByUserEntityAndBoardEntityAndBookmarkType(UserEntity userEntity, BoardEntity boardEntity, BookmarkType bookmarkType);
 }
