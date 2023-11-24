@@ -1,12 +1,10 @@
 package com.fitness.gymsup.Controller;
 
-import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BookmarkDTO;
-import com.fitness.gymsup.Entity.BookmarkEntity;
 import com.fitness.gymsup.Service.BookmarkService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,12 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
-
+@Log4j2
 public class BookmarkController extends BaseController {
     private final BookmarkService bookmarkService;
 
@@ -67,13 +63,29 @@ public class BookmarkController extends BaseController {
     }
 
     @PostMapping("/bookmark_register")
-    private String registerProc(BookmarkDTO bookmarkDTO,
+    private String registerBookmarkProc(BookmarkDTO bookmarkDTO,
                                 HttpServletRequest request,
                                 Principal principal,
                                 RedirectAttributes redirectAttributes,
                                 String categoryType) throws Exception{
 
         bookmarkDTO.setBookmarkType(BookmarkType.BOOKMARK);
+        bookmarkService.register(bookmarkDTO, request, principal);
+
+        redirectAttributes.addAttribute("id", bookmarkDTO.getBoardId());
+
+        return "redirect:" + getRedirectUrl(categoryType);
+    }
+
+    @PostMapping("/like_register")
+    private String registerLikeProc(BookmarkDTO bookmarkDTO,
+                                HttpServletRequest request,
+                                Principal principal,
+                                RedirectAttributes redirectAttributes,
+                                String categoryType) throws Exception{
+
+        bookmarkDTO.setBookmarkType(BookmarkType.LIKE);
+        log.info(bookmarkDTO);
         bookmarkService.register(bookmarkDTO, request, principal);
 
         redirectAttributes.addAttribute("id", bookmarkDTO.getBoardId());
