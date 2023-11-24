@@ -1,4 +1,4 @@
-package com.fitness.gymsup.config.oauth;
+package com.fitness.gymsup.Config.oauth;
 
 import com.fitness.gymsup.Service.OAuthUserService;
 import lombok.RequiredArgsConstructor;
