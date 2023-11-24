@@ -122,28 +122,27 @@ public class BoardService {
         log.info(user.toString());
         log.info(newBoard.toString());
 
-        if(imgFiles != null) { //게시글에 첨부된 이미지파일이 존재하면
-            for(MultipartFile imgFile : imgFiles) {
-                originalFileName = imgFile.getOriginalFilename();
+        for(MultipartFile imgFile : imgFiles) {
+            originalFileName = imgFile.getOriginalFilename();
 
-                if(originalFileName.length() != 0) {
-                    //이미지파일을 이미지 저장경로에 업로드
-                    newFileName = fileUploader.uploadFile(imgUploadLocation,
-                                                          originalFileName,
-                                                          imgFile.getBytes());
-                    log.info("newFileName : "+ newFileName);
+            //게시글에 첨부된 이미지파일이 존재하면
+            if(originalFileName.length() != 0) {
+                //이미지파일을 이미지 저장경로에 업로드
+                newFileName = fileUploader.uploadFile(imgUploadLocation,
+                                                      originalFileName,
+                                                      imgFile.getBytes());
+                log.info("newFileName : "+ newFileName);
 
-                    //board_image 테이블에 이미지파일 정보 저장
-                    BoardImageEntity boardImageEntity = BoardImageEntity.builder()
-                            .boardEntity(newBoard)
-                            .imgFile(newFileName)
-                            .build();
+                //board_image 테이블에 이미지파일 정보 저장
+                BoardImageEntity boardImageEntity = BoardImageEntity.builder()
+                        .boardEntity(newBoard)
+                        .imgFile(newFileName)
+                        .build();
 
-                    log.info(boardImageEntity.toString());
-                    log.info(boardImageEntity.getImgFile());
+                log.info(boardImageEntity.toString());
+                log.info(boardImageEntity.getImgFile());
 
-                    boardImageRepository.save(boardImageEntity);
-                }
+                boardImageRepository.save(boardImageEntity);
             }
         }
     }
