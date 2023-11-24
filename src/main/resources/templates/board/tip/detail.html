@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
@@ -119,10 +120,12 @@
                                     <span class="text-left" th:text="${data.userNickname}"></span>
                                 </div>
                                 <div class="col-lg-6 mb-2">
-
+                                    <span class="text-left" th:text="${data.comment}"></span>
                                 </div>
                                 <div class="col-lg-4 mb-2">
-
+                                    <button class="text-right" type="button"
+                                            th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id})}'|">삭제</button>
+                                    <span class="text-left" th:text="${#temporals.format(data.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                 </div>
                             </div>
                             <div class="row mt-2">
