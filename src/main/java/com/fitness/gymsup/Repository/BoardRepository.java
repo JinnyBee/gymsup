@@ -19,6 +19,5 @@ public interface BoardRepository extends
     void viewcnt(@Param("id") Integer id);
 
     Page<BoardEntity> findAllByCategoryType(Pageable pageable, BoardCategoryType categoryType);
-
     Page<BoardEntity> findAllByUserEntity(Pageable pageable, UserEntity userEntity);
 }

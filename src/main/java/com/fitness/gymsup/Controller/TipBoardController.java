@@ -5,6 +5,7 @@ import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
+import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ import java.util.List;
 public class TipBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+    private final ReplyService replyService;
 
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
@@ -69,7 +71,12 @@ public class TipBoardController {
         log.info("nextPage : "+nextPage);
         log.info("lastPage : "+lastPage);
 
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTOS", boardDTOS);
+
+        for(BoardDTO dto : boardDTOS) {
+            log.info(dto);
+        }
 
         return "board/tip/list";
     }
@@ -90,8 +97,8 @@ public class TipBoardController {
                                Model model, Principal principal,
                                HttpServletRequest request) throws Exception {
         log.info(boardDTO.getCategoryType().name());
-        for(int i=0;i< imgFiles.size();i++) {
-            log.info("imgFiles("+i+") : " + imgFiles.get(i));
+        for(MultipartFile imgFile : imgFiles) {
+            log.info(imgFile);
         }
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
@@ -106,9 +113,11 @@ public class TipBoardController {
         BoardDTO boardDTO = boardService.detail(id, "R");
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
+
         log.info(boardDTO);
         log.info(commentDTOS);
 
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
 
@@ -131,13 +140,18 @@ public class TipBoardController {
                              Model model) throws Exception {
         BoardDTO boardDTO = boardService.detail(id, "");
         model.addAttribute("boardDTO", boardDTO);
+        log.info("111" + boardDTO.getCategoryType());
 
         return "board/tip/modify";
     }
     @PostMapping("/board_tip_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
+                             List<MultipartFile> imgFiles,
                              Model model) throws Exception {
+        log.info(boardDTO);
+        log.info(imgFiles);
+
         if (bindingResult.hasErrors()) {
             return "board/tip/modify";
         }

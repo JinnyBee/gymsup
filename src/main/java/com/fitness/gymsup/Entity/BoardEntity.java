@@ -28,7 +28,7 @@ public class BoardEntity extends BaseEntity {
 
     @Column(name = "category_type", length = 50, nullable = false)
     @Enumerated(EnumType.STRING)
-    private BoardCategoryType categoryType; //카테고리 타입
+    private BoardCategoryType categoryType; //게시판 카테고리 타입 (열거형)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
