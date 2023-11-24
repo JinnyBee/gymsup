@@ -4,6 +4,7 @@ import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BookmarkEntity;
+import com.fitness.gymsup.Entity.ReplyEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.BookmarkRepository;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @Transactional
@@ -85,14 +87,27 @@ public class BookmarkService {
 
         log.info(board);
         log.info(user);
+        log.info(bookmarkDTO);
 
         BookmarkEntity bookmarkEntity = modelMapper.map(bookmarkDTO, BookmarkEntity.class);
         bookmarkEntity.setBoardEntity(board);
         bookmarkEntity.setUserEntity(user);
 
+        //기존에 등록되어 있지 않을 경우
+
         if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
                 user, board, bookmarkDTO.getBookmarkType()) == 0) {
+            //bookmark 테이블에 등록
             bookmarkRepository.save(bookmarkEntity);
+            //좋아요를 눌렀을 경우 board 테이블의 good_cnt 증가
+            if(bookmarkDTO.getBookmarkType().equals(BookmarkType.GOOD)) {
+                boardRepository.viewCntUp(bookmarkDTO.getBoardId());
+            }
         }
+    }
+    //북마크(북마크) 삭제
+    public void remove(Integer userId, Integer boardId) throws Exception{
+        //bookmark 테이블에서 해당 북마크 삭제
+        bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
     }
 }

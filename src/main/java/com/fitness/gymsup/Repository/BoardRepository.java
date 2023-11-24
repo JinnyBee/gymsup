@@ -16,7 +16,11 @@ public interface BoardRepository extends
         JpaRepository<BoardEntity, Integer> {
     @Query(value = "UPDATE board SET view_cnt = view_cnt+1 WHERE id=:id",
             nativeQuery = true)
-    void viewcnt(@Param("id") Integer id);
+    void viewCntUp(@Param("id") Integer id);
+
+    @Query(value = "UPDATE board SET good_cnt = good_cnt+1 WHERE id=:id",
+            nativeQuery = true)
+    void goodCntUp(@Param("id") Integer id);
 
     Page<BoardEntity> findAllByCategoryType(Pageable pageable, BoardCategoryType categoryType);
     Page<BoardEntity> findAllByUserEntity(Pageable pageable, UserEntity userEntity);

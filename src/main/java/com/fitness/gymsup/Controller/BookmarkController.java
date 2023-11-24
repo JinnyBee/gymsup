@@ -64,10 +64,10 @@ public class BookmarkController extends BaseController {
 
     @PostMapping("/bookmark_register")
     private String registerBookmarkProc(BookmarkDTO bookmarkDTO,
+                                String categoryType,
                                 HttpServletRequest request,
                                 Principal principal,
-                                RedirectAttributes redirectAttributes,
-                                String categoryType) throws Exception{
+                                RedirectAttributes redirectAttributes) throws Exception{
 
         bookmarkDTO.setBookmarkType(BookmarkType.BOOKMARK);
         bookmarkService.register(bookmarkDTO, request, principal);
@@ -77,12 +77,21 @@ public class BookmarkController extends BaseController {
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
-    @PostMapping("/like_register")
-    private String registerLikeProc(BookmarkDTO bookmarkDTO,
-                                HttpServletRequest request,
-                                Principal principal,
-                                RedirectAttributes redirectAttributes,
-                                String categoryType) throws Exception{
+    @PostMapping("/bookmark_remove")
+    private String removeBookmarkProc(BookmarkDTO bookmarkDTO,
+                                      String categoryType,
+                                      RedirectAttributes redirectAttributes) throws Exception{
+        bookmarkService.remove(bookmarkDTO.getUserId(), bookmarkDTO.getBoardId());
+
+        return "redirect:" + getRedirectUrl(categoryType);
+    }
+
+    @PostMapping("/good_register")
+    private String registerGoodProc(BookmarkDTO bookmarkDTO,
+                                    String categoryType,
+                                    HttpServletRequest request,
+                                    Principal principal,
+                                    RedirectAttributes redirectAttributes) throws Exception{
 
         bookmarkDTO.setBookmarkType(BookmarkType.GOOD);
         log.info(bookmarkDTO);

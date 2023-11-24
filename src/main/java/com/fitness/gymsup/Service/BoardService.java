@@ -4,7 +4,6 @@ import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
-import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BoardImageEntity;
 import com.fitness.gymsup.Entity.CommentEntity;
@@ -147,13 +146,13 @@ public class BoardService {
         }
     }
     //게시글 상세보기
-    public BoardDTO detail(Integer id, String pan,
+    public BoardDTO detail(Integer id, Boolean isFirst,
                            HttpServletRequest request,
                            Principal principal) throws Exception {
-        //조회수 증가 (개별읽기에만 증가)
-        if(pan.equals("R")) {
+        //조회수 증가 (첫 상세보기에만 증가)
+        if(isFirst) {
             log.info("id : "+id);
-            boardRepository.viewcnt(id);
+            boardRepository.viewCntUp(id);
         }
 
         //게시글 상세정보 및 첨부이미지 조회

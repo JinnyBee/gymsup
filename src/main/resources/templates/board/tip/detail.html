@@ -91,13 +91,13 @@
                         <div class="row mt-1">
                             <form th:action="@{/comment_register}" method="post">
                             <div style="float: left">
-                                <textarea class="form-control" name="" id="" rows="3" style="height: 70px; width: 850px"></textarea>
+                                <textarea class="form-control" name="comment" id="comment"
+                                          rows="3" style="height: 70px; width: 890px"></textarea>
                             </div>
                             <div style="float: right">
                                 <button type="submit" class="btn btn-dark" style="height: 70px; width: 60px">등록</button>
                             </div>
                                 <input type="hidden" name="boardId" th:value="${boardDTO.id}">
-                                <input type="hidden" name="userId" value="42">
                                 <input type="hidden" name="goodCnt" value="0">
                                 <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                             </form>

@@ -7,6 +7,7 @@ import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
 import com.fitness.gymsup.Service.ReplyService;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -162,7 +163,26 @@ public class DiaryBoardController {
                              HttpServletRequest request,
                              Principal principal) throws Exception {
         //해당게시글 상세조회
-        BoardDTO boardDTO = boardService.detail(id, "R", request, principal);
+        BoardDTO boardDTO = boardService.detail(id, true, request, principal);
+        //댓글목록 조회
+        List<CommentDTO> commentDTOS = commentService.list(id);
+
+        log.info(boardDTO);
+        log.info(commentDTOS);
+
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+        model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("commentDTOS", commentDTOS);
+
+        return "board/diary/detail";
+    }
+    @GetMapping("/board_diary_detailreload")
+    public String detailReloadForm(Integer id,
+                                   Model model,
+                                   HttpServletRequest request,
+                                   Principal principal) throws Exception {
+        //해당게시글 상세조회 Reload
+        BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
 
@@ -180,7 +200,7 @@ public class DiaryBoardController {
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
-        BoardDTO boardDTO = boardService.detail(id, "", request, principal);
+        BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         model.addAttribute("boardDTO", boardDTO);
         log.info(boardDTO);
 

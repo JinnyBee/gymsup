@@ -27,14 +27,16 @@ public class CommentController extends BaseController {
                                BindingResult bindingResult,
                                String categoryType,
                                RedirectAttributes redirectAttributes) throws Exception {
-        log.info("boardId : " + commentDTO.getBoardId() + ", userId : " + commentDTO.getUserId() + "categoryType : " + categoryType);
+        log.info("boardId : " + commentDTO.getBoardId() + ", userId : " + commentDTO.getUserId() + ", categoryType : " + categoryType);
         if (bindingResult.hasErrors()) {
             log.info(getRedirectUrl(categoryType));
+            log.info(bindingResult.getAllErrors());
             return "redirect:" + getRedirectUrl(categoryType);
         }
 
         commentService.register(commentDTO);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
+        log.info("#### " + commentDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
     }

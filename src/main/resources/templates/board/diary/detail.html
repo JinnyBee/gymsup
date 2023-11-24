@@ -55,7 +55,7 @@
                                 </form>
                             </div> <!-- End 북마크 -->
                             <div class="col-lg-2 text-end"> <!-- 추천 버튼 -->
-                                <form th:action="@{/like_register}" method="post">
+                                <form th:action="@{/good_register}" method="post">
                                     <input type="hidden" th:value="${boardDTO.id}" name="boardId">
                                     <input type="hidden" name="categoryType" value="BTYPE_DIARY">
                                     <button type="submit" class="btn btn-outline-dark rounded-pill" style="width: 110px; height:50px; display: inline-block" >
@@ -96,7 +96,6 @@
                                 </div>
                                 <!-- 댓글 등록 시 필요한 값들을 hidden으로 설정 -->
                                 <input type="hidden" name="boardId" th:value="${boardDTO.id}">
-                                <input type="hidden" name="userId" value="42">
                                 <input type="hidden" name="goodCnt" value="0">
                                 <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                             </form>
