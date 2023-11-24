@@ -93,9 +93,11 @@ public class UserController {
     }
 
     @GetMapping("/user_detail")
-    public String detailForm(HttpServletRequest request, Model model, Principal principal) throws Exception {
+    public String detailForm(HttpServletRequest request, Model model, Principal principal,
+                             String errorMessage) throws Exception {
         UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
 
+        model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("userEntity",userEntity);
         return "user/detail";
     }
@@ -172,13 +174,13 @@ public class UserController {
         return "redirect:/user_join";
     }
 
-    @GetMapping("/user_password")
+    @GetMapping("/user_password_Confirm")
     public String passwordConfirmForm(String errorMessage, Model model)throws Exception{
         model.addAttribute("errorMessage",errorMessage);
         return "user/passwordform";
     }
 
-    @PostMapping("/user_password")
+    @PostMapping("/user_password_Confirm")
     public String passwordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
 
         String errorMessage = "";
@@ -197,18 +199,17 @@ public class UserController {
 
     }
 
-    @GetMapping("/user_password_update")
-    public String passwordUpdateForm()throws Exception{
-        return "user/passwordproc";
-    }
 
     @PostMapping("/user_password_update")
-    public String passwordUpdateProc(@Valid UserDTO userDTO,BindingResult bindingResult, Principal principal, Model model)throws Exception{
-        if(bindingResult.hasErrors()){
-            model.addAttribute("userDTO",userDTO);
+    public String passwordUpdateProc(@Valid UserDTO userDTO,BindingResult bindingResult,
+                                     Principal principal, Model model,
+                                     RedirectAttributes redirectAttributes)throws Exception{
+        if (bindingResult.hasErrors()){
             return "user/passwordproc";
         }
 
+        model.addAttribute("userDTO", userDTO);
+        redirectAttributes.addAttribute("errorMessage","비밀번호 변경에 성공했습니다.");
         basicUserService.updatePassword(userDTO, principal);
         return "redirect:/user_detail";
     }
