@@ -16,15 +16,15 @@
                         <div class="row" style="border-bottom: 2px solid black">
                             <div class="col-lg-12"><h2>팁 게시판</h2></div>
                         </div>
-                        <div class="row mt-4 mb-3" >
+                        <div class="row mt-3 mb-2" >
                             <div class="col-lg-12">
-                                <p style="font-size: 30px; margin-bottom: 0px;" th:text="${boardDTO.title}">제목</p></div>
+                                <p style="font-size: 26px; margin-bottom: 0px;" th:text="${boardDTO.title}">제목</p></div>
                             </div>
                         <div class="row mb-3 text-start" style="border-bottom: 1px solid black; border-top: 1px solid black; height: 45px; background-color: #f2f2f2">
-                            <div class="col-lg-5 mt-2">닉네임 : <div style="display: inline-block" th:text="${boardDTO.userNickname}"></div></div>
+                            <div class="col-lg-5 mt-2"><div style="display: inline-block" th:text="'닉네임 : ' + ${boardDTO.userNickname}"></div></div>
                             <div class="col-lg-2 mt-2"></div>
-                            <div class="col-lg-3 mt-2 text-end">날짜 : <div style="display: inline-block" th:text="${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div></div>
-                            <div class="col-lg-2 mt-2 text-end">조회수 : <div style="display: inline-block" th:text="${boardDTO.viewCnt}"></div></div>
+                            <div class="col-lg-3 mt-2 text-end"><div style="display: inline-block" th:text="'날짜 : ' + ${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div></div>
+                            <div class="col-lg-2 mt-2 text-end"><div style="display: inline-block" th:text="'조회수 : ' + ${boardDTO.viewCnt}"></div></div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12" th:each="data:${boardDTO.imgFileList}">
@@ -47,6 +47,15 @@
                                         북마크
                                     </button>
                                 </form>
+                                <!--<form action="/bookmark_remove" method="post">
+                                    <input type="hidden" th:value="${boardDTO.id}" name="boardId">
+                                    <input type="hidden" name="categoryType" value="BTYPE_TIP">
+                                    <button type="submit" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block">
+                                        <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
+                                        북마크
+                                    </button>
+                                </form>-->
+
 
                             </div>
                             <div class="col-lg-2 text-end">
@@ -79,13 +88,17 @@
                         </div>
 
                         <div class="row mt-1">
-                            <form action="/board/tip/detail" method="post">
+                            <form th:action="@{/comment_register}" method="post">
                             <div style="float: left">
-                                <textarea class="form-control" name="" id="" rows="3" style="height: 70px; width: 890px"></textarea>
+                                <textarea class="form-control" name="" id="" rows="3" style="height: 70px; width: 850px"></textarea>
                             </div>
                             <div style="float: right">
-                                <button class="btn btn-dark" style="height: 70px; width: 60px">등록</button>
+                                <button type="submit" class="btn btn-dark" style="height: 70px; width: 60px">등록</button>
                             </div>
+                                <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                <input type="hidden" name="userId" value="42">
+                                <input type="hidden" name="goodCnt" value="0">
+                                <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                             </form>
                         </div>
 
@@ -100,6 +113,17 @@
                                 <div class="col-lg-2 mb-2">작성자</div>
                                 <div class="col-lg-6 mb-2">내용</div>
                                 <div class="col-lg-4 mb-2">작성일</div>
+                            </div>
+                            <div class="row mt-2" th:each="data:${commentDTOS}">
+                                <div class="col-lg-2 mb-2">
+                                    <span class="text-left" th:text=${data.userNickname} }"></span>
+                                </div>
+                                <div class="col-lg-6 mb-2">
+
+                                </div>
+                                <div class="col-lg-4 mb-2">
+
+                                </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-lg-2 mb-2"><button type="button" class="btn btn-outline-secondary" onclick="replyBtn()">답글</button></div>

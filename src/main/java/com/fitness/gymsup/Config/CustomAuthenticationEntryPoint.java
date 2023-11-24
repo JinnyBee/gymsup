@@ -1,4 +1,4 @@
-package com.fitness.gymsup.Config;
+package com.fitness.gymsup.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
