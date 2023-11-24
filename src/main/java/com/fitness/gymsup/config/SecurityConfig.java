@@ -35,9 +35,9 @@ public class SecurityConfig {
             auth.antMatchers("/","/user_login", "/user_join") .permitAll();
             auth.antMatchers("/user_logout").hasRole("USER");
             auth.antMatchers("/user_logout").hasRole("ADMIN");
-            auth.antMatchers("/board_all_list", "/board_notify_detail",
-                                        "/board_tip_detail", "/board_qna_detail",
-                                        "/board_diary_detail").hasRole("USER");
+            auth.antMatchers("/board_list", "/board_notify_list",
+                                        "/board_tip_list", "/board_qna_list",
+                                        "/board_diary_list").hasRole("USER");
         });
 
 
