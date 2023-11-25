@@ -9,6 +9,10 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,12 +71,20 @@ public class CommentService {
         return commentDTOS;
     }
     //댓글 등록
-    public void register(CommentDTO commentDTO) throws Exception {
+    public void register(CommentDTO commentDTO,
+                         HttpServletRequest request,
+                         Principal principal) throws Exception {
         log.info("boardId : " + commentDTO.getBoardId());
         //부모 게시글 Entity
         BoardEntity parentBoard = boardRepository.findById(commentDTO.getBoardId()).orElseThrow();
+
         //댓글 작성자 Entity
-        UserEntity writer = userRepository.findById(commentDTO.getUserId()).orElseThrow();
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
         log.info(parentBoard);
         log.info(writer);
 

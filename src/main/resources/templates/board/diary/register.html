@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+
 <body>
 <div layout:fragment="content">
     <main id="main">
@@ -14,7 +15,8 @@
                     <div class="col-md-7"> <!-- 작업공간 -->
                         <form th:action="@{/board_diary_register}" method="post"
                               enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 가입폼 -->
-                            <h3 class="text-center" th:text="*{getCategoryType().getDescription()}">글쓰기</h3>
+                            <h3 class="text-center">
+                                [글쓰기] [[*{getCategoryType().getDescription()}]]</h3>
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
                                 <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
@@ -27,6 +29,12 @@
                                 <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
                             </div>
                             <div class="mb-3">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#food_calorieModal">
+                                    음식 칼로리 계산하기
+                                </button>
+                            </div>
+                            <div class="mb-3">
                                 <label for="img1" class="form-label">사진1:</label>
                                 <input type="file" class="form-control" id="img1" name="imgFiles">
                                 <label for="img2" class="form-label">사진2:</label>
@@ -35,8 +43,56 @@
                             <input type="hidden" name="categoryType" th:field="*{categoryType}">
                             <input type="hidden" name="viewCnt" value="0">
                             <input type="hidden" name="goodCnt" value="0">
-                            <button type="submit" class="btn btn-primary">등록</button>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">확인</button>
+                            </div>
                         </form> <!-- End 가입폼 -->
+
+                        <!-- The Modal -->
+                        <div class="modal" id="food_calorieModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">음식 칼로리</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body"> <!-- 음식칼로리 검색 모달창 -->
+                                        <form id="food_calorieForm" name="food_calorieForm">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색어 입력"
+                                                       name="keyword">
+                                                <button type="submit" class="btn btn-dark"
+                                                        id="searchBtn" onclick="clickSearch(food_calorieForm)">@</button>
+                                            </div>
+                                        </form>
+                                        <p/>
+                                        <div>
+                                            <table class="table text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 150px;">음식명</th>
+                                                    <th style="width: 600px;">칼로리</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="food_calorieList"></tbody>
+                                            </table>
+                                        </div>
+                                    </div> <!-- End 음시칼로리 모달창 -->
+                                </div>
+                            </div>
+                        </div> <!-- End Modal -->
+                        <script>
+                            function clickSearch(formName) {
+                                alert('검색을 클릭했습니다.');
+                                formName.action="/";
+                                forName.method="post";
+                                forName.submit();
+                            }
+                        </script>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

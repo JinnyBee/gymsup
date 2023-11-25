@@ -64,10 +64,10 @@ public class BookmarkController extends BaseController {
 
     @PostMapping("/bookmark_register")
     private String registerBookmarkProc(BookmarkDTO bookmarkDTO,
-                                String categoryType,
-                                HttpServletRequest request,
-                                Principal principal,
-                                RedirectAttributes redirectAttributes) throws Exception{
+                                        String categoryType,
+                                        HttpServletRequest request,
+                                        Principal principal,
+                                        RedirectAttributes redirectAttributes) throws Exception {
 
         bookmarkDTO.setBookmarkType(BookmarkType.BOOKMARK);
         bookmarkService.register(bookmarkDTO, request, principal);
@@ -80,7 +80,7 @@ public class BookmarkController extends BaseController {
     @PostMapping("/bookmark_remove")
     private String removeBookmarkProc(BookmarkDTO bookmarkDTO,
                                       String categoryType,
-                                      RedirectAttributes redirectAttributes) throws Exception{
+                                      RedirectAttributes redirectAttributes) throws Exception {
         bookmarkService.remove(bookmarkDTO.getUserId(), bookmarkDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
@@ -91,7 +91,7 @@ public class BookmarkController extends BaseController {
                                     String categoryType,
                                     HttpServletRequest request,
                                     Principal principal,
-                                    RedirectAttributes redirectAttributes) throws Exception{
+                                    RedirectAttributes redirectAttributes) throws Exception {
 
         bookmarkDTO.setBookmarkType(BookmarkType.GOOD);
         log.info(bookmarkDTO);

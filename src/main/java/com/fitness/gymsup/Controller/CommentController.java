@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,18 +25,14 @@ public class CommentController extends BaseController {
     private final ReplyService replyService;
 
     @PostMapping("/comment_register")
-    public String registerCommentProc(@Valid CommentDTO commentDTO,
-                               BindingResult bindingResult,
-                               String categoryType,
-                               RedirectAttributes redirectAttributes) throws Exception {
+    public String registerCommentProc(CommentDTO commentDTO,
+                                      String categoryType,
+                                      HttpServletRequest request,
+                                      Principal principal,
+                                      RedirectAttributes redirectAttributes) throws Exception {
         log.info("boardId : " + commentDTO.getBoardId() + ", userId : " + commentDTO.getUserId() + ", categoryType : " + categoryType);
-        if (bindingResult.hasErrors()) {
-            log.info(getRedirectUrl(categoryType));
-            log.info(bindingResult.getAllErrors());
-            return "redirect:" + getRedirectUrl(categoryType);
-        }
 
-        commentService.register(commentDTO);
+        commentService.register(commentDTO, request, principal);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
         log.info("#### " + commentDTO.getBoardId());
 

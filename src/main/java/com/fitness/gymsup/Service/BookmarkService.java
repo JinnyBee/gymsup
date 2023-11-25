@@ -77,10 +77,11 @@ public class BookmarkService {
                          Principal principal) throws Exception{
         //북마크 게시글 Entity
         BoardEntity board = boardRepository.findById(bookmarkDTO.getBoardId()).orElseThrow();
+
         //북마크 선택한 사용자 Entity
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user ==null){
+        if(user == null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
