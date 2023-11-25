@@ -95,14 +95,13 @@ public class BookmarkService {
         bookmarkEntity.setUserEntity(user);
 
         //기존에 등록되어 있지 않을 경우
-
         if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
                 user, board, bookmarkDTO.getBookmarkType()) == 0) {
             //bookmark 테이블에 등록
             bookmarkRepository.save(bookmarkEntity);
             //좋아요를 눌렀을 경우 board 테이블의 good_cnt 증가
             if(bookmarkDTO.getBookmarkType().equals(BookmarkType.GOOD)) {
-                boardRepository.viewCntUp(bookmarkDTO.getBoardId());
+                boardRepository.goodCntUp(bookmarkDTO.getBoardId());
             }
         }
     }

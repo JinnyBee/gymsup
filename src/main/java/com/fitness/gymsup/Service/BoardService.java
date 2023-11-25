@@ -4,6 +4,7 @@ import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
+import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BoardImageEntity;
 import com.fitness.gymsup.Entity.CommentEntity;
@@ -98,6 +99,42 @@ public class BoardService {
 
         return boardDTOS;
     }
+    //특정게시글 인기글(TOP2)
+    public List<BoardDTO> best(BoardCategoryType categoryType) throws Exception {
+        log.info(categoryType.name());
+
+        //좋아요 높은 순으로 TOP2 게시글 조회
+        List<BoardEntity> boardEntities = boardRepository.findTop2ByCategoryTypeOrderByGoodCntDesc(categoryType);
+        List<BoardDTO> boardDTOS = new ArrayList<>();
+
+        for(BoardEntity data : boardEntities) {
+            //게시글 첨부이미지 조회
+            List<String> imgFileList = new ArrayList<>();
+            List<BoardImageDTO> boardImageDTOS = Arrays.asList(
+                    modelMapper.map(boardImageRepository.findAllByBoardId(data.getId()), BoardImageDTO[].class));
+
+            for(BoardImageDTO boardImageDTO : boardImageDTOS) {
+                imgFileList.add(boardImageDTO.getImgFile());
+            }
+
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .id(data.getId())
+                    .categoryType(data.getCategoryType())
+                    .userId(data.getUserEntity().getId())
+                    .userNickname(data.getUserEntity().getNickname())
+                    .title(data.getTitle())
+                    .content(data.getContent())
+                    .imgFileList(imgFileList)
+                    .viewCnt(data.getViewCnt())
+                    .goodCnt(data.getGoodCnt())
+                    .regDate(data.getRegDate())
+                    .modDate(data.getModDate())
+                    .build();
+            boardDTOS.add(boardDTO);
+        }        
+
+        return boardDTOS;
+    }
     //게시글 등록
     public void register(BoardDTO boardDTO, List<MultipartFile> imgFiles,
                          HttpServletRequest request, Principal principal) throws Exception {
@@ -158,7 +195,8 @@ public class BoardService {
         //게시글 상세정보 및 첨부이미지 조회
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow();
         BoardDTO boardDTO = modelMapper.map(boardEntity, BoardDTO.class);
-        List<BoardImageDTO> boardImageDTOS = Arrays.asList(modelMapper.map(boardImageRepository.findAllByBoardId(id), BoardImageDTO[].class));
+        List<BoardImageDTO> boardImageDTOS = Arrays.asList(
+                modelMapper.map(boardImageRepository.findAllByBoardId(id), BoardImageDTO[].class));
 
         List<String> imgFileList = new ArrayList<>();
         for(BoardImageDTO boardImageDTO : boardImageDTOS) {
@@ -172,7 +210,7 @@ public class BoardService {
         //게시글 조회하고 있는 사용자 Entity
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user ==null) {
+        if(user == null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }

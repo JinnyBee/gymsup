@@ -32,7 +32,6 @@ import java.util.List;
 public class DiaryBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
-    private final ReplyService replyService;
 
     //모든게시판 전체목록 조회
     @GetMapping("/board_list")
@@ -224,17 +223,5 @@ public class DiaryBoardController {
     public String removeProc(Integer id, Model model) throws Exception {
         boardService.remove(id);
         return "redirect:/board_diary_list";
-    }
-    @GetMapping("/board_diary_goodcnt")
-    public String goodcntProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
-    }
-    @GetMapping("/board_diary_bookmarkon")
-    public String bookmarkOnProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
-    }
-    @GetMapping("/board_diary_bookmarkoff")
-    public String bookmarkOffProc(Model model) throws Exception {
-        return "redirect:/board/diary/detail";
     }
 }
