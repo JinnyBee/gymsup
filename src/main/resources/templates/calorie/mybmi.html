@@ -15,7 +15,7 @@
                         <div class="row mb-5" style="border-bottom: 3px solid black;">
                             <h2>나의 BMI 지수 확인하기</h2>
                         </div>
-                        <form th:action="@{/mybmi_view}" method="get">
+                        <form name="bmiCalcForm">
                             <!-- 신장 입력 -->
                             <hr>
                             <div class="form-group row">
@@ -34,17 +34,22 @@
                                 </div>
                             </div>
                             <hr>
-                            <p style="font-size: small">
-                                <strong>체질량지수(BMI) 측정이란?</strong><br>
-                                체질량지수는 자신의 몸무게(kg)를 키의 제곱(m)으로 나눈 값으로 비만을 판정하는 비만 지수입니다.<br>
-                                체질량지수는 근육량, 유전적 원인, 다른 개인적 차이를 반영하지 못하는 단점이 있음에도 불구하고
-                                조사자들이나 의료인들이 가장 많이 쓰는 방법 중 하나입니다.
-                            </p>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">확인</button>
-                                <button type="button" class="btn btn-secondary">다시입력</button>
+                            <div class="form-group row"> <!-- BMI 지수 계산 자바스크립트 호출 -->
+                                <div class="col-sm-6 text-center">
+                                    <button type="button" class="btn btn-primary" onclick="bmiCalc()">확인</button>
+                                    <button type="reset" class="btn btn-secondary">다시입력</button>
+                                </div>
                             </div>
+                            <hr>
+                            <h5><div id="result" style="color: green"></div></h5> <!-- BMI 지수 및 비만도 출력 -->
                         </form>
+                        <p/><p/>
+                        <p style="font-size: small">
+                            <strong>체질량지수(BMI) 측정이란?</strong><br>
+                            체질량지수는 자신의 몸무게(kg)를 키의 제곱(m)으로 나눈 값으로 비만을 판정하는 비만 지수입니다.<br>
+                            체질량지수는 근육량, 유전적 원인, 다른 개인적 차이를 반영하지 못하는 단점이 있음에도 불구하고
+                            조사자들이나 의료인들이 가장 많이 쓰는 방법 중 하나입니다.
+                        </p>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
