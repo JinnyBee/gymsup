@@ -45,24 +45,38 @@
                         <div class="row mb-3">
                             <!-- 북마크 -->
                             <div class="col-lg-10 text-end" style="padding-right: 0px;">
-                                <form th:action="@{/bookmark_register}" method="post">
+                                <div>
                                     <input type="hidden" th:value="${boardDTO.id}" name="boardId">
-                                    <input type="hidden" name="categoryType" value="BTYPE_DIARY">
-                                    <button type="submit" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block">
+                                    <!-- 북마크가 OFF인 경우 (북마크ON 버튼) -->
+                                    <button th:unless="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                            th:onclick="|location.href='@{/bookmark_on(id=${boardDTO.id}, categoryType='BTYPE_DIARY')}'|">
+                                        <img src="/assets/img/bookmark_on.png" alt="" width="25" height="20">
+                                        북마크
+                                    </button>
+                                    <!-- 북마크가 ON인 경우 (북마크OFF 버튼) -->
+                                    <button th:if="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                            th:onclick="|location.href='@{/bookmark_off(id=${boardDTO.id}, categoryType='BTYPE_DIARY')}'|">
                                         <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
                                         북마크
                                     </button>
-                                </form>
+                                </div>
                             </div> <!-- End 북마크 -->
                             <div class="col-lg-2 text-end"> <!-- 추천 버튼 -->
-                                <form th:action="@{/good_register}" method="post">
+                                <div>
                                     <input type="hidden" th:value="${boardDTO.id}" name="boardId">
-                                    <input type="hidden" name="categoryType" value="BTYPE_DIARY">
-                                    <button type="submit" class="btn btn-outline-dark rounded-pill" style="width: 110px; height:50px; display: inline-block" >
+                                    <!-- 좋아요가 OFF인 경우 (좋아요 기능 활성화) -->
+                                    <button th:unless="${boardDTO.goodOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                            th:onclick="|location.href='@{/good_on(id=${boardDTO.id}, categoryType='BTYPE_DIARY')}'|">
                                         <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
                                         추천
                                     </button>
-                                </form>
+                                    <!-- 좋아요가 ON인 경우 (좋아요 기능 비활성화) -->
+                                    <button th:if="${boardDTO.goodOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                            onclick="event.preventDefault()">
+                                        <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
+                                        추천
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="row" style="border-top: 1px solid black; height: 100px;">
@@ -70,9 +84,9 @@
                             <div class="col-lg-4 mt-2"></div>
                             <div class="col-lg-4 mt-2" style="text-align: right"> <!-- 수정, 삭제, 목록 버튼 -->
                                 <button class="btn btn-outline-dark" type="button"
-                                        th:onclick="|location.href='@{/board_tip_modify(id=${boardDTO.id})}'|">수정</button>
+                                        th:onclick="|location.href='@{/board_diary_modify(id=${boardDTO.id})}'|">수정</button>
                                 <button class="btn btn-outline-danger" type="button"
-                                        th:onclick="|location.href='@{/board_tip_remove(id=${boardDTO.id})}'|">삭제</button>
+                                        th:onclick="|location.href='@{/board_diary_remove(id=${boardDTO.id})}'|">삭제</button>
                                 <button class="btn btn-outline-primary" type="button"
                                         th:onclick="|location.href='@{/board_diary_list}'|">목록</button>
                             </div>
@@ -113,7 +127,7 @@
                                     <td>
                                         <!-- 댓글 삭제 (bid:부모 게시글 id, id:삭제할 댓글 id) -->
                                         <button class="text-right" type="button"
-                                                th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id})}'|">삭제</button>
+                                                th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id}, categoryType='BTYPE_DIARY')}'|">삭제</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -145,7 +159,7 @@
                                     <span class="text-left" th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                     <!-- 답글 삭제 (bid:부모 게시글 id, id:삭제할 답글 id) -->
                                     <button class="text-right" type="button"
-                                            th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|">답글삭제</button>
+                                            th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_DIARY')}'|">답글삭제</button>
                                 </div>
                                 <div class="card-body">
                                     <span class="text-left" th:text="${replyDTO.reply}"></span>

@@ -31,7 +31,7 @@ public class BoardDTO {
     private Integer viewCnt;                    //게시글 조회수
     
     private Boolean bookmarkOn;                 //게시글 조회하고 있는 사용자가 북마크 눌렀는지
-    private Boolean GoodOn;                     //게시글 조회하고 있는 사용자가 좋아요 눌렀는지
+    private Boolean goodOn;                     //게시글 조회하고 있는 사용자가 좋아요 눌렀는지
     
     private LocalDateTime regDate;              //생성일
     private LocalDateTime modDate;              //수정일

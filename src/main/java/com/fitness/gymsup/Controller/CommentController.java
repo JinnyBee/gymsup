@@ -40,12 +40,13 @@ public class CommentController extends BaseController {
 
     @GetMapping("/comment_remove")
     public String removeCommentProc(int bid,
-                             int id,
-                             RedirectAttributes redirectAttributes) throws Exception {
+                                    int id,
+                                    String categoryType,
+                                    RedirectAttributes redirectAttributes) throws Exception {
         commentService.remove(id);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:/board_diary_detail";
+        return "redirect:" + getRedirectUrl(categoryType);
     }
 
     @PostMapping("/reply_register")
@@ -68,10 +69,11 @@ public class CommentController extends BaseController {
     @GetMapping("/reply_remove")
     public String removeReplyProc(int bid,
                                   int id,
+                                  String categoryType,
                                   RedirectAttributes redirectAttributes) throws Exception {
         replyService.remove(id);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:/board_diary_detail";
+        return "redirect:" + getRedirectUrl(categoryType);
     }
 }

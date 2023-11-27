@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,8 @@ public class BookmarkController extends BaseController {
     private String listForm(@PageableDefault(page = 1) Pageable pageable,
                             Model model,
                             HttpServletRequest request,
-                            Principal principal) throws Exception{
+                            Principal principal) throws Exception {
+
         Page<BookmarkDTO> bookmarkDTOS = bookmarkService.list(BookmarkType.BOOKMARK, pageable, request, principal);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
@@ -41,7 +43,6 @@ public class BookmarkController extends BaseController {
             lastPage = 0;
         } else {
             startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
-            //endPage = Math.min(startPage+blockLimit-1, boardDTOS.getTotalPages());
             endPage = ((startPage+blockLimit-1)<bookmarkDTOS.getTotalPages()) ? startPage+blockLimit-1 : bookmarkDTOS.getTotalPages();
 
             prevPage = bookmarkDTOS.getNumber();
@@ -62,42 +63,44 @@ public class BookmarkController extends BaseController {
         return "user/bookmark";
     }
 
-    @PostMapping("/bookmark_register")
-    private String registerBookmarkProc(BookmarkDTO bookmarkDTO,
-                                        String categoryType,
-                                        HttpServletRequest request,
-                                        Principal principal,
-                                        RedirectAttributes redirectAttributes) throws Exception {
+    @GetMapping("/bookmark_on")
+    private String bookmarkOnProc(@RequestParam("id") Integer boardId,
+                                  @RequestParam("categoryType") String categoryType,
+                                  HttpServletRequest request,
+                                  Principal principal,
+                                  RedirectAttributes redirectAttributes) throws Exception {
 
-        bookmarkDTO.setBookmarkType(BookmarkType.BOOKMARK);
-        bookmarkService.register(bookmarkDTO, request, principal);
-
-        redirectAttributes.addAttribute("id", bookmarkDTO.getBoardId());
-
-        return "redirect:" + getRedirectUrl(categoryType);
-    }
-
-    @PostMapping("/bookmark_remove")
-    private String removeBookmarkProc(BookmarkDTO bookmarkDTO,
-                                      String categoryType,
-                                      RedirectAttributes redirectAttributes) throws Exception {
-        bookmarkService.remove(bookmarkDTO.getUserId(), bookmarkDTO.getBoardId());
+        log.info(boardId + ", " + categoryType);
+        bookmarkService.register(boardId, BookmarkType.BOOKMARK, request, principal);
+        redirectAttributes.addAttribute("id", boardId);
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
-    @PostMapping("/good_register")
-    private String registerGoodProc(BookmarkDTO bookmarkDTO,
-                                    String categoryType,
-                                    HttpServletRequest request,
-                                    Principal principal,
-                                    RedirectAttributes redirectAttributes) throws Exception {
+    @GetMapping("/bookmark_off")
+    private String bookmarkOffProc(@RequestParam("id") Integer boardId,
+                                   @RequestParam("categoryType") String categoryType,
+                                   HttpServletRequest request,
+                                   Principal principal,
+                                   RedirectAttributes redirectAttributes) throws Exception {
 
-        bookmarkDTO.setBookmarkType(BookmarkType.GOOD);
-        log.info(bookmarkDTO);
-        bookmarkService.register(bookmarkDTO, request, principal);
+        log.info(boardId + ", " + categoryType);
+        bookmarkService.remove(boardId, BookmarkType.BOOKMARK, request, principal);
+        redirectAttributes.addAttribute("id", boardId);
 
-        redirectAttributes.addAttribute("id", bookmarkDTO.getBoardId());
+        return "redirect:" + getRedirectUrl(categoryType);
+    }
+
+    @GetMapping("/good_on")
+    private String goodOnProc(@RequestParam("id") Integer boardId,
+                              @RequestParam("categoryType") String categoryType,
+                              HttpServletRequest request,
+                              Principal principal,
+                              RedirectAttributes redirectAttributes) throws Exception {
+
+        log.info(boardId + ", " + categoryType);
+        bookmarkService.register(boardId, BookmarkType.GOOD, request, principal);
+        redirectAttributes.addAttribute("id", boardId);
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
