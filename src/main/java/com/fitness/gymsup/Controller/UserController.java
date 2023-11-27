@@ -121,8 +121,14 @@ public class UserController {
     }
 
     @GetMapping("/user_cancel")
-    public String cancelProc(Model model) throws Exception {
-        return "redirect:/";
+    public String cancelForm(Model model) throws Exception {
+        return "user/cancel";
+    }
+
+    @GetMapping ("/user_cancel_proc")
+    public String cancelProc(Model model,Principal principal, HttpServletRequest request) throws Exception {
+        basicUserService.cancelUser(principal, request);
+        return "redirect:/user_logout";
     }
 
     @GetMapping("/user_mywrite")

@@ -14,4 +14,5 @@ public interface UserRepository extends
     Long countByEmail(String email);
 
     Optional<UserEntity> findByEmailAndOauthType(String email, String oauthType);
+    void deleteByEmail(String email);
 }

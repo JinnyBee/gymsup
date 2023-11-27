@@ -181,4 +181,17 @@ public class BasicUserService implements UserDetailsService {
         }
         userRepository.save(userEntity);
     }
+
+    public void cancelUser(Principal principal, HttpServletRequest request)throws Exception{
+        HttpSession session = request.getSession();
+        UserEntity userEntity = (UserEntity) session.getAttribute("user");
+        String email = "";
+
+        if(userEntity != null){
+            email = userEntity.getEmail();
+        }else {
+            email = principal.getName();
+        }
+        userRepository.deleteByEmail(email);
+    }
 }

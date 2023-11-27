@@ -41,20 +41,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="#"><span>관리자 페이지</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-                        <ul>
-                            <li><a th:href="@{/user_list}">회원 관리</a></li>
-                            <li><a th:href="@{/gyminfo_list}">헬스장 소개정보 관리</a></li>
-                            <li><a th:href="@{/board_contact_list}">문의 내역</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="about.html">About us(참고용)</a></li>
-                    <li><a href="contact.html">Contact us(참고용)</a></li>
-                    <li><a th:href="@{/test}">Test(테스트용)</a></li>
+                    <li><a th:href="@{/machine_detect}">문의하기</a></li>
                 </ul>
             </nav><!-- .navbar -->
 
             <div class="position-relative">
+                <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">관리자 패이지</a>
+                <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">마이 패이지</a>
                 <a th:href="@{/user_login}" sec:authorize="isAnonymous()">로그인</a>
                 <a th:href="@{/user_logout}" sec:authorize="isAuthenticated()">로그아웃</a>
                 <!--<a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
