@@ -21,19 +21,18 @@
                                  onclick="location.href='/user_detail'">
                                 <p class="mt-1" style="text-align: center;">내 정보수정</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer "
                                  onclick="location.href='/bookmark_list'">
                                 <p class="mt-1" style="text-align: center;">북마크</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer "
                                  onclick="location.href='/user_mywrite'">
                                 <p class="mt-1" style="text-align: center;">내 게시물</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
                                 <p class="mt-1" style="text-align: center;">내 댓글</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
-                                 onclick="location.href='/user_contact'">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
                                 <p class="mt-1" style="text-align: center;">내 문의</p>
                             </div>
                             <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
@@ -45,8 +44,29 @@
                         <div class="row">
                             <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
 
-                                <div class="mt-5" style="height: auto;min-height: 160px">
-                                    <h4 class="mt-2">북마크</h4>
+                                <div class="mt-2">
+
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: auto; max-width: 15px">처리여부</th>
+                                            <th>제목</th>
+                                            <th style="width: auto; max-width: 15px">등록일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="data:${contactDTOS}">
+                                            <td>
+                                                <span th:if="${data.is_answer}==false">답변 등록 X</span>
+                                                <span th:if="${data.is_answer}==true">답변 등록 O</span>
+
+                                            </td>
+                                            <td th:text="${data.title}">John</td>
+                                            <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}" style="width: auto; max-width: 15px">John</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
                                 </div>
 
                             </div>

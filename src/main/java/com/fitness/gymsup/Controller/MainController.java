@@ -26,7 +26,7 @@ public class MainController {
     @GetMapping({"/", "/index"})
     public String main(Model model,
                        HttpServletRequest request,
-                       Principal principal) throws Exception {
+                       Principal principal, String errorMessage) throws Exception {
         if(request != null && principal != null) {
             UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
             model.addAttribute("userEntity",userEntity);
@@ -35,6 +35,7 @@ public class MainController {
         List<BoardDTO> tipBoardBestDTOS = boardService.best(BoardCategoryType.BTYPE_TIP);
         List<BoardDTO> diaryBoardBestDTOS = boardService.best(BoardCategoryType.BTYPE_DIARY);
 
+        model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("tipBoardBestDTOS", tipBoardBestDTOS);
         model.addAttribute("diaryBoardBestDTOS", diaryBoardBestDTOS);
 
