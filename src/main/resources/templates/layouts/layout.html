@@ -57,8 +57,7 @@
                 alert(errorMessage);    //메세지창
             }
         });
-    </script>
-    <script type="text/javascript">
+
         function validatePassword(){
             var passwd = document.getElementById("password").value;
             var repeatPasswd = document.getElementById("repeat-password").value;
@@ -70,26 +69,17 @@
                 return true;
             }
         }
-
-    </script>
-    <script>
+        /*답글 버튼 이벤트*/
         function replyBtn(){
 
-            const reply = document.getElementById("reply");
+            const replyli = document.getElementById("replyli");
 
-            if (reply.style.display !=='none'){
-                reply.style.display = 'none';
+            if (replyli.style.display !=='none'){
+                replyli.style.display = 'none';
             }
             else {
-                reply.style.display='block';
+                replyli.style.display='block';
             }
-        }
-    </script>
-
-    <script>
-        function bookmarkon() {
-
-            const bookmark = document.getElementById("bookmark")
         }
     </script>
     <!--자바스크립트 jquery : 스크립트를 이용한 효과-->
