@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FoodCalDTO {
+public class FoodNutrDTO {
     private Integer id;
 
     private String makerName;
