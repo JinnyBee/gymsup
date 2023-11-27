@@ -76,11 +76,11 @@
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2" style="text-align: right">
-                                    <button class="btn btn-outline-dark" type="button" th:onclick="|location.href='@{/board_tip_modify(id=${boardDTO.id})}'|">
+                                    <button class="btn btn-outline-dark" type="button" th:onclick="|location.href='@{/board_tip_modify(id=${boardDTO.id})}'|" th:unless="${boardDTO.userNickname}">
                                         수정
                                     </button>
 
-                                    <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/board_tip_remove(id=${boardDTO.id})}'|">
+                                    <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/board_tip_remove(id=${boardDTO.id})}'|" th:unless="${boardDTO.userNickname}">
                                         삭제
                                     </button>
                                     <button class="btn btn-outline-primary" type="button" th:onclick="|location.href='@{/board_tip_list}'|">
@@ -90,7 +90,7 @@
                             </div>
                             <!-- 댓글 작성 -->
                             <div class="row">
-                                <div class="col-lg-4 mt-2">댓글 작성:</div>
+                                <div class="col-lg-4 mt-2">댓글 작성</div>
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2"></div>
                             </div>
@@ -99,32 +99,33 @@
                                 <form th:action="@{/comment_register}" method="post">
 
                                     <div class="col-lg-11" style="float: left">
-                                        <textarea onkeydown="enterkey();" class="form-control" name="comment" id="comment" rows="3" style="resize: none"></textarea>
+                                        <textarea class="form-control" name="comment" id="comment" rows="3" style="resize: none"></textarea>
                                     </div>
                                     <div class="col-lg-1" style="float: right">
                                         <button type="submit" class="btn btn-dark" style="float: right; height: 86px">등록</button>
                                     </div>
                                     <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                    <input type="hidden" name="userId" value="42">
                                     <input type="hidden" name="goodCnt" value="0">
                                     <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                                 </form>
                             </div>
 
-                            <div class="row mt-5">
-                                <div class="col-lg-12 mb-2">댓글(0)</div>
+                            <div class="row mt-5" style="border-bottom: 2px solid black;">
+                                <div  class="col-lg-12 mb-2">댓글(0)</div>
                             </div>
 
                             <!--댓글 목록 시작-->
-                            <div style="border-bottom: 2px solid black; border-top: 2px solid black" th:each="data:${commentDTOS}">
+                            <div style="border-bottom: 1px solid black;" th:each="data:${commentDTOS}">
                                 <div class="row mt-2">
                                     <div class="col-lg-12 mb-2">
                                         <span class="text-left" th:text="${data.userNickname}"></span>
                                         &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d" th:text="${#temporals.format(data.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                         <button class="btn btn-outline-dark btn-sm text-right" type="button"
-                                                th:onclick="|location.href='@{/comment_modify(bid=${boardDTO.id}, id=${data.id})}'|">수정
+                                                th:onclick="|location.href='@{/comment_modify(bid=${boardDTO.id}, id=${data.id})}'|" th:unless="${data.userNickname}">수정
                                         </button>
                                         <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id})}'|">삭제
+                                                th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id})}'|" th:unless="${data.userNickname}">삭제
                                         </button>
                                         <div class="mt-3" th:text="${data.comment}"></div>
                                     </div>
@@ -139,10 +140,11 @@
                                             <div class="col-lg-11" style="float: left">
                                                 <div class="mb-3">
                                                     <lfabel for="reply"></lfabel>
-                                                    <textarea onkeydown="enterkey();" class="form-control mt-2" id="reply" name="reply" rows="2" style=" resize: none"></textarea>
+                                                    <textarea class="form-control mt-2" id="reply" name="reply" rows="2" style=" resize: none"></textarea>
                                                     <!-- 답글 등록 시 필요한 값들을 hidden으로 설정 -->
                                                     <input type="hidden" name="commentId" th:value="${data.id}">
                                                     <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                                    <input type="hidden" name="userId" value="52">
                                                     <input type="hidden" name="goodCnt" value="0">
                                                     <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                                                 </div>
@@ -154,18 +156,24 @@
                                     </div>
                                 </form>
                                 <!--답글 목록-->
-                                <div class="row" th:each="replyDTO:${data.replyDTOList}">
-                                    <div class="col-lg-12">
+                                <div th:each="replyDTO:${data.replyDTOList}" style="border-top: 1px solid black;">
+                                <div class="row">
+                                    <div class="col-lg-1 d-flex justify-content-center align-items-center" style="font-size: 12px">
+                                        └
+                                    </div>
+                                    <div class="col-lg-11 mt-2 mb-2">
                                         <!--답글 단 사람 닉네임-->
                                         <span class="text-left" th:text="${replyDTO.userNickname}"></span>
                                         <!-- 답글 시간-->
-                                        <span class="text-left" th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
+                                        &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d" th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                         <!-- 답글 삭제 버튼 -->
                                         <button class="btn btn-outline-dark btn-sm text-right" type="button"
-                                                th:onclick="|location.href='@{/reply_modify(bid=${boardDTO.id}, id=${replyDTO.id})}'|">수정</button>
+                                                th:onclick="|location.href='@{/reply_modify(bid=${boardDTO.id}, id=${replyDTO.id})}'|" th:unless="${data.userNickname}">수정</button>
                                         <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|">삭제</button>
+                                                th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|" th:unless="${data.userNickname}">삭제</button>
+                                        <div class="mt-3" th:text="${replyDTO.reply}"></div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
