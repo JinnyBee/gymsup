@@ -36,7 +36,7 @@ public class CalorieService {
 
     public void myBMICalculate(Integer userId, Integer boardId) throws Exception{
         //bookmark 테이블에서 해당 북마크 삭제
-        bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
+        //bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
     }
 
 
@@ -113,6 +113,6 @@ public class CalorieService {
     //북마크(북마크) 삭제
     public void remove(Integer userId, Integer boardId) throws Exception{
         //bookmark 테이블에서 해당 북마크 삭제
-        bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
+        //bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
     }
 }

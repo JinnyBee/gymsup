@@ -4,7 +4,6 @@ import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BookmarkEntity;
-import com.fitness.gymsup.Entity.ReplyEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.BookmarkRepository;
@@ -72,11 +71,13 @@ public class BookmarkService {
     }
 
     //북마크(북마크|좋아요) 등록
-    public void register(BookmarkDTO bookmarkDTO,
+    public void register(Integer boardId,
+                         BookmarkType bookmarkType,
                          HttpServletRequest request,
-                         Principal principal) throws Exception{
+                         Principal principal) throws Exception {
+        log.info(boardId);
         //북마크 게시글 Entity
-        BoardEntity board = boardRepository.findById(bookmarkDTO.getBoardId()).orElseThrow();
+        BoardEntity board = boardRepository.findById(boardId).orElseThrow();
 
         //북마크 선택한 사용자 Entity
         HttpSession session = request.getSession();
@@ -88,26 +89,54 @@ public class BookmarkService {
 
         log.info(board);
         log.info(user);
-        log.info(bookmarkDTO);
-
-        BookmarkEntity bookmarkEntity = modelMapper.map(bookmarkDTO, BookmarkEntity.class);
-        bookmarkEntity.setBoardEntity(board);
-        bookmarkEntity.setUserEntity(user);
+        log.info(boardId);
 
         //기존에 등록되어 있지 않을 경우
         if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
-                user, board, bookmarkDTO.getBookmarkType()) == 0) {
+                user, board, bookmarkType) == 0) {
+
+            BookmarkEntity bookmarkEntity = new BookmarkEntity();
+            bookmarkEntity.setBoardEntity(board);
+            bookmarkEntity.setUserEntity(user);
+            bookmarkEntity.setBookmarkType(bookmarkType);
+
             //bookmark 테이블에 등록
             bookmarkRepository.save(bookmarkEntity);
+
             //좋아요를 눌렀을 경우 board 테이블의 good_cnt 증가
-            if(bookmarkDTO.getBookmarkType().equals(BookmarkType.GOOD)) {
-                boardRepository.goodCntUp(bookmarkDTO.getBoardId());
+            if(bookmarkType.equals(BookmarkType.GOOD)) {
+                boardRepository.goodCntUp(boardId);
             }
         }
     }
     //북마크(북마크) 삭제
-    public void remove(Integer userId, Integer boardId) throws Exception{
-        //bookmark 테이블에서 해당 북마크 삭제
-        bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
+    public void remove(Integer boardId,
+                       BookmarkType bookmarkType,
+                       HttpServletRequest request,
+                       Principal principal) throws Exception {
+        //북마크 게시글 Entity
+        BoardEntity board = boardRepository.findById(boardId).orElseThrow();
+
+        //북마크해제 선택한 사용자 Entity
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+
+        log.info(board);
+        log.info(user);
+        log.info(boardId);
+
+        BookmarkEntity bookmarkEntity = bookmarkRepository
+                .findByUserEntityAndBoardEntityAndBookmarkType(user, board, bookmarkType);
+
+        //기존에 등록되어 있는 경우 bookmark 테이블에서 해당 북마크 삭제
+        if(bookmarkEntity != null) {
+            log.info(bookmarkEntity);
+            log.info(bookmarkEntity.getId());
+            bookmarkRepository.deleteById(bookmarkEntity.getId());
+        }
     }
 }
