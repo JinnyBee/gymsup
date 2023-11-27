@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6"> <!-- 작업공간 -->
+
+
+                        <div class="row">
+                            <div style="border: 2px solid lightgrey; height: auto;min-height: 200px">
+                                <h2 class="mt-4">회원탈퇴</h2>
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <button type="button" class="btn btn-danger"  onclick="location.href='/user_cancel_proc'">탈퇴</button>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button type="button" class="btn btn-dark" onclick="location.href='/user_cancel'">뒤로가기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

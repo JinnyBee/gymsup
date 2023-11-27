@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"> <!-- 작업공간 -->
+
+                        <div class="row mb-5" style="border-bottom: 3px solid black;">
+                            <h2>관리자페이지</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/admin_detail'">
+                                <p class="mt-1" style="text-align: center;">내 정보수정</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
+                                 onclick="location.href='/admin_user_list'">
+                                <p class="mt-1" style="text-align: center;">회원관리</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/user_mywrite'">
+                                <p class="mt-1" style="text-align: center;">문의내역</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+                            <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>유저번호</th>
+                                        <th>유저이메일</th>
+                                        <th>닉네임</th>
+                                        <th>등록일</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>test@gmail.com</td>
+                                        <td>test</td>
+                                        <td>2023-09-05</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>
