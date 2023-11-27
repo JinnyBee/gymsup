@@ -4,7 +4,6 @@ import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BookmarkEntity;
-import com.fitness.gymsup.Entity.ReplyEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.BookmarkRepository;
@@ -22,18 +21,24 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
-public class BookmarkService {
+public class CalorieService {
     //주입 : Repository, ModelMapper
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+
+
+    public void myBMICalculate(Integer userId, Integer boardId) throws Exception{
+        //bookmark 테이블에서 해당 북마크 삭제
+        bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
+    }
+
 
     //북마크 전체목록
     public Page<BookmarkDTO> list(BookmarkType bookmarkType,

@@ -40,7 +40,12 @@
                             <!-- 운동팁 게시글 BEST2 -->
                             <div th:each="data:${tipBoardBestDTOS}" class="col-lg-6 border-start custom-border" >
                                 <div class="post-entry-1">
-                                    <div th:if="${!#lists.isEmpty(data.imgFileList)}">
+                                    <div th:if="${#lists.isEmpty(data.imgFileList)}">
+                                        <a th:href="@{/board_tip_detail(id=${data.id})}">
+                                            <img src="/assets/img/post-landscape-3.jpg" alt="" class="img-fluid">
+                                        </a>
+                                    </div>
+                                    <div th:unless="${#lists.isEmpty(data.imgFileList)}">
                                         <a th:href="@{/board_tip_detail(id=${data.id})}">
                                             <img th:src="|images/@{${data.imgFileList[0]}}|" alt="" class="img-fluid">
                                         </a>
@@ -48,7 +53,7 @@
                                     <div class="post-meta">
                                         <span class="date">운동팁</span>
                                         <span class="mx-1">&bullet;</span>
-                                        <span th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">작성일</span>
+                                        <span th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                                     </div>
                                     <h2>
                                         <a class="d-inline-block text-truncate"
@@ -61,7 +66,12 @@
                             <!-- 일기 게시글 BEST2 -->
                             <div th:each="data:${diaryBoardBestDTOS}" class="col-lg-6 border-start custom-border">
                                 <div class="post-entry-1">
-                                    <div th:if="${!#lists.isEmpty(data.imgFileList)}">
+                                    <div th:if="${#lists.isEmpty(data.imgFileList)}">
+                                        <a th:href="@{/board_diary_detail(id=${data.id})}">
+                                            <img src="/assets/img/post-landscape-3.jpg" alt="" class="img-fluid">
+                                        </a>
+                                    </div>
+                                    <div th:unless="${#lists.isEmpty(data.imgFileList)}">
                                         <a th:href="@{/board_diary_detail(id=${data.id})}">
                                             <img th:src="|images/@{${data.imgFileList[0]}}|" alt="" class="img-fluid">
                                         </a>
@@ -69,7 +79,7 @@
                                     <div class="post-meta">
                                         <span class="date">일기(자랑글)</span>
                                         <span class="mx-1">&bullet;</span>
-                                        <span th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">작성일</span>
+                                        <span th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd HH:mm')}">작성일</span>
                                     </div>
                                     <h2>
                                         <a class="d-inline-block text-truncate"

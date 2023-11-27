@@ -1,6 +1,5 @@
 package com.fitness.gymsup.Controller;
 
-import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Service.CommentService;

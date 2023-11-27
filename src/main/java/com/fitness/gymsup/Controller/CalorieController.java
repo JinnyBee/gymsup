@@ -9,11 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CalorieController {
     @GetMapping("/mybmi")
     public String myBmiForm(Model model) throws Exception {
-        return "calorie/bmi_write";
-    }
-    @GetMapping("/mybmi_view")
-    public String myBmiView(Model model) throws Exception {
-        return "calorie/bmi_view";
+        return "calorie/mybmi";
     }
     @GetMapping("/calorie_food_list")
     public String foodListForm(Model model) throws Exception {
