@@ -112,7 +112,7 @@
                             </div>
 
                             <div class="row mt-5" style="border-bottom: 2px solid black;">
-                                <div  class="col-lg-12 mb-2">댓글(0)</div>
+                                <div class="col-lg-12 mb-2">댓글(0)</div>
                             </div>
 
                             <!--댓글 목록 시작-->
@@ -132,29 +132,36 @@
                                 </div>
                                 <!-- 답글 등록 -->
                                 <div>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-2" onclick="replyBtn()">답글</button>
-                                </div>
-                                <form th:action="@{/reply_register}" method="post">
-                                    <div style="display: none" id="replyli">
-                                        <div class="row">
-                                            <div class="col-lg-11" style="float: left">
-                                                <div class="mb-3">
-                                                    <lfabel for="reply"></lfabel>
-                                                    <textarea class="form-control mt-2" id="reply" name="reply" rows="2" style=" resize: none"></textarea>
-                                                    <!-- 답글 등록 시 필요한 값들을 hidden으로 설정 -->
-                                                    <input type="hidden" name="commentId" th:value="${data.id}">
-                                                    <input type="hidden" name="boardId" th:value="${boardDTO.id}">
-                                                    <input type="hidden" name="userId" value="52">
-                                                    <input type="hidden" name="goodCnt" value="0">
-                                                    <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                                    <button type="button"
+                                            class="btn btn-outline-secondary btn-sm mb-2"
+                                            th:attr="data-bs-target=${'#asd'+ data.id}"
+                                            aria-expanded="false"
+                                            aria-controls="collapseExample"
+                                            data-bs-toggle="collapse">답글
+                                    </button>
+                                    <form th:action="@{/reply_register}" method="post">
+                                        <div class="collapse" th:attr="id='asd'+${data.id}">
+                                            <div class="row">
+                                                <div class="col-lg-11" style="float: left">
+                                                    <div class="mb-3">
+                                                        <lfabel for="reply"></lfabel>
+                                                        <textarea class="form-control mt-2" id="reply" name="reply" rows="2" style=" resize: none"></textarea>
+                                                        <!-- 답글 등록 시 필요한 값들을 hidden으로 설정 -->
+                                                        <input type="hidden" name="commentId" th:value="${data.id}">
+                                                        <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                                        <input type="hidden" name="userId" value="52">
+                                                        <input type="hidden" name="goodCnt" value="0">
+                                                        <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1" style="float: right; padding-left: 6px">
+                                                    <button type="submit" class="btn btn-dark mt-2" style="font-size: 12px; height: 62px">등록</button>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-1" style="float: right; padding-left: 6px">
-                                                <button type="submit" class="btn btn-dark mt-2" style="font-size: 12px; height: 62px">등록</button>
-                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
+
                                 <!--답글 목록-->
                                 <div th:each="replyDTO:${data.replyDTOList}" style="border-top: 1px solid black;">
                                     <div class="row">
@@ -168,9 +175,11 @@
                                             &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d" th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                             <!-- 답글 삭제 버튼 -->
                                             <button class="btn btn-outline-dark btn-sm text-right" type="button"
-                                                    th:onclick="|location.href='@{/reply_modify(bid=${boardDTO.id}, id=${replyDTO.id})}'|" th:unless="${data.userNickname}">수정</button>
+                                                    th:onclick="|location.href='@{/reply_modify(bid=${boardDTO.id}, id=${replyDTO.id})}'|" th:unless="${data.userNickname}">수정
+                                            </button>
                                             <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                    th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|" th:unless="${data.userNickname}">삭제</button>
+                                                    th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|" th:unless="${data.userNickname}">삭제
+                                            </button>
                                             <div class="mt-3" th:text="${replyDTO.reply}"></div>
                                         </div>
                                     </div>
