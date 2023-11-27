@@ -26,7 +26,7 @@
                                 <p class="mt-1" style="text-align: center;">회원관리</p>
                             </div>
                             <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
-                                 onclick="location.href='/user_mywrite'">
+                                 onclick="location.href='#'">
                                 <p class="mt-1" style="text-align: center;">문의내역</p>
                             </div>
                             <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
@@ -43,24 +43,73 @@
 
                         <div class="row">
                             <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered mt-2">
                                     <thead>
                                     <tr>
                                         <th>유저번호</th>
                                         <th>유저이메일</th>
                                         <th>닉네임</th>
                                         <th>등록일</th>
+                                        <th>수정 & 삭제</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>test@gmail.com</td>
-                                        <td>test</td>
-                                        <td>2023-09-05</td>
+                                    <tr th:each="data:${userDTOS}">
+                                        <td th:text="${data.id}">1</td>
+                                        <td th:text="${data.email}" >test@gmail.com</td>
+                                        <td th:text="${data.nickname}">test</td>
+                                        <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd HH:mm:ss')}">2023-09-05</td>
+                                        <td>
+                                            <button type="button" class="btn btn-dark">수정</button>
+                                            <button type="button" class="btn btn-danger">삭제</button>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
+                                <div class="row">
+                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-6" style="text-align: center">
+                                        <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
+                                            <!--시작 페이지-->
+                                            <div class="start" th:unless="${startPage==1}">
+                                                <a th:href="@{/admin_user_list(page=1)}">
+                                                    <<
+                                                </a>
+                                            </div>
+                                            <!--이전 페이지-->
+                                            <div class="prev" th:unless="${currentPage==1}">
+                                                <a th:href="@{admin_user_list(page=${prevPage})}">
+                                                    <
+                                                </a>
+                                            </div>
+                                            <span th:each="page:${#numbers.sequence(startPage, endPage)}">
+                                            <!--현재페이지 아닐시-->
+                                            <div th:unless="${page==currentPage}">
+                                                <a th:href="@{/admin_user_list(page=${page})}">
+                                                    [[${page}]]
+                                                </a>
+                                            </div>
+                                                <!--현재 페이지-->
+                                            <div class="active" th:if="${page==currentPage}">
+                                                [[${page}]]
+                                            </div>
+                                        </span>
+                                            <!--다음페이지-->
+                                            <div class="next" th:unless="${currentPage==lastPage}">
+                                                <a th:href="@{/admin_user_list(page=${nextPage})}">
+                                                    >
+                                                </a>
+                                            </div>
+                                            <!--마지막 페이지-->
+                                            <div class="last" th:unless="${endPage==lastPage}">
+                                                <a th:href="@{/admin_user_list(page=${lastPage})}">
+                                                    >>
+                                                </a>
+                                            </div>
+                                        </div><!-- End Paging -->
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                </div>
                             </div>
                         </div>
 

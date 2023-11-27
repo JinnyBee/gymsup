@@ -120,7 +120,7 @@ public class BasicUserService implements UserDetailsService {
 
     public Page<BoardDTO> myWrite(Pageable page, HttpServletRequest request, Principal principal)throws Exception{
         int curPage = page.getPageNumber()-1;
-        int pageLimit = 5;
+        int pageLimit = 10;
 
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
@@ -193,5 +193,25 @@ public class BasicUserService implements UserDetailsService {
             email = principal.getName();
         }
         userRepository.deleteByEmail(email);
+    }
+
+    public Page<UserDTO> userList(Pageable page) throws Exception{
+        int curPage = page.getPageNumber()-1;
+        int pageLimit = 10;
+
+        Pageable pageable = PageRequest.of(curPage, pageLimit,
+                Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<UserEntity> userEntities = userRepository.findAll(pageable);
+        Page<UserDTO> userDTOS = userEntities.map(data->UserDTO.builder()
+                .id(data.getId())
+                .email(data.getEmail())
+                .nickname(data.getNickname())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build()
+        );
+
+        return userDTOS;
     }
 }

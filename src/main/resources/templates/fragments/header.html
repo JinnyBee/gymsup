@@ -47,7 +47,7 @@
 
             <div class="position-relative">
                 <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">관리자 패이지</a>
-                <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">마이 패이지</a>
+                <a th:href="@{/user_detail}" sec:authorize="isAuthenticated()">마이 패이지</a>
                 <a th:href="@{/user_login}" sec:authorize="isAnonymous()">로그인</a>
                 <a th:href="@{/user_logout}" sec:authorize="isAuthenticated()">로그아웃</a>
                 <!--<a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
