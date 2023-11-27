@@ -56,9 +56,9 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="data:${contactDTOS}">
-                                            <td>
-                                                <span th:if="${data.is_answer}==false">답변 등록 X</span>
-                                                <span th:if="${data.is_answer}==true">답변 등록 O</span>
+                                            <td style="width: auto; max-width: 15px">
+                                                <span class="badge rounded-pill bg-success" th:if="${data.is_answer}==true">답변 완료</span>
+                                                <span class="badge rounded-pill bg-danger" th:if="${data.is_answer}==false">답변 미완료</span>
 
                                             </td>
                                             <td th:text="${data.title}">John</td>

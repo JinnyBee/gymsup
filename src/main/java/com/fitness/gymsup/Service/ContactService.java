@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -86,6 +87,21 @@ public class ContactService {
                 .build()
         );
 
-        return contactDTOS
+        return contactDTOS;
+    }
+
+    public ContactDTO contactDetail(int id)throws Exception{
+        Optional<ContactEntity> contactEntity = contactRepository.findById(id);
+
+        ContactDTO contactDTO = modelMapper.map(contactEntity, ContactDTO.class);
+
+        return contactDTO;
+    }
+
+    public void adminContactRegister(String answer, boolean is_answer,int id)throws Exception{
+        ContactEntity contactEntity = contactRepository.findById(id).orElseThrow();
+        contactEntity.setAnswer(answer);
+        contactEntity.set_answer(is_answer);
+        contactRepository.save(contactEntity);
     }
 }

@@ -15,6 +15,7 @@ public class ContactDTO {
     private Integer id;
     private Integer userId;
     private String userNickname;
+    private String userEmail;
 
     @NotEmpty(message = "제목을 적어주세요.")
     private String title;

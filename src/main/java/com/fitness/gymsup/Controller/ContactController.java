@@ -91,4 +91,16 @@ public class ContactController {
 
         return "contact/adminlist";
     }
+
+    @GetMapping("/admin_contact_detail")
+    public String adminContactDetail(int id,Model model)throws Exception{
+        ContactDTO contactDTO = contactService.contactDetail(id);
+        model.addAttribute("contactDTO",contactDTO);
+        return "contact/admindetail";
+    }
+    @PostMapping("/admin_contact_register")
+    public String adminContactRegister(int id, String answer, boolean is_answer)throws Exception{
+        contactService.adminContactRegister(answer, is_answer, id);
+        return "redirect:/admin_contact";
+    }
 }
