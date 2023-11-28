@@ -34,7 +34,7 @@ public class SecurityConfig {
             auth.antMatchers("/user_logout").hasRole("ADMIN");
             auth.antMatchers("/board_all_detail", "/board_notify_detail",
                                         "/board_tip_detail", "/board_qna_detail",
-                                        "/board_diary_detail").hasRole("USER");
+                                        "/board_diary_detail", "/machine_detect").hasRole("USER");
         });
 
 
