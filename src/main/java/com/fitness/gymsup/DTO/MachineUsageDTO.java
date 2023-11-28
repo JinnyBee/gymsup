@@ -17,9 +17,8 @@ public class MachineUsageDTO {
     private int id;
     @NotEmpty(message = "제목을 적어주세요.")
     private String title;
-    private String machineInfoId;
+    private Integer machineInfoId;
     private String machineInfoName;
-    private String machineInfoContent;
 
     @NotEmpty(message = "내용을 적어주세요.")
     private String content;

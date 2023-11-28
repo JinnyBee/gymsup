@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"> <!-- 작업공간 -->
+
+                        <div class="row mb-5" style="border-bottom: 3px solid black;">
+                            <h2>관리자페이지</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;">내 정보수정</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/admin_user_list'">
+                                <p class="mt-1" style="text-align: center;">회원관리</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;">문의내역</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
+                                <p class="mt-1" style="text-align: center;">유튜브 수정</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+                            <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 200px">
+                                <button class="btn btn-dark mt-3 mb-2" type="button" th:onclick="|location.href='@{/admin_machine_register}'|">유튜브 등록</button>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30%;">썸네일</th>
+                                        <th style="width: 40%;">제목</th>
+                                        <th style="width: 10%;">조회수</th>
+                                        <th style="width: 20%;">수정&삭제</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="data:${machineUsageDTOS}">
+                                        <td><img th:src="|/images/${data.thumbnail}|" alt="" height="125px" width="210px"></td>
+                                        <td th:text="${data.title}">Doe</td>
+                                        <td th:text="${data.viewCnt}">john@example.com</td>
+                                        <td>
+                                            <button class="btn btn-dark" type="button">수정</button>
+                                            <button class="btn btn-danger" type="button">삭제</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>
