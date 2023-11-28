@@ -45,24 +45,24 @@
                                 <table class="table table-bordered mt-2">
                                     <thead>
                                     <tr>
-                                        <th>번호</th>
-                                        <th>유저닉네임</th>
-                                        <th>문의 제목</th>
-                                        <th>답변 여부</th>
-                                        <th>등록일</th>
-                                        <th>상세보기</th>
+                                        <th style="width: 10%;">번호</th>
+                                        <th style="width: 15%;">유저닉네임</th>
+                                        <th style="width: 40%;">문의 제목</th>
+                                        <th style="width: 15%;">답변 여부</th>
+                                        <th style="width: 20%;">상세보기</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="data:${contactDTOS}">
                                         <td th:text="${data.id}"></td>
                                         <td th:text="${data.userNickname}">1</td>
-                                        <td th:text="${data.title}"></td>
+                                        <td>
+                                            <span class="d-inline-block text-truncate" style="max-width: 250px" th:text="${data.title}"></span>
+                                        </td>
                                         <td>
                                             <span class="badge rounded-pill bg-success" th:if="${data.is_answer}==true">답변 완료</span>
                                             <span class="badge rounded-pill bg-danger" th:if="${data.is_answer}==false">답변 미완료</span>
                                         </td>
-                                        <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd HH:mm:ss')}">2023-09-05</td>
                                         <td><button type="button" class="btn btn-dark" th:onclick="|location.href='@{/admin_contact_detail(id=${data.id})}'|">상세보기</button></td>
                                     </tr>
                                     </tbody>

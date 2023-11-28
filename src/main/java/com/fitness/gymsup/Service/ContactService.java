@@ -104,4 +104,15 @@ public class ContactService {
         contactEntity.set_answer(is_answer);
         contactRepository.save(contactEntity);
     }
+
+    public void contactDelete(int id)throws Exception{
+        contactRepository.deleteById(id);
+    }
+
+    public void userContactModify(ContactDTO contactDTO, int id)throws Exception{
+        ContactEntity contactEntity = contactRepository.findById(id).orElseThrow();
+        contactEntity.setTitle(contactDTO.getTitle());
+        contactEntity.setContent(contactDTO.getContent());
+        contactRepository.save(contactEntity);
+    }
 }

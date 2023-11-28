@@ -1,6 +1,7 @@
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.ContactDTO;
+import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Service.ContactService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,14 +48,44 @@ public class ContactController {
     }
 
     @GetMapping("/user_contact")
-    public String userContact(Principal principal, HttpServletRequest request, Model model)throws Exception{
+    public String userContact(Principal principal, HttpServletRequest request, Model model, String errorMessage)throws Exception{
 
         List<ContactDTO> contactDTOS = contactService.userContact(request, principal);
 
+        model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("contactDTOS",contactDTOS);
         return "contact/userlist";
     }
-    
+
+    @GetMapping("/user_contact_detail")
+    public String userContactDetail(int id, Model model)throws Exception{
+        ContactDTO contactDTO = contactService.contactDetail(id);
+
+        model.addAttribute("contactDTO",contactDTO);
+
+        return "contact/userdetail";
+    }
+
+    @GetMapping("/user_contact_delete")
+    public String userContactDelete(int id, RedirectAttributes redirectAttributes)throws Exception{
+        contactService.contactDelete(id);
+        redirectAttributes.addAttribute("errorMessage","문의가 삭제되었습니다.");
+        return "redirect:/user_contact";
+    }
+
+    @GetMapping("/user_contact_modify")
+    public String userContactModifyForm(int id, Model model)throws Exception{
+        ContactDTO contactDTO = contactService.contactDetail(id);
+        model.addAttribute("contactDTO", contactDTO);
+        return "contact/usermodify";
+    }
+
+    @PostMapping("/user_contact_modify")
+    public String userContactModifyProc(int id, ContactDTO contactDTO)throws Exception{
+        contactService.userContactModify(contactDTO, id);
+        return "redirect:/user_contact";
+    }
+
     @GetMapping("/admin_contact")
     public String adminContact(@PageableDefault(page = 1)Pageable pageable, Model model)throws Exception{
         Page<ContactDTO> contactDTOS = contactService.contactList(pageable);
@@ -103,4 +134,7 @@ public class ContactController {
         contactService.adminContactRegister(answer, is_answer, id);
         return "redirect:/admin_contact";
     }
+
+
+
 }
