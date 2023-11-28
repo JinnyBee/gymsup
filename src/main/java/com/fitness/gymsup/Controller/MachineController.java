@@ -1,6 +1,8 @@
 package com.fitness.gymsup.Controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +15,15 @@ public class MachineController {
     public String detectForm(Model model) throws Exception {
         return "machine/detect";
     }
+    @PostMapping("/machine_detect")
+    public String detectProc(Model model) throws Exception {
+        return "redirect:/machine_howto";
+    }
     @GetMapping("/machine_howto")
     public String howtoProc(Model model) throws Exception {
         return "machine/howto";
     }
-    @GetMapping("/machine_about")
+    @GetMapping("/machine_about") //운동기구 전체 페이지
     public String aboutForm(Model model) throws Exception {
         return "machine/about";
     }
