@@ -19,4 +19,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     @Query(value = "DELETE FROM comment WHERE board_id = :boardId",
             nativeQuery = true)
     void deleteAllByBoardId(@Param("boardId") Integer boardId);
+
+
 }

@@ -13,6 +13,18 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-8"> <!-- 작업공간 -->
 
+                        <form action="/machine_info_register" method="post">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">이름:</label>
+                                <input type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">내용:</label>
+                                <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">등록</button>
+                        </form>
+
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
