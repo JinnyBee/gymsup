@@ -15,29 +15,11 @@
                         <div class="container mt-3">
                             <h2>운동기구 전체목록</h2> <!--제목-->
                             <hr>
-                            <div class="row"> <!--공간 시작-->
-                                <div class="col-lg-3">
-                                    <img src="#" alt="#">
-                                    <div>
-                                        <button type="button">수정</button>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <img src="#" alt="#">
-                                    <div>
-                                        <button type="button">수정</button>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <img src="#" alt="#">
-                                    <div>
-                                        <button type="button">수정</button>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <img src="#" alt="#">
-                                    <div>
-                                        <button type="button">수정</button>
+                            <div class="row" th:each="data:${machineInfoDTOS}"> <!--공간 시작-->
+                                <div class="col-lg-3 text-center">
+                                    <img th:src="|/gymsup/@{${data.img}}|" width="200" height="200">
+                                    <div class="mt-3">
+                                        <button class="btn btn-primary"  type="button">수정</button>
                                     </div>
                                 </div>
                             </div> <!--공간 끝-->
