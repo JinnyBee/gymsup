@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,8 +21,8 @@ public class MachineInfoController {
     }
 
     @PostMapping("/machine_info_register")
-    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO)throws Exception{
-        machineInfoService.register(machineInfoDTO);
+    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO, MultipartFile imgFile)throws Exception{
+        machineInfoService.register(machineInfoDTO, imgFile);
         return "machine/register";
     }
 }

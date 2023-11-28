@@ -13,7 +13,7 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-8"> <!-- 작업공간 -->
 
-                        <form action="/machine_info_register" method="post">
+                        <form th:action="@{/machine_info_register}" method="post" enctype="multipart/form-data">
                             <div class="mb-3 mt-3">
                                 <label for="name" class="form-label">이름:</label>
                                 <input type="text" class="form-control" id="name" name="name">
@@ -21,6 +21,10 @@
                             <div class="mb-3">
                                 <label for="content" class="form-label">내용:</label>
                                 <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imgFile" class="form-label">사진:</label>
+                                <input class="form-control" type="file" id="imgFile" name="imgFile">
                             </div>
                             <button type="submit" class="btn btn-primary">등록</button>
                         </form>

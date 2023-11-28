@@ -32,5 +32,5 @@ public class MachineInfoEntity extends BaseEntity{
     private String content;
 
     @Column(name ="img_file", length = 255,nullable = false)
-    private String imgFile;
+    private String img;
 }
