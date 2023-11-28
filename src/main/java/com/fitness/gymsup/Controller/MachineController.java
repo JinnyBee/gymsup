@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -56,11 +58,18 @@ public class MachineController {
         return "redirect:/machine_list";
     }
     @GetMapping("/machine_modify")
-    public String modifyForm(Model model) throws Exception {
+    public String modifyForm(Integer id, Model model) throws Exception {
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+
         return "machine/modify";
     }
     @PostMapping("/machine_modify")
-    public String modifyProc(Model model) throws Exception {
+    public String modifyProc(MachineInfoDTO machineInfoDTO,
+                             MultipartFile imgFile) throws Exception {
+
+        machineInfoService.modify(machineInfoDTO, imgFile);
         return "redirect:/machine_list";
     }
     @GetMapping("/machine_remove")
