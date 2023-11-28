@@ -153,14 +153,14 @@
                                     <button class="btn btn-outline-secondary btn-sm mb-2"
                                             type="button"
                                             data-bs-toggle="collapse"
-                                            th:attr="data-bs-target=${'#collapseExample'+ data.id}"
+                                            th:attr="data-bs-target='#collapseExample'+ ${data.id}"
                                             aria-expanded="false"
-                                            aria-controls="collapseExample">답글
+                                            aria-controls="multiCollapseExample">답글
                                     </button>
                                     <form th:action="@{/reply_register}" method="post">
-                                        <div class="row">
-                                            <div th:attr="id='collapseExample'+${data.id}" class="collapse">
-                                            <div class="col-lg-11" style="float: left">
+                                        <div th:attr="id='collapseExample'+${data.id}" class="collapse">
+                                            <div class="row">
+                                                <div class="col-lg-11" style="float: left">
                                                     <div class="mb-3">
                                                         <lfabel for="reply"></lfabel>
                                                         <textarea class="form-control mt-2" id="reply" name="reply"
