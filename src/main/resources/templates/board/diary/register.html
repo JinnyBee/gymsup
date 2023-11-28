@@ -6,6 +6,38 @@
 
 <body>
 <div layout:fragment="content">
+    <script>
+        $(document).ready(function () {
+            $('#searchFoodBtn').click(function () {
+                alert("111");
+                $.ajax({
+                    type: "GET",
+                    url: "http://openapi.foodsafetykorea.go.kr/api/be61650aef44488a9029/I2790/json/1/3/DESC_KOR=브라우니",
+                    data: {},
+                    success: function (data) {
+                        let dataStr = JSON.stringify(data);
+                        alert(dataStr);
+
+                        var parseData = JSON.parse(dataStr);
+                        var result = "";
+
+                        alert(parseData.I2790.total_count);
+                        alert(parseData.I2790.RESULT.MSG);
+                        alert(parseData.I2790.row.length);
+                        for(var i=0; i<parseData.I2790.row.length; i++) {
+                            var makerName = parseData.I2790.row[i].MAKER_NAME;
+                            var descKor = parseData.I2790.row[i].DESC_KOR;
+                            var servingSize = parseData.I2790.row[i].SERVING_SIZE;
+                            var servingUnit = parseData.I2790.row[i].SERVING_UNIT;
+                            var nutrCont1 = parseData.I2790.row[i].NUTR_CONT1;
+                            result = "[" + makerName + "]" + descKor + " : " + nutrCont1 + "kcal ("+ servingSize + servingUnit + ")";
+                            alert(result);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     <main id="main">
         <!-- ======= Search Results ======= -->
         <section id="search-result" class="search-result">
@@ -61,12 +93,23 @@
 
                                     <!-- Modal body -->
                                     <div class="modal-body"> <!-- 음식칼로리 검색 모달창 -->
-                                        <form id="food_calorieForm" name="food_calorieForm">
+                                        <ul id="names-q1">
+                                        </ul>
+<!--                                        <form id="food_calorieForm" name="food_calorieForm">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="검색어 입력"
                                                        name="keyword">
                                                 <button type="submit" class="btn btn-dark"
                                                         id="searchBtn" onclick="clickSearch(food_calorieForm)">@</button>
+                                            </div>
+                                        </form>-->
+                                        <!--<form th:action="@{/food_calorie_list(keyword=${keyword})}" method="get">-->
+                                        <form>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="검색어 입력"
+                                                       name="keyword">
+                                                <button type="button" class="btn btn-dark"
+                                                        id="searchFoodBtn" name="searchFoodBtn">검색</button>
                                             </div>
                                         </form>
                                         <p/>
@@ -85,14 +128,7 @@
                                 </div>
                             </div>
                         </div> <!-- End Modal -->
-                        <script>
-                            function clickSearch(formName) {
-                                alert('검색을 클릭했습니다.');
-                                formName.action="/";
-                                forName.method="post";
-                                forName.submit();
-                            }
-                        </script>
+
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

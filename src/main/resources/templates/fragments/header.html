@@ -41,13 +41,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a th:href="@{/contact_register}">문의하기</a></li>
+                    <li><a th:href="@{/machine_detect}">문의하기</a></li>
                 </ul>
             </nav><!-- .navbar -->
 
             <div class="position-relative">
-                <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">관리자 페이지</a>
-                <a th:href="@{/user_detail}" sec:authorize="isAuthenticated()">마이 페이지</a>
+                <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">관리자 페이지</a>&nbsp;&nbsp;&nbsp;
+                <a th:href="@{/user_detail}" sec:authorize="isAuthenticated()">마이 페이지</a>&nbsp;&nbsp;&nbsp;
                 <a th:href="@{/user_login}" sec:authorize="isAnonymous()">로그인</a>
                 <a th:href="@{/user_logout}" sec:authorize="isAuthenticated()">로그아웃</a>
                 <!--<a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
