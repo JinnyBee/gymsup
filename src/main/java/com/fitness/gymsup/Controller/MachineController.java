@@ -1,6 +1,8 @@
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.DTO.MachineInfoDTO;
 import com.fitness.gymsup.DTO.MachineUsageDTO;
+import com.fitness.gymsup.Service.MachineInfoService;
 import com.fitness.gymsup.Service.MachineUsageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,12 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @Log4j2
 public class MachineController {
-
     private final MachineUsageService machineUsageService;
+    private final MachineInfoService machineInfoService;
 
     @GetMapping("/machine_detect")
     public String detectForm(Model model) throws Exception {
@@ -34,6 +38,9 @@ public class MachineController {
     }
     @GetMapping("/machine_about") //운동기구 전체 페이지
     public String aboutForm(Model model) throws Exception {
+        List<MachineInfoDTO> machineInfoDTOS = machineInfoService.list();
+
+        model.addAttribute("machineInfoDTOS", machineInfoDTOS);
         return "machine/about";
     }
     @GetMapping("/machine_detail")
@@ -86,11 +93,17 @@ public class MachineController {
         return "redirect:/";
     }
     @GetMapping("/machine_modify")
-    public String modifyForm(Model model) throws Exception {
+    public String modifyForm(Integer id, Model model) throws Exception {
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
         return "machine/modify";
     }
     @PostMapping("/machine_modify")
-    public String modifyProc(Model model) throws Exception {
+    public String modifyProc(MachineInfoDTO machineInfoDTO,
+                             MultipartFile imgFile) throws Exception {
+
+        machineInfoService.modify(machineInfoDTO, imgFile);
         return "redirect:/machine_list";
     }
     @GetMapping("/machine_remove")
