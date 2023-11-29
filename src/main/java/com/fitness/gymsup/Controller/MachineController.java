@@ -38,9 +38,17 @@ public class MachineController {
     }
     @GetMapping("/machine_about") //운동기구 전체 페이지
     public String aboutForm(Model model) throws Exception {
-        List<MachineInfoDTO> machineInfoDTOS = machineInfoService.list();
+        int id1 = 7;
+        int id2 = 8;
+        int id3 = 9;
 
-        model.addAttribute("machineInfoDTOS", machineInfoDTOS);
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
+        MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
+        /*MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);*/
+
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+        model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
+        /*model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);*/
         return "machine/about";
     }
     @GetMapping("/machine_detail")

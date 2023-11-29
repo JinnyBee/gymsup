@@ -15,14 +15,20 @@
                         <div class="container mt-3">
                             <h2>운동기구 전체목록</h2> <!--제목-->
                             <hr>
-                            <div class="row" th:each="data:${machineInfoDTOS}"> <!--공간 시작-->
-                                <div class="col-lg-3 text-center">
-                                    <img th:src="|/gymsup/@{${data.img}}|" width="200" height="200">
-                                    <div class="mt-3">
-                                        <button class="btn btn-primary" type="button"
-                                        th:onclick="|location.href='@{/machine_modify(id=${data.id})}'|">수정</button>
-                                    </div>
+                            <div class="row"> <!--공간 시작-->
+                                <div class="col-lg-4 text-center">
+                                    <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="200" height="200">
+                                    <button type="button" class="btn btn-primary" th:text="${machineInfoDTO.name}"
+                                            th:onclick="|location.href='@{/machine_howto(id=${machineInfoDTO.id}}'|"></button>
                                 </div>
+                                <div class="col-lg-4 text-center">
+                                    <img th:src="|/gymsup/@{${machineInfoDTOid2.img}}|" width="200" height="200">
+                                    <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid2.name}"
+                                            th:onclick="|location.href='@{/machine_howto(id=${machineInfoDTOid2.id}}'|"></button>
+                                </div>
+                                <!--<div class="col-lg-4 text-center">
+                                    <img th:src="|/gymsup/@{${machineInfoDTOid3.img}}|" width="200" height="200">
+                                </div>-->
                             </div> <!--공간 끝-->
                             <div class="row">
                                 <div class="col-lg-4"></div>
