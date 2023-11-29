@@ -214,7 +214,6 @@ public class BoardService {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
-
         //북마크, 좋아요 확인
         if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
                 user, boardEntity, BookmarkType.BOOKMARK) >= 1) {
@@ -308,5 +307,27 @@ public class BoardService {
 
         //board 테이블에서 해당 게시글 삭제
         boardRepository.deleteById(id);
+    }
+
+    //게시판유저아이디와 로그인한 유저 아이디 비교
+    public boolean userConfirm(Integer id, HttpServletRequest request, Principal principal)throws Exception{
+
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow();
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+        boolean userLoginConfirm;
+        int boardUserId = boardEntity.getUserEntity().getId();
+        int sessionUserId = user.getId();
+
+        if(boardUserId == sessionUserId){
+            userLoginConfirm = true;
+        }else {
+            userLoginConfirm= false;
+        }
+        return userLoginConfirm;
     }
 }
