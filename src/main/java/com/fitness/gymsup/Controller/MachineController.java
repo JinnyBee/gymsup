@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -110,10 +111,14 @@ public class MachineController {
     }
     @PostMapping("/machine_modify")
     public String modifyProc(MachineInfoDTO machineInfoDTO,
+                             RedirectAttributes redirectAttributes,
                              MultipartFile imgFile) throws Exception {
 
+        int id = machineInfoDTO.getId();
+
+        redirectAttributes.addAttribute("id",id);
         machineInfoService.modify(machineInfoDTO, imgFile);
-        return "redirect:/machine_list";
+        return "redirect:/machine_select_list";
     }
     @GetMapping("/machine_remove")
     public String removeProc(Model model) throws Exception {
@@ -144,7 +149,7 @@ public class MachineController {
             lastPage = machineUsageDTOS.getTotalPages();
         }
 
-
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
 
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -154,6 +159,7 @@ public class MachineController {
         model.addAttribute("lastPage", lastPage);
 
         model.addAttribute("machineUsageDTOS",machineUsageDTOS);
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
 
         return "machine/list";
     }

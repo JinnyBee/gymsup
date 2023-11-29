@@ -13,17 +13,23 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
-                            <h2>운동기구 사용방법</h2>
+                            <h2>
+                                운동기구 사용방법
+                                <span>
+                                    <button class="btn btn-outline-dark" type="button"
+                                            th:onclick="|location.href='@{/machine_modify(id=${machineInfoDTO.id})}'|">수정</button>
+                                </span>
+                            </h2>
                             <hr>
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-5">
-                                        <img src="#" alt="#">
+                                        <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="330" height="330">
                                     </div>
                                     <div class="col-lg-2"></div>
                                     <div class="col-lg-5">
-                                        <h3>이 기구는 OO입니다.</h3>
-                                        <p>운동기구에 대한 간략한 설명</p>
+                                        <h3>이 기구는 <span th:text="${machineInfoDTO.name}">OO</span>입니다.</h3>
+                                        <p th:text="${machineInfoDTO.content}">운동기구에 대한 간략한 설명</p>
                                     </div>
                                 </div>
                                 <div class="container mt-3">
