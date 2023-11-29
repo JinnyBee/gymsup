@@ -36,17 +36,23 @@
                                     <h4>사용 설명을 위한 유튜브 </h4>
                                     <table class="table">
                                         <thead>
-                                        <tr class="text-center">
-                                            <th>썸네일</th>
-                                            <th>제목</th>
-                                            <th>조회수</th>
+                                        <tr>
+                                            <th style="width: 30%;">썸네일</th>
+                                            <th style="width: 40%;">제목</th>
+                                            <th style="width: 10%;">조회수</th>
+                                            <th style="width: 20%;">수정&삭제</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="data:${machineUsageDTOS}">
+
                                             <td><img th:src="|/images/${data.thumbnail}|" alt="" height="125px" width="210px"></td>
-                                            <td th:text="${data.title}"><a th:href="@{/machine_detail}">제목 들어갈 공간</a></td>
-                                            <td th:text="${data.viewCnt}">조회수 나올 공간</td>
+                                            <td><a th:href="@{/machine_detail(id=${data.id})}"  th:text="${data.title}"></a></td>
+                                            <td th:text="${data.viewCnt}">john@example.com</td>
+                                            <td>
+                                                <button class="btn btn-dark" type="button">수정</button>
+                                                <button class="btn btn-danger" type="button">삭제</button>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

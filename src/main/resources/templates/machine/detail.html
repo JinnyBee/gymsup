@@ -15,9 +15,9 @@
                         <div class="container mt-3">
                             <h2>운동기구 사용방법</h2>
                             <hr>
-                            <iframe width="800" height="500" src="https://www.youtube.com/embed/ihikcHXzb6Y?si=pCYbkqohfxdIy1JV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <iframe width="800" height="500" th:src="${machineUsageDTO.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             <div class="mt-3">
-                                간략한 설명
+                                <span th:text="${machineUsageDTO.content}"></span>
                             </div>
                         </div>
                     </div> <!-- End 작업공간 -->

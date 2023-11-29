@@ -54,7 +54,10 @@ public class MachineController {
         return "machine/about";
     }
     @GetMapping("/machine_detail")
-    public String detailForm(Model model) throws Exception {
+    public String detailForm(int id,Model model) throws Exception {
+        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id);
+
+        model.addAttribute("machineUsageDTO",machineUsageDTO);
         return "machine/detail";
     }
     @GetMapping("/admin_machine_list")
