@@ -29,7 +29,6 @@ import java.util.List;
 public class TipBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
-    private final ReplyService replyService;
 
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
@@ -103,7 +102,7 @@ public class TipBoardController {
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
-        boardService.register(boardDTO, imgFiles,request,principal);
+        boardService.register(boardDTO, imgFiles, request, principal);
 
         return "redirect:/board_tip_list";
     }
@@ -116,6 +115,7 @@ public class TipBoardController {
         BoardDTO boardDTO = boardService.detail(id, true, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
+
         boolean userConfirm = boardService.userConfirm(id,request,principal);
         log.info(boardDTO);
         log.info(commentDTOS);
@@ -147,10 +147,6 @@ public class TipBoardController {
         model.addAttribute("commentDTOS", commentDTOS);
 
         return "board/tip/detail";
-    }
-    @GetMapping("/board_tip_goodcnt")
-    public String goodcntProc(Model model) throws Exception {
-        return "redirect:/board/tip/detail";
     }
     @GetMapping("/board_tip_modify")
     public String modifyForm(Integer id,
