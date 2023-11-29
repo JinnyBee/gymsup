@@ -34,6 +34,7 @@ public class MachineController {
     }
     @GetMapping("/machine_howto")
     public String howtoProc(Model model) throws Exception {
+
         return "machine/howto";
     }
     @GetMapping("/machine_about") //운동기구 전체 페이지

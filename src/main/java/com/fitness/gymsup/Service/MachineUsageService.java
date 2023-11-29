@@ -76,4 +76,31 @@ public class MachineUsageService {
 
         return machineUsageDTOS;
     }
+
+    //부분목록
+    public Page<MachineUsageDTO> partList(int id, Pageable page)throws Exception{
+        int curPage = page.getPageNumber()-1;
+        int pageLimit = 5;
+
+        Pageable pageable = PageRequest.of(curPage, pageLimit,
+                Sort.by(Sort.Direction.DESC, "id"));
+
+        MachineInfoEntity machineInfo = machineInfoRepository.findById(id).orElseThrow();
+        Page<MachineUsageEntity> machineUsageEntities = machineUsageRepository.findAllByMachineInfoEntity(pageable, machineInfo);
+        Page<MachineUsageDTO> machineUsageDTOS = machineUsageEntities.map(data->MachineUsageDTO.builder()
+                .id(data.getId())
+                .title(data.getTitle())
+                .content(data.getContent())
+                .machineInfoId(data.getMachineInfoEntity().getId())
+                .machineInfoName(data.getMachineInfoEntity().getName())
+                .url(data.getUrl())
+                .thumbnail(data.getThumbnail())
+                .viewCnt(data.getViewCnt())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build());
+
+        return machineUsageDTOS;
+    }
+
 }
