@@ -85,13 +85,13 @@
                                 <div class="col-lg-4 mt-2" style="text-align: right">
                                     <button class="btn btn-outline-dark" type="button"
                                             th:onclick="|location.href='@{/board_tip_modify(id=${boardDTO.id})}'|"
-                                            th:unless="${boardDTO.userNickname}">
+                                            th:if="${userConfirm}==true">
                                         수정
                                     </button>
 
                                     <button class="btn btn-outline-danger" type="button"
                                             th:onclick="|location.href='@{/board_tip_remove(id=${boardDTO.id})}'|"
-                                            th:unless="${boardDTO.userNickname}">
+                                            th:if="${userConfirm}==true">
                                         삭제
                                     </button>
                                     <button class="btn btn-outline-primary" type="button"
@@ -200,11 +200,11 @@
                                             <!-- 답글 삭제 버튼 -->
                                             <button class="btn btn-outline-dark btn-sm text-right" type="button"
                                                     th:onclick="|location.href='@{/reply_modify(bid=${boardDTO.id}, id=${replyDTO.id})}'|"
-                                                    th:if="${userConfirm}==true">수정
+                                                    >수정
                                             </button>
                                             <button class="btn btn-outline-danger btn-sm text-right" type="button"
                                                     th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id})}'|"
-                                                    th:if="${userConfirm}==true">삭제
+                                                    >삭제
                                             </button>
                                             <div class="mt-3" th:text="${replyDTO.reply}"></div>
                                         </div>
