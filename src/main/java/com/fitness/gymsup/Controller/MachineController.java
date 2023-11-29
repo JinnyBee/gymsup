@@ -144,6 +144,8 @@ public class MachineController {
             lastPage = machineUsageDTOS.getTotalPages();
         }
 
+
+
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("prevPage", prevPage);
