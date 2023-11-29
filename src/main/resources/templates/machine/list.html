@@ -10,9 +10,43 @@
         <section id="search-result" class="search-result">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
-
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
+                        <div class="container mt-3">
+                            <h2>운동기구 사용방법</h2>
+                            <hr>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <img src="#" alt="#">
+                                    </div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-5">
+                                        <h3>이 기구는 OO입니다.</h3>
+                                        <p>운동기구에 대한 간략한 설명</p>
+                                    </div>
+                                </div>
+                                <div class="container mt-3">
+                                    <h4>사용 설명을 위한 유튜브 </h4>
+                                    <table class="table">
+                                        <thead>
+                                        <tr class="text-center">
+                                            <th>썸네일</th>
+                                            <th>제목</th>
+                                            <th>조회수</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="data:${machineUsageDTOS}">
+                                            <td><img th:src="|/images/${data.thumbnail}|" alt="" height="125px" width="210px"></td>
+                                            <td th:text="${data.title}"><a th:href="@{/machine_detail}">제목 들어갈 공간</a></td>
+                                            <td th:text="${data.viewCnt}">조회수 나올 공간</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

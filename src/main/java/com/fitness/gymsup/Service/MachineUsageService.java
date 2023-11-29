@@ -1,5 +1,6 @@
 package com.fitness.gymsup.Service;
 
+import com.fitness.gymsup.DTO.MachineInfoDTO;
 import com.fitness.gymsup.DTO.MachineUsageDTO;
 import com.fitness.gymsup.Entity.MachineInfoEntity;
 import com.fitness.gymsup.Entity.MachineUsageEntity;
@@ -103,4 +104,13 @@ public class MachineUsageService {
         return machineUsageDTOS;
     }
 
+    //상세보기
+    public MachineUsageDTO detail(int id)throws Exception{
+
+        MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
+        MachineUsageDTO machineUsageDTO = modelMapper.map(machineUsageEntity, MachineUsageDTO.class);
+
+        return machineUsageDTO;
+
+    }
 }
