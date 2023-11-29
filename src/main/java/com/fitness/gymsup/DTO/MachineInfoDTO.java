@@ -15,6 +15,7 @@ public class MachineInfoDTO {
     private String name;
     private String content;
     private String img;
+    private String result;
     private LocalDateTime regDate;              //생성일
     private LocalDateTime modDate;              //수정일
 }

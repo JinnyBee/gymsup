@@ -40,9 +40,9 @@ public class MachineController {
     }
     @GetMapping("/machine_about") //운동기구 전체 페이지
     public String aboutForm(Model model) throws Exception {
-        int id1 = 7;
-        int id2 = 8;
-        int id3 = 9;
+        int id1 = 9;
+        int id2 = 10;
+        int id3 = 11;
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
         MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);

@@ -10,21 +10,40 @@
         <section id="search-result" class="search-result">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
                             <h2>운동기구 전체목록</h2> <!--제목-->
                             <hr>
                             <div class="row"> <!--공간 시작-->
                                 <div class="col-lg-4 text-center">
-                                    <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="200" height="200">
-                                    <button type="button" class="btn btn-primary" th:text="${machineInfoDTO.name}"
-                                            th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTO.id})}'|"></button>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="200" height="200">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTO.name}"
+                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTO.id})}'|"></button>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="col-lg-4 text-center">
-                                    <img th:src="|/gymsup/@{${machineInfoDTOid2.img}}|" width="200" height="200">
-                                    <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid2.name}"
-                                            th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid2.id})}'|"></button>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img th:src="|/gymsup/@{${machineInfoDTOid2.img}}|" width="200" height="200">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid2.name}"
+                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid2.id})}'|"></button>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <!--<div class="col-lg-4 text-center">
                                     <img th:src="|/gymsup/@{${machineInfoDTOid3.img}}|" width="200" height="200">

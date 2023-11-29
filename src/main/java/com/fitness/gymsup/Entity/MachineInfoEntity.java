@@ -33,4 +33,7 @@ public class MachineInfoEntity extends BaseEntity{
 
     @Column(name ="img_file", length = 255,nullable = false)
     private String img;
+
+    @Column(name ="result", length = 50, nullable = false)
+    private String result;
 }
