@@ -116,11 +116,14 @@ public class TipBoardController {
         BoardDTO boardDTO = boardService.detail(id, true, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
-        boolean userConfirm = boardService.userConfirm(id,request,principal);
+        boolean boardUserConfirm = boardService.userConfirm(id,request,principal);
         log.info(boardDTO);
         log.info(commentDTOS);
 
-        model.addAttribute("userConfirm", userConfirm);
+        Integer userId = boardService.userId(request, principal);
+
+        model.addAttribute("userId",userId);
+        model.addAttribute("userConfirm", boardUserConfirm);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
@@ -141,6 +144,9 @@ public class TipBoardController {
         log.info(boardDTO);
         log.info(commentDTOS);
 
+        Integer userId = boardService.userId(request, principal);
+
+        model.addAttribute("userId",userId);
         model.addAttribute("userConfirm", userConfirm);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);

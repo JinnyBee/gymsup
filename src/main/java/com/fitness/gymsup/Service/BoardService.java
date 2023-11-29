@@ -330,4 +330,15 @@ public class BoardService {
         }
         return userLoginConfirm;
     }
+
+    public Integer userId(HttpServletRequest request, Principal principal)throws Exception{
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+        Integer userId = user.getId();
+        return userId;
+    }
 }
