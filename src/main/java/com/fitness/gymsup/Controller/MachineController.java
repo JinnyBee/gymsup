@@ -1,11 +1,14 @@
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.DTO.FlaskResponseDTO;
 import com.fitness.gymsup.DTO.MachineInfoDTO;
 import com.fitness.gymsup.DTO.MachineUsageDTO;
 import com.fitness.gymsup.Service.MachineInfoService;
 import com.fitness.gymsup.Service.MachineUsageService;
+import com.fitness.gymsup.Util.Flask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,25 +16,41 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @Log4j2
 public class MachineController {
+    @Autowired
+    private Flask flask;
+
     private final MachineUsageService machineUsageService;
     private final MachineInfoService machineInfoService;
+
 
     @GetMapping("/machine_detect")
     public String detectForm(Model model) throws Exception {
         return "machine/detect";
     }
     @PostMapping("/machine_detect")
-    public String detectProc(Model model) throws Exception {
-        return "redirect:/machine_howto";
+    public String detectProc(@RequestParam("imgFile") MultipartFile imgFile,
+                             Model model) throws Exception {
+        log.info(imgFile);
+        //플라스크 서버에 분석할 이미지를 전달하여 처리
+        FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(imgFile);
+
+        log.info("Flask Response DTO (resultFilename) : " + flaskResponseDTO.getResultFilename());
+        for(String name : flaskResponseDTO.getName()) {
+            log.info("Flask Response DTO (name) : " + name);
+        }
+
+        model.addAttribute("flaskResponseDTO", flaskResponseDTO);
+
+        return "machine/howto";
     }
     @GetMapping("/machine_howto")
     public String howtoProc(Model model) throws Exception {
