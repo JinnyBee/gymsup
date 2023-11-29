@@ -46,11 +46,11 @@ public class MachineController {
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
         MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
-        /*MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);*/
+        MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);
 
         model.addAttribute("machineInfoDTO", machineInfoDTO);
         model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
-        /*model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);*/
+        model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
         return "machine/about";
     }
     @GetMapping("/machine_detail")

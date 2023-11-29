@@ -10,11 +10,12 @@
         <section id="search-result" class="search-result">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"> <!-- 작업공간 -->
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
-                            <h2>운동기구 사용방법</h2>
-                            <hr>
+                            <div class="row" style="border-bottom: 3px solid black">
+                                <h2>운동기구 사용방법</h2>
+                            </div>
                             <iframe width="800" height="500" th:src="${machineUsageDTO.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             <div class="mt-3">
                                 <span th:text="${machineUsageDTO.content}"></span>
