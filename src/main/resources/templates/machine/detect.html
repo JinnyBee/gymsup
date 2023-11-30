@@ -16,14 +16,15 @@
                             <h2>운동기구 검색하기</h2>
                             <hr>
                             <div class="container mt-3">
-                                <form th:action="@{/machine_detect}" method="post">
+                                <form th:action="@{/machine_detect}" method="post"
+                                      enctype="multipart/form-data">
                                     <div class="mb-3 mt-3">
                                         <label for="img">※운동기구 이미지만 가능합니다!!</label>
-                                        <input type="file" class="form-control" id="img" name="imgFiles">
-                                        <img src="#" alt="#">
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">운동기구 이미지 검색하기</button>
-                                        </div>
+                                        <input type="file" class="form-control" id="img" name="imgFile">
+                                    </div>
+                                    <div class="text-center">
+                                        <!--<img src="#" alt="#">-->
+                                        <button type="submit" class="btn btn-primary">운동기구 이미지 검색하기</button>
                                     </div>
                                 </form>
                             </div>

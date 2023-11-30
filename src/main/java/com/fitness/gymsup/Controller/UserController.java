@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
@@ -190,13 +188,13 @@ public class UserController {
         return "redirect:/user_join";
     }
 
-    @GetMapping("/user_password_Confirm")
+    @GetMapping("/user_password_confirm")
     public String passwordConfirmForm(String errorMessage, Model model)throws Exception{
         model.addAttribute("errorMessage",errorMessage);
         return "user/passwordform";
     }
 
-    @PostMapping("/user_password_Confirm")
+    @PostMapping("/user_password_confirm")
     public String passwordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
 
         String errorMessage = "";
@@ -210,7 +208,7 @@ public class UserController {
         }else {
             errorMessage="현재 비밀번호와 다릅니다.";
             redirectAttributes.addAttribute("errorMessage",errorMessage);
-            return "redirect:/user_password";
+            return "redirect:/user_password_confirm";
         }
 
     }
