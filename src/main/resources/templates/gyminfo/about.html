@@ -5,17 +5,6 @@
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=fmzziwzoty&callback=initMap"></script>
-    <script type="text/javascript">
-        var map = null;
-
-        function initMap() {
-            map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(37.3595704, 127.105399),
-                zoom: 10
-            });
-        }
-    </script>
     <main id="main">
         <!-- ======= Search Results ======= -->
         <div class="container" data-bs-spy="scroll" data-bs-target="#naver-example2" data-bs-offset="0" tabindex="0">

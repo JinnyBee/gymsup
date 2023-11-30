@@ -43,6 +43,9 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <!--naver map API-->
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=fmzziwzoty&callback=initMap"></script>
     <!--js 끝-->
 
     <script type="text/javascript">
@@ -101,6 +104,24 @@
 
             let message = "당신의 비만도(BMI) 지수는 " + bmi + "로 \"" + weightStatus + "\" 입니다.";
             document.getElementById("result").innerHTML = message;
+        }
+        /*네이버 지도*/
+
+        function initMap() {
+            var map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(37.4868788, 126.7829829), //지도의 초기 중심 좌표
+                zoom: 17, //지도의 초기 줌 레벨
+                minZoom: 7, //지도의 최소 줌 레벨
+                zoomControl: true, //줌 컨트롤의 표시 여부
+                zoomControlOptions: { //줌 컨트롤의 옵션
+                    position: naver.maps.Position.TOP_RIGHT
+                }
+                });
+
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(37.4868788, 126.7829829),
+                map: map
+            });
         }
     </script>
     <!--자바스크립트 jquery : 스크립트를 이용한 효과-->

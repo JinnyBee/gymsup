@@ -18,7 +18,9 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-5">
-                                        <img src="#" alt="#">
+                                        <!--<img src="#" alt="#">-->
+                                        <p th:text="${flaskResponseDTO.resultFilename}"></p>
+                                        <img th:src="|/images/temp/@{${flaskResponseDTO.resultFilename}}|" alt="결과 이미지">
                                     </div>
                                     <div class="col-lg-2"></div>
                                     <div class="col-lg-5">
