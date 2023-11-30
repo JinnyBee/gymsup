@@ -17,19 +17,21 @@
                             <hr>
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-lg-5">
+                                    <div class="col-lg-5 text-center">
                                         <!--<img src="#" alt="#">-->
                                         <p th:text="${flaskResponseDTO.resultFilename}"></p>
                                         <img th:src="|/images/temp/@{${flaskResponseDTO.resultFilename}}|" alt="결과 이미지">
                                     </div>
                                     <div class="col-lg-2"></div>
                                     <div class="col-lg-5">
-                                        <h3>이 기구는 OO입니다.</h3>
-                                        <p>운동기구에 대한 간략한 설명</p>
+<!--                                        <h3>이 기구는 OO입니다.</h3>
+                                        <p>운동기구에 대한 간략한 설명</p>-->
                                     </div>
                                 </div>
-                                <div class="container mt-3">
-                                    <h4>사용 설명을 위한 유튜브 </h4>
+                                <div class="container mt-3" th:each="data:${machineInfoDTOS}">
+                                    <h3>이 기구는 [[${data.name}]]입니다.</h3>
+                                    <p th:text="${data.content}">운동기구에 대한 간략한 설명</p>
+                                    <h4 class="text-center">[[${data.name}]] 사용 설명을 위한 유튜브 </h4>
                                     <table class="table">
                                         <thead>
                                         <tr class="text-center">
@@ -39,10 +41,15 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>썸네일 들어갈 공간</td>
-                                            <td><a th:href="@{/machine_detail}">제목 들어갈 공간</a></td>
-                                            <td>조회수 나올 공간</td>
+                                        <tr th:each="usage:${data.getMachineUsageDTOList()}">
+                                            <td>
+                                                <img th:src="|/images/@{${usage.getThumbnail()}}|" alt="썸네일">
+                                            </td>
+                                            <td>
+                                                <a th:text="${usage.getTitle()}"
+                                                   th:href="@{/machine_detail(id=${usage.getId()})}">제목 들어갈 공간</a>
+                                            </td>
+                                            <td th:text="${usage.getViewCnt()}">조회수 나올 공간</td>
                                         </tr>
                                         </tbody>
                                     </table>

@@ -1,8 +1,15 @@
 package com.fitness.gymsup.Service;
 
+import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.MachineInfoDTO;
+import com.fitness.gymsup.DTO.MachineUsageDTO;
+import com.fitness.gymsup.DTO.ReplyDTO;
+import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Entity.MachineInfoEntity;
+import com.fitness.gymsup.Entity.MachineUsageEntity;
+import com.fitness.gymsup.Entity.ReplyEntity;
 import com.fitness.gymsup.Repository.MachineInfoRepository;
+import com.fitness.gymsup.Repository.MachineUsageRepository;
 import com.fitness.gymsup.Util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +33,7 @@ public class MachineInfoService {
     private String imgUploadLocation;
 
     private final MachineInfoRepository machineInfoRepository;
+    private final MachineUsageRepository machineUsageRepository;
     private final ModelMapper modelMapper = new ModelMapper();
     private final FileUploader fileUploader;
 
@@ -39,6 +48,20 @@ public class MachineInfoService {
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(id).orElseThrow();
 
         MachineInfoDTO machineInfoDTO = modelMapper.map(machineInfoEntity, MachineInfoDTO.class);
+        return machineInfoDTO;
+    }
+    public MachineInfoDTO find(String className) throws Exception {
+        MachineInfoEntity machineInfoEntity = machineInfoRepository.findByResult(className);
+
+        List<MachineUsageEntity> machineUsageEntities = machineUsageRepository
+                .findAllByMachineInfoEntity(machineInfoEntity);
+        List<MachineUsageDTO> machineUsageDTOS = Arrays.asList(modelMapper
+                .map(machineUsageEntities, MachineUsageDTO[].class));
+
+        MachineInfoDTO machineInfoDTO = modelMapper
+                .map(machineInfoRepository.findByResult(className), MachineInfoDTO.class);
+        machineInfoDTO.setMachineUsageDTOList(machineUsageDTOS);
+
         return machineInfoDTO;
     }
 

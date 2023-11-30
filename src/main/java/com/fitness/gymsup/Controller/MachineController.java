@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -37,18 +40,34 @@ public class MachineController {
         return "machine/detect";
     }
     @PostMapping("/machine_detect")
-    public String detectProc(@RequestParam("imgFile") MultipartFile imgFile,
+    public String detectProc(@RequestParam("detectImg") MultipartFile detectImg,
                              Model model) throws Exception {
-        log.info(imgFile);
+
+/*        if(detectImg.getOriginalFilename().isEmpty()) {
+            return "redirect:/machine_detect";
+        }*/
+
         //플라스크 서버에 분석할 이미지를 전달하여 처리
-        FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(imgFile);
+        //FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(detectImg);
+        FlaskResponseDTO flaskResponseDTO = new FlaskResponseDTO();
+        List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
+
+        List<String> names = new ArrayList<>();
+        names.add("foamroller");
+        names.add("dumbbell");
+        names.add("kettlebell");
+
+        flaskResponseDTO.setName(names);
 
         log.info("Flask Response DTO (resultFilename) : " + flaskResponseDTO.getResultFilename());
         for(String name : flaskResponseDTO.getName()) {
             log.info("Flask Response DTO (name) : " + name);
+            machineInfoDTOS.add(machineInfoService.find(name));
         }
+        log.info(machineInfoDTOS);
 
         model.addAttribute("flaskResponseDTO", flaskResponseDTO);
+        model.addAttribute("machineInfoDTOS", machineInfoDTOS);
 
         return "machine/howto";
     }

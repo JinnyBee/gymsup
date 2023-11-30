@@ -5,6 +5,17 @@
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
+    <script>
+        document.getElementById('detectForm').addEventListener('submit', function(event) {
+            var detectImg = document.getElementById('detectImg');
+
+            if(detectImg.files.length) {
+                event.preventDefault();
+                alert("파일을 선택해주세요.")
+            }
+        });
+    </script>
+
     <main id="main">
         <!-- ======= Search Results ======= -->
         <section id="search-result" class="search-result">
@@ -17,14 +28,16 @@
                             <hr>
                             <div class="container mt-3">
                                 <form th:action="@{/machine_detect}" method="post"
+                                      id="detectForm"
                                       enctype="multipart/form-data">
                                     <div class="mb-3 mt-3">
-                                        <label for="img">※운동기구 이미지만 가능합니다!!</label>
-                                        <input type="file" class="form-control" id="img" name="imgFile">
+                                        <label for="detectImg">※운동기구 이미지만 가능합니다!!</label>
+                                        <input type="file" class="form-control" id="detectImg" name="detectImg">
                                     </div>
                                     <div class="text-center">
                                         <!--<img src="#" alt="#">-->
-                                        <button type="submit" class="btn btn-primary">운동기구 이미지 검색하기</button>
+                                        <button type="submit" class="btn btn-primary"
+                                                onclick="return checkDetectImg()">운동기구 이미지 검색하기</button>
                                     </div>
                                 </form>
                             </div>

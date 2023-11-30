@@ -3,6 +3,7 @@ package com.fitness.gymsup.DTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class MachineInfoDTO {
     private String content;
     private String img;
     private String result;
+    private List<MachineUsageDTO> machineUsageDTOList;
     private LocalDateTime regDate;              //생성일
     private LocalDateTime modDate;              //수정일
 }

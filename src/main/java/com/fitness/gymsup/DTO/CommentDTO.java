@@ -1,16 +1,6 @@
 package com.fitness.gymsup.DTO;
 
-import com.fitness.gymsup.Constant.BoardCategoryType;
-import com.fitness.gymsup.Entity.BoardEntity;
-import com.fitness.gymsup.Entity.ReplyEntity;
-import com.fitness.gymsup.Entity.UserEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
