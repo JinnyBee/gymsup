@@ -82,6 +82,13 @@ section .signin .content .form .inputBox i
   transition: 0.5s !important;
   pointer-events: none !important;
 }
+
+section .signin .content .form .snsloginbutton img
+{
+  height: 60px;
+  width: 315px;
+}
+
 .signin .content .form .inputBox input:focus ~ i,
 .signin .content .form .inputBox input:valid ~ i
 {
