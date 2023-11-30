@@ -59,6 +59,7 @@ public class BookmarkService {
                 .id(data.getId())
                 .userId(data.getUserEntity().getId())
                 .boardId(data.getBoardEntity().getId())
+                .boardRegDate(data.getBoardEntity().getRegDate())
                 .boardTitle(data.getBoardEntity().getTitle())
                 .boardViewCnt(data.getBoardEntity().getViewCnt())
                 .categoryType(data.getBoardEntity().getCategoryType())

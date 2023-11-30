@@ -46,8 +46,71 @@
                         <div class="row">
                             <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
 
-                                <div class="mt-5" style="height: auto;min-height: 160px">
-                                    <h4 class="mt-2">북마크</h4>
+                                <div class="mt-2">
+
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: auto; max-width: 20%">카테고리</th>
+                                            <th>제목</th>
+                                            <th style="width: auto; max-width: 10%">조회수</th>
+                                            <th style="width: auto; max-width: 10%">등록일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="data:${bookmarkDTOS}">
+                                            <td th:text="${data.categoryType.getDescription()}">John</td>
+                                            <td th:text="${data.boardTitle}">John</td>
+                                            <td th:text="${data.boardViewCnt}">John</td>
+                                            <td th:text="${#temporals.format(data.boardRegDate, 'yyyy-MM-dd')}">John</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="row">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-6" style="text-align: center">
+                                            <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
+                                                <!--시작 페이지-->
+                                                <div class="start" th:unless="${startPage==1}">
+                                                    <a th:href="@{/user_mywrite(page=1)}">
+                                                        <<
+                                                    </a>
+                                                </div>
+                                                <!--이전 페이지-->
+                                                <div class="prev" th:unless="${currentPage==1}">
+                                                    <a th:href="@{user_mywrite(page=${prevPage})}">
+                                                        <
+                                                    </a>
+                                                </div>
+                                                <span th:each="page:${#numbers.sequence(startPage, endPage)}">
+                                            <!--현재페이지 아닐시-->
+                                            <div th:unless="${page==currentPage}">
+                                                <a th:href="@{/user_mywrite(page=${page})}">
+                                                    [[${page}]]
+                                                </a>
+                                            </div>
+                                                    <!--현재 페이지-->
+                                            <div class="active" th:if="${page==currentPage}">
+                                                [[${page}]]
+                                            </div>
+                                        </span>
+                                                <!--다음페이지-->
+                                                <div class="next" th:unless="${currentPage==lastPage}">
+                                                    <a th:href="@{/user_mywrite(page=${nextPage})}">
+                                                        >
+                                                    </a>
+                                                </div>
+                                                <!--마지막 페이지-->
+                                                <div class="last" th:unless="${endPage==lastPage}">
+                                                    <a th:href="@{/user_mywrite(page=${lastPage})}">
+                                                        >>
+                                                    </a>
+                                                </div>
+                                            </div><!-- End Paging -->
+                                        </div>
+                                        <div class="col-lg-3"></div>
+                                    </div>
                                 </div>
 
                             </div>

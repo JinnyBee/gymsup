@@ -19,6 +19,7 @@ public class BookmarkDTO {
     private Integer boardId;                //북마크 게시글의 id
     private String boardTitle;              //북마크 게시글의 제목
     private Integer boardViewCnt;           //북마크 게시글의 조회수
+    private LocalDateTime boardRegDate;
     private BoardCategoryType categoryType; //북마크 게시글의 카테고리 타입 (열거형)
     private BookmarkType bookmarkType;      //북마크 타입 (열거형)
 

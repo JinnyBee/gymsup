@@ -14,7 +14,7 @@
                     <div class="col-md-3"> <!-- 작업공간 1 -->
                         <div class="post-entry-1 lg">
                             <div class="card mb-5"> <!-- 로그인 -->
-                                <div class="card-body">
+                                <div class="card-body" style="text-align: center">
                                     <h3 style="margin-bottom: 10px" sec:authorize="isAnonymous()">로그인</h3>
                                     <h3 style="margin-bottom: 10px" sec:authorize="isAuthenticated()"><span th:text="${userEntity.nickname}"></span>님 환영합니다</h3>
                                     <div>

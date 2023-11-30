@@ -3,7 +3,6 @@ package com.fitness.gymsup.Controller;
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
-import com.fitness.gymsup.DTO.MessageDTO;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
 import com.fitness.gymsup.Service.ReplyService;
