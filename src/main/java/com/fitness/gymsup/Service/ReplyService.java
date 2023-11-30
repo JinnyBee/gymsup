@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.RoleInfo;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,19 +56,27 @@ public class ReplyService {
         return replyDTOS;
     }
     //답글 등록
-    public void register(ReplyDTO replyDTO) throws Exception {
+    public void register(ReplyDTO replyDTO,
+                         HttpServletRequest request,
+                         Principal principal) throws Exception {
         log.info("commentId : " + replyDTO.getCommentId());
         //부모 댓글 Entity 조회
         CommentEntity parentComment = commentRepository.findById(replyDTO.getCommentId()).orElseThrow();
-        //답글 작성자 Entity 조회
-        UserEntity writer = userRepository.findById(replyDTO.getUserId()).orElseThrow();
+
+        //댓글 작성자 Entity
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
 
         log.info(parentComment);
-        log.info(writer);
+        log.info(user);
 
         ReplyEntity replyEntity = modelMapper.map(replyDTO, ReplyEntity.class);
         replyEntity.setCommentEntity(parentComment);
-        replyEntity.setUserEntity(writer);
+        replyEntity.setUserEntity(user);
 
         replyRepository.save(replyEntity);
     }

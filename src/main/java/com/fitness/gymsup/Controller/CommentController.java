@@ -37,6 +37,14 @@ public class CommentController extends BaseController {
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
+    @PostMapping("/comment_modify")
+    public String modifyCommentProc(CommentDTO commentDTO,
+                                    String categoryType) throws Exception{
+
+        commentService.modify(commentDTO);
+
+        return "redirect:" + getRedirectUrl(categoryType);
+    }
 
     @GetMapping("/comment_remove")
     public String removeCommentProc(int bid,
@@ -53,6 +61,8 @@ public class CommentController extends BaseController {
     public String registerReplyProc(@Valid ReplyDTO replyDTO,
                                     BindingResult bindingResult,
                                     String categoryType,
+                                    HttpServletRequest request,
+                                    Principal principal,
                                     RedirectAttributes redirectAttributes) throws Exception {
         log.info("commentId : " + replyDTO.getCommentId() + ", userId : " + replyDTO.getUserId() + "categoryType : " + categoryType);
         if (bindingResult.hasErrors()) {
@@ -60,10 +70,20 @@ public class CommentController extends BaseController {
             return "redirect:" + getRedirectUrl(categoryType);
         }
 
-        replyService.register(replyDTO);
+        replyService.register(replyDTO, request, principal);
         redirectAttributes.addAttribute("id", replyDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
+    }
+    @PostMapping("/reply_modify")
+    public String registerReplyProc(ReplyDTO replyDTO,
+                                    BindingResult bindingResult,
+                                    HttpServletRequest request,
+                                    Principal principal,
+                                    String categorType) throws Exception{
+        replyService.modify(replyDTO);
+
+        return "redirect:" + getRedirectUrl(categorType);
     }
 
     @GetMapping("/reply_remove")
