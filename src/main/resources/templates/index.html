@@ -14,7 +14,7 @@
                     <div class="col-md-3"> <!-- 작업공간 1 -->
                         <div class="post-entry-1 lg">
                             <div class="card mb-5"> <!-- 로그인 -->
-                                <div class="card-body">
+                                <div class="card-body" style="text-align: center">
                                     <h3 style="margin-bottom: 10px" sec:authorize="isAnonymous()">로그인</h3>
                                     <h3 style="margin-bottom: 10px" sec:authorize="isAuthenticated()"><span th:text="${userEntity.nickname}"></span>님 환영합니다</h3>
                                     <div>
@@ -28,9 +28,11 @@
                                 </div>
                             </div> <!-- End 로그인 -->
                             <div class="card mb-5"> <!-- 운동기구 사용법 링크 -->
-                                <div class="card-body">
-                                    <h3><a th:href="@{/machine_list}">운동기구 사용법</a></h3>
-                                    <p class="mb-4 d-block">운동기구 사용방법 설명</p>
+                                <div class="card-body text-center">
+                                    <div class="text-center">
+                                        <a th:href="@{/machine_detect}"><img class="img-fluid" src="/assets/img/gymimg.png"></a>
+                                    </div>
+                                    <h3><a th:href="@{/machine_detect}">운동기구 사용법</a></h3>
                                 </div>
                             </div> <!-- End 운동기구 사용법 링크 -->
                         </div>
@@ -58,7 +60,7 @@
                                     <h2>
                                         <a class="d-inline-block text-truncate"
                                            th:text="${data.title}"
-                                           th:href="@{/board_tip_detail(id=${data.id})}" style="max-width: 180px;">인기글 제목</a>
+                                           th:href="@{/board_tip_detail(id=${data.id})}" style="max-width: 230px;">인기글 제목</a>
                                         <span class="d-inline-block text-truncate" style=" color: #ff4930"></span>
                                     </h2>
                                 </div>
@@ -84,7 +86,7 @@
                                     <h2>
                                         <a class="d-inline-block text-truncate"
                                            th:text="${data.title}"
-                                           th:href="@{/board_diary_detail(id=${data.id})}" style="max-width: 180px;">인기글 제목</a>
+                                           th:href="@{/board_diary_detail(id=${data.id})}" style="max-width: 230px;">인기글 제목</a>
                                         <span class="d-inline-block text-truncate" style=" color: #ff4930"></span>
                                     </h2>
                                 </div>

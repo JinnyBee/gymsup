@@ -2,10 +2,13 @@ package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.UserRole;
 import com.fitness.gymsup.DTO.BoardDTO;
+import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
+import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.BoardRepository;
+import com.fitness.gymsup.Repository.CommentRepository;
 import com.fitness.gymsup.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -35,10 +40,11 @@ public class BasicUserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
     private final ModelMapper modelMapper = new ModelMapper();
     private final PasswordEncoder passwordEncoder;
 
-    public void saveMember(UserDTO userDTO){
+    public void saveMember(UserDTO userDTO) {
         String password = passwordEncoder.encode(userDTO.getPassword());
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(userDTO.getEmail());
@@ -50,18 +56,18 @@ public class BasicUserService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 
-    private void validateDuplicateUser(UserEntity userEntity){
+    private void validateDuplicateUser(UserEntity userEntity) {
         UserEntity findUser = userRepository.findByEmail(userEntity.getEmail());
-        if(findUser != null){
+        if (findUser != null) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(email);
 
-        if (userEntity == null){
+        if (userEntity == null) {
             throw new UsernameNotFoundException(email);
         }
 
@@ -72,67 +78,67 @@ public class BasicUserService implements UserDetailsService {
                 .build();
     }
 
-    public UserEntity bringUserInfo(HttpServletRequest request,Principal principal)throws Exception{
+    public UserEntity bringUserInfo(HttpServletRequest request, Principal principal) throws Exception {
         HttpSession session = request.getSession();
         UserEntity userEntity = (UserEntity) session.getAttribute("user");
 
-        if (userEntity != null){
+        if (userEntity != null) {
             return userEntity;
-        }else{
+        } else {
             String email = principal.getName();
             userEntity = userRepository.findByEmail(email);
             return userEntity;
         }
     }
 
-    public String dupNickname(UserDTO userDTO) throws Exception{
+    public String dupNickname(UserDTO userDTO) throws Exception {
         String nickname = userDTO.getNickname();
-        String message="";
-        if (nickname.length() != 0){
+        String message = "";
+        if (nickname.length() != 0) {
             Long dup = userRepository.countByNickname(nickname);
-            if (dup == 1){
+            if (dup == 1) {
                 message = "닉네임이 중복입니다.";
-            }else if(dup==0){
+            } else if (dup == 0) {
                 message = "닉네임 사용이 가능합니다.";
             }
-        }else{
+        } else {
             message = "닉네임을 입력해 주세요.";
         }
         return message;
     }
 
 
-    public String dupEmail(UserDTO userDTO)throws Exception{
+    public String dupEmail(UserDTO userDTO) throws Exception {
         String email = userDTO.getEmail();
-        String emessage="";
-        if (email.length() != 0){
+        String emessage = "";
+        if (email.length() != 0) {
             Long dup = userRepository.countByEmail(email);
-            if (dup == 1){
+            if (dup == 1) {
                 emessage = "이메일이 중복입니다.";
-            }else if(dup==0){
+            } else if (dup == 0) {
                 emessage = "이메일 사용이 가능합니다.";
             }
-        }else{
+        } else {
             emessage = "이메일을 입력해 주세요.";
         }
         return emessage;
     }
 
-    public Page<BoardDTO> myWrite(Pageable page, HttpServletRequest request, Principal principal)throws Exception{
-        int curPage = page.getPageNumber()-1;
+    public Page<BoardDTO> myWrite(Pageable page, HttpServletRequest request, Principal principal) throws Exception {
+        int curPage = page.getPageNumber() - 1;
         int pageLimit = 10;
 
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user ==null){
+        if (user == null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
 
         Pageable pageable = PageRequest.of
-                (curPage, pageLimit, Sort.by(Sort.Direction.DESC,"id"));
+                (curPage, pageLimit, Sort.by(Sort.Direction.DESC, "id"));
         Page<BoardEntity> boardEntities = boardRepository.findAllByUserEntity(pageable, user);
-        Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
+        Page<BoardDTO> boardDTOS = boardEntities.map(data -> BoardDTO.builder()
                 .id(data.getId())
                 .categoryType(data.getCategoryType())
                 .userId(data.getUserEntity().getId())
@@ -148,14 +154,14 @@ public class BasicUserService implements UserDetailsService {
         return boardDTOS;
     }
 
-    public String bringPassword(Principal principal)throws Exception{
+    public String bringPassword(Principal principal) throws Exception {
         String email = principal.getName();
         UserEntity userEntity = userRepository.findByEmail(email);
         String bpassword = userEntity.getPassword();
         return bpassword;
     }
 
-    public void updatePassword(UserDTO userDTO,Principal principal)throws Exception{
+    public void updatePassword(UserDTO userDTO, Principal principal) throws Exception {
         String email = principal.getName();
 
         String npassword = userDTO.getPassword();
@@ -167,14 +173,14 @@ public class BasicUserService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 
-    public void updateNickname(UserDTO userDTO, Principal principal, HttpServletRequest request)throws Exception{
+    public void updateNickname(UserDTO userDTO, Principal principal, HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         String nickname = userDTO.getNickname();
         UserEntity userEntity = (UserEntity) session.getAttribute("user");
 
-        if(userEntity != null){
+        if (userEntity != null) {
             userEntity.setNickname(nickname);
-        }else {
+        } else {
             String loginId = principal.getName();
             userEntity = userRepository.findByEmail(loginId);
             userEntity.setNickname(nickname);
@@ -182,28 +188,28 @@ public class BasicUserService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 
-    public void cancelUser(Principal principal, HttpServletRequest request)throws Exception{
+    public void cancelUser(Principal principal, HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         UserEntity userEntity = (UserEntity) session.getAttribute("user");
         String email = "";
 
-        if(userEntity != null){
+        if (userEntity != null) {
             email = userEntity.getEmail();
-        }else {
+        } else {
             email = principal.getName();
         }
         userRepository.deleteByEmail(email);
     }
 
-    public Page<UserDTO> userList(Pageable page) throws Exception{
-        int curPage = page.getPageNumber()-1;
+    public Page<UserDTO> userList(Pageable page) throws Exception {
+        int curPage = page.getPageNumber() - 1;
         int pageLimit = 10;
 
         Pageable pageable = PageRequest.of(curPage, pageLimit,
                 Sort.by(Sort.Direction.DESC, "id"));
 
         Page<UserEntity> userEntities = userRepository.findAll(pageable);
-        Page<UserDTO> userDTOS = userEntities.map(data->UserDTO.builder()
+        Page<UserDTO> userDTOS = userEntities.map(data -> UserDTO.builder()
                 .id(data.getId())
                 .email(data.getEmail())
                 .nickname(data.getNickname())
@@ -214,4 +220,36 @@ public class BasicUserService implements UserDetailsService {
 
         return userDTOS;
     }
+
+    public Page<CommentDTO> myComment(Pageable page, HttpServletRequest request, Principal principal)throws Exception{
+        int curPage = page.getPageNumber()-1;
+        int pageLimit = 10;
+
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user ==null){
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+        Integer userId = user.getId();
+
+        Pageable pageable = PageRequest.of
+                (curPage, pageLimit, Sort.by(Sort.Direction.DESC,"id"));
+        Page<CommentEntity> commentEntities = commentRepository.findDistinctByBoardId(userId, pageable);
+
+        Page<CommentDTO> commentDTOS = commentEntities.map(data->CommentDTO.builder()
+                .id(data.getId())
+                .comment(data.getComment())
+                .boardTitle(data.getBoardEntity().getTitle())
+                .boardCategoryType(data.getBoardEntity().getCategoryType())
+                .boardViewCnt(data.getBoardEntity().getViewCnt())
+                .boardRegDate(data.getBoardEntity().getRegDate())
+                .boardId(data.getBoardEntity().getId())
+                .goodCnt(data.getGoodCnt())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build());
+        return commentDTOS;
+    }
+
 }

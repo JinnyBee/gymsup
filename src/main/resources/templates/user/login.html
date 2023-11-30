@@ -36,11 +36,18 @@
                             <input type="submit" value="로그인">
 
                         </div>
-                        <img src="/assets/img/kakaologin2.png" alt="" onclick="location.href='/'"
-                             style="cursor: pointer">
-                        <a class="btn btn-google" th:href="@{/oauth2/authorization/google}">Google Login</a>
+                        <div class="snsloginbutton">
+                        <!--<img src="/assets/img/kakaologin2.png" alt="" th:onclick="|location.href='@{/oauth2/authorization/kakao}'|"
+                             style="cursor: pointer">-->
+                        <img class="mb-3" src="/assets/img/Gbtn.png" style="cursor: pointer" th:onclick="|location.href='@{/oauth2/authorization/google}'|">
+                            <br>
+                        <img class="mb-3" src="/assets/img/Nbtn.png" style="cursor: pointer" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">
+                            <br>
+                        <img src="/assets/img/Kbtn.png" style="cursor: pointer" th:onclick="|location.href='@{/oauth2/authorization/kakao}'|">
+                        <!--<a class="btn btn-google" th:href="@{/oauth2/authorization/google}"></a>
                         <a class="btn btn-naver" th:href="@{/oauth2/authorization/naver}">Naver Login</a>
-                        <a class="btn btn-kakao" th:href="@{/oauth2/authorization/kakao}">Kakao Login</a>
+                        <a class="btn btn-kakao" th:href="@{/oauth2/authorization/kakao}">Kakao Login</a>-->
+                        </div>
                     </div>
                 </form>
 

@@ -25,6 +25,7 @@ public class BoardDTO {
     private String  title;                      //게시글 제목
     @NotEmpty(message = "내용을 적어주세요.")
     private String  content;                    //게시글 내용
+    private Integer commentCount;
 
     private List<String> imgFileList;           //게시글 첨부 이미지파일 리스트
     private Integer goodCnt;                    //게시글 추천수

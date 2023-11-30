@@ -85,6 +85,7 @@ public class BoardService {
         Page<BoardEntity> boardEntities = boardRepository.findAllByCategoryType(pageable, categoryType);
         Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
                 .id(data.getId())
+                .commentCount(commentRepository.countByBoardEntity_Id(data.getId()))
                 .categoryType(data.getCategoryType())
                 .userId(data.getUserEntity().getId())
                 .userNickname(data.getUserEntity().getNickname())

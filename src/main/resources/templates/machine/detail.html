@@ -13,17 +13,23 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
-                            <div class="row" style="border-bottom: 3px solid black">
+                            <div class="row" style="border-bottom: 2px solid black">
                                 <h2>운동기구 사용방법</h2>
                             </div>
-                            <div class="row" style="border-bottom: 2px solid black">
-                                <div class="row mt-3 mb-2">
-                                    <div class="col-lg-12">
-                                        <p style="font-size: 26px; margin-bottom: 0px;" th:text="${machineUsageDTO.title}">제목</p>
-                                    </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-12">
+                                    <p style="font-size: 26px; margin-bottom: 0px;" th:text="${machineUsageDTO.title}">제목</p>
                                 </div>
                             </div>
-                            <iframe width="800" height="500" th:src="${machineUsageDTO.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+                            <div class="row mb-3 text-start"
+                                 style="border-bottom: 1px solid black; border-top: 1px solid black; height: 45px; background-color: #f2f2f2">
+
+                            </div>
+
+                            <div class="row mt-3">
+                                <iframe width="800" height="500" th:src="${machineUsageDTO.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            </div>
                             <div class="mt-3">
                                 <span th:text="${machineUsageDTO.content}"></span>
                             </div>

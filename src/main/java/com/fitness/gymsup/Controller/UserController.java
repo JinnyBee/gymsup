@@ -1,6 +1,7 @@
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.BoardDTO;
+import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Service.BasicUserService;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -168,8 +170,42 @@ public class UserController {
     }
 
     @GetMapping("/user_mycomment")
-    public String myComment(Model model) throws Exception {
-        return "redirect:/user/detail";
+    public String myComment(@PageableDefault(page = 1) Pageable pageable
+            , Model model, HttpServletRequest request, Principal principal) throws Exception {
+        Page<CommentDTO> commentDTOS = basicUserService.myComment(pageable, request, principal);
+
+
+        int blockLimit = 5;
+        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
+
+        if(commentDTOS.isEmpty()) {
+            startPage = 0;
+            endPage = 0;
+            prevPage = 0;
+            currentPage = 0;
+            nextPage = 0;
+            lastPage = 0;
+        } else {
+            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
+            //endPage = Math.min(startPage+blockLimit-1, commentDTOS.getTotalPages());
+            endPage = ((startPage+blockLimit-1)<commentDTOS.getTotalPages()) ? startPage+blockLimit-1 : commentDTOS.getTotalPages();
+
+            prevPage = commentDTOS.getNumber();
+            currentPage = commentDTOS.getNumber() + 1;
+            nextPage = commentDTOS.getNumber() + 2;
+            lastPage = commentDTOS.getTotalPages();
+        }
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("prevPage", prevPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("lastPage", lastPage);
+
+        model.addAttribute("commentDTOS", commentDTOS);
+        
+        return "user/mycomment";
     }
     @PostMapping("/user_regDupNickname")
     public String regDupNickname(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{

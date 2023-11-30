@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -156,7 +157,7 @@ public class TipBoardController {
     }
     @GetMapping("/board_tip_goodcnt")
     public String goodcntProc(Model model) throws Exception {
-        return "redirect:/board/tip/detail";
+        return "redirect:/board_tip_detail";
     }
     @GetMapping("/board_tip_modify")
     public String modifyForm(Integer id,
@@ -181,7 +182,7 @@ public class TipBoardController {
             return "board/tip/modify";
         }
         boardService.modify(boardDTO, imgFiles);
-        return "redirect:/board/tip/list";
+        return "redirect:/board_tip_list";
     }
     @GetMapping("/board_tip_remove")
     public String removeProc(Integer id,

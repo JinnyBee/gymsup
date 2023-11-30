@@ -25,11 +25,11 @@
                                  onclick="location.href='/bookmark_list'">
                                 <p class="mt-1" style="text-align: center;">북마크</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
-                                 onclick="location.href='/user_mywrite'">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
                                 <p class="mt-1" style="text-align: center;">내 게시물</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                            th:onclick="|location.href='@{/user_mycomment}'|">
                                 <p class="mt-1" style="text-align: center;">내 댓글</p>
                             </div>
                             <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
@@ -50,21 +50,22 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th style="width: auto; max-width: 15px">카테고리</th>
+                                            <th style="width: auto; max-width: 20%">카테고리</th>
                                             <th>제목</th>
-                                            <th style="width: auto; max-width: 15px">조회수</th>
-                                            <th style="width: auto; max-width: 15px">등록일</th>
+                                            <th style="width: auto; max-width: 10%">조회수</th>
+                                            <th style="width: auto; max-width: 10%">등록일</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="data:${boardDTOS}">
-                                            <td th:text="${data.categoryType.getDescription()}" style="width: auto; max-width: 15px">John</td>
+                                            <td th:text="${data.categoryType.getDescription()}">John</td>
                                             <td th:text="${data.title}">John</td>
-                                            <td th:text="${data.viewCnt}" style="width: auto; max-width: 15px">John</td>
-                                            <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}" style="width: auto; max-width: 15px">John</td>
+                                            <td th:text="${data.viewCnt}">John</td>
+                                            <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">John</td>
                                         </tr>
                                         </tbody>
                                     </table>
+
                                     <div class="row">
                                         <div class="col-lg-3"></div>
                                         <div class="col-lg-6" style="text-align: center">
