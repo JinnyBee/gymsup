@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -235,6 +236,7 @@ public class BasicUserService implements UserDetailsService {
         Pageable pageable = PageRequest.of
                 (curPage, pageLimit, Sort.by(Sort.Direction.DESC,"id"));
         Page<CommentEntity> commentEntities = commentRepository.findDistinctByBoardId(userId, pageable);
+
         Page<CommentDTO> commentDTOS = commentEntities.map(data->CommentDTO.builder()
                 .id(data.getId())
                 .comment(data.getComment())
@@ -249,4 +251,5 @@ public class BasicUserService implements UserDetailsService {
                 .build());
         return commentDTOS;
     }
+
 }

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -172,6 +173,7 @@ public class UserController {
     public String myComment(@PageableDefault(page = 1) Pageable pageable
             , Model model, HttpServletRequest request, Principal principal) throws Exception {
         Page<CommentDTO> commentDTOS = basicUserService.myComment(pageable, request, principal);
+
 
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;

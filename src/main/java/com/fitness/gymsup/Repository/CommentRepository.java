@@ -28,4 +28,5 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
             nativeQuery = true)
     Page<CommentEntity> findDistinctByBoardId(@Param("userId") Integer userId, Pageable pageable);
 
+    Integer countByBoardEntity_Id(Integer id);
 }
