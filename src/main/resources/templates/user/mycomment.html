@@ -25,11 +25,11 @@
                                  onclick="location.href='/bookmark_list'">
                                 <p class="mt-1" style="text-align: center;">북마크</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer "
+                                 onclick="location.href='/user_mywrite'">
                                 <p class="mt-1" style="text-align: center;">내 게시물</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
-                            th:onclick="|location.href='@{/user_mycomment}'|">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
                                 <p class="mt-1" style="text-align: center;">내 댓글</p>
                             </div>
                             <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
@@ -57,35 +57,34 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="data:${boardDTOS}">
-                                            <td th:text="${data.categoryType.getDescription()}">John</td>
-                                            <td th:text="${data.title}">John</td>
-                                            <td th:text="${data.viewCnt}">John</td>
-                                            <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">John</td>
+                                        <tr th:each="data:${commentDTOS}">
+                                            <td th:text="${data.boardCategoryType.getDescription()}" >John</td>
+                                            <td th:text="${data.boardTitle}">John</td>
+                                            <td th:text="${data.boardViewCnt}">John</td>
+                                            <td th:text="${#temporals.format(data.boardRegDate, 'yyyy-MM-dd')}" >John</td>
                                         </tr>
                                         </tbody>
                                     </table>
-
                                     <div class="row">
                                         <div class="col-lg-3"></div>
                                         <div class="col-lg-6" style="text-align: center">
                                             <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
                                                 <!--시작 페이지-->
                                                 <div class="start" th:unless="${startPage==1}">
-                                                    <a th:href="@{/user_mywrite(page=1)}">
+                                                    <a th:href="@{/user_mycomment(page=1)}">
                                                         <<
                                                     </a>
                                                 </div>
                                                 <!--이전 페이지-->
                                                 <div class="prev" th:unless="${currentPage==1}">
-                                                    <a th:href="@{user_mywrite(page=${prevPage})}">
+                                                    <a th:href="@{user_mycomment(page=${prevPage})}">
                                                         <
                                                     </a>
                                                 </div>
                                                 <span th:each="page:${#numbers.sequence(startPage, endPage)}">
                                             <!--현재페이지 아닐시-->
                                             <div th:unless="${page==currentPage}">
-                                                <a th:href="@{/user_mywrite(page=${page})}">
+                                                <a th:href="@{/user_mycomment(page=${page})}">
                                                     [[${page}]]
                                                 </a>
                                             </div>
@@ -96,13 +95,13 @@
                                         </span>
                                                 <!--다음페이지-->
                                                 <div class="next" th:unless="${currentPage==lastPage}">
-                                                    <a th:href="@{/user_mywrite(page=${nextPage})}">
+                                                    <a th:href="@{/user_mycomment(page=${nextPage})}">
                                                         >
                                                     </a>
                                                 </div>
                                                 <!--마지막 페이지-->
                                                 <div class="last" th:unless="${endPage==lastPage}">
-                                                    <a th:href="@{/user_mywrite(page=${lastPage})}">
+                                                    <a th:href="@{/user_mycomment(page=${lastPage})}">
                                                         >>
                                                     </a>
                                                 </div>
