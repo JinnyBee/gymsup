@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +29,6 @@ import java.util.List;
 public class TipBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
-    private final ReplyService replyService;
 
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
@@ -39,7 +37,7 @@ public class TipBoardController {
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
-        if(boardDTOS.isEmpty()) {
+        if (boardDTOS.isEmpty()) {
             startPage = 0;
             endPage = 0;
             prevPage = 0;
@@ -47,9 +45,9 @@ public class TipBoardController {
             nextPage = 0;
             lastPage = 0;
         } else {
-            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
+            startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
             //endPage = Math.min(startPage+blockLimit-1, boardDTOS.getTotalPages());
-            endPage = ((startPage+blockLimit-1)<boardDTOS.getTotalPages()) ? startPage+blockLimit-1 : boardDTOS.getTotalPages();
+            endPage = ((startPage + blockLimit - 1) < boardDTOS.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOS.getTotalPages();
 
             prevPage = boardDTOS.getNumber();
             currentPage = boardDTOS.getNumber() + 1;
@@ -65,22 +63,23 @@ public class TipBoardController {
         model.addAttribute("lastPage", lastPage);
 
         log.info("getTotalPages : " + boardDTOS.getTotalPages());
-        log.info("startPage : "+startPage);
-        log.info("endPage : "+endPage);
-        log.info("prevPage : "+prevPage);
-        log.info("currentPage : "+currentPage);
-        log.info("nextPage : "+nextPage);
-        log.info("lastPage : "+lastPage);
+        log.info("startPage : " + startPage);
+        log.info("endPage : " + endPage);
+        log.info("prevPage : " + prevPage);
+        log.info("currentPage : " + currentPage);
+        log.info("nextPage : " + nextPage);
+        log.info("lastPage : " + lastPage);
 
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTOS", boardDTOS);
 
-        for(BoardDTO dto : boardDTOS) {
+        for (BoardDTO dto : boardDTOS) {
             log.info(dto);
         }
 
         return "board/tip/list";
     }
+
     @GetMapping("/board_tip_register")
     public String registerForm(Model model) throws Exception {
         BoardDTO boardDTO = new BoardDTO();
@@ -91,6 +90,7 @@ public class TipBoardController {
 
         return "board/tip/register";
     }
+
     @PostMapping("/board_tip_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
@@ -98,16 +98,17 @@ public class TipBoardController {
                                Model model, Principal principal,
                                HttpServletRequest request) throws Exception {
         log.info(boardDTO.getCategoryType().name());
-        for(MultipartFile imgFile : imgFiles) {
+        for (MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
         }
         if (bindingResult.hasErrors()) {
             return "board/tip/register";
         }
-        boardService.register(boardDTO, imgFiles,request,principal);
+        boardService.register(boardDTO, imgFiles, request, principal);
 
         return "redirect:/board_tip_list";
     }
+
     @GetMapping("/board_tip_detail")
     public String detailForm(Integer id,
                              Model model,
@@ -117,13 +118,13 @@ public class TipBoardController {
         BoardDTO boardDTO = boardService.detail(id, true, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
-        boolean boardUserConfirm = boardService.userConfirm(id,request,principal);
+        boolean boardUserConfirm = boardService.userConfirm(id, request, principal);
         log.info(boardDTO);
         log.info(commentDTOS);
 
         Integer userId = boardService.userId(request, principal);
 
-        model.addAttribute("userId",userId);
+        model.addAttribute("userId", userId);
         model.addAttribute("userConfirm", boardUserConfirm);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
@@ -131,23 +132,25 @@ public class TipBoardController {
 
         return "board/tip/detail";
     }
+
     @GetMapping("/board_tip_detailreload")
     public String detailReloadForm(Integer id,
                                    Model model,
                                    HttpServletRequest request,
                                    Principal principal) throws Exception {
         log.info("id : " + id);
+
         //해당게시글 상세조회
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
-        boolean userConfirm = boardService.userConfirm(id,request,principal);
+        boolean userConfirm = boardService.userConfirm(id, request, principal);
         log.info(boardDTO);
         log.info(commentDTOS);
 
         Integer userId = boardService.userId(request, principal);
 
-        model.addAttribute("userId",userId);
+        model.addAttribute("userId", userId);
         model.addAttribute("userConfirm", userConfirm);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
@@ -155,10 +158,12 @@ public class TipBoardController {
 
         return "board/tip/detail";
     }
+
     @GetMapping("/board_tip_goodcnt")
     public String goodcntProc(Model model) throws Exception {
         return "redirect:/board_tip_detail";
     }
+
     @GetMapping("/board_tip_modify")
     public String modifyForm(Integer id,
                              Model model,
@@ -170,6 +175,7 @@ public class TipBoardController {
 
         return "board/tip/modify";
     }
+
     @PostMapping("/board_tip_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
@@ -184,6 +190,7 @@ public class TipBoardController {
         boardService.modify(boardDTO, imgFiles);
         return "redirect:/board_tip_list";
     }
+
     @GetMapping("/board_tip_remove")
     public String removeProc(Integer id,
                              Model model) throws Exception {

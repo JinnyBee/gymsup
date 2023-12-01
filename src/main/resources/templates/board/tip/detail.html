@@ -148,8 +148,11 @@
                                         <span class="text-left" th:text="${data.userNickname}"></span>
                                         &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d"
                                                     th:text="${#temporals.format(data.modDate, 'yyyy-MM-dd HH:mm')}"></span>
-                                        <button class="btn btn-outline-dark btn-sm text-right" type="button"
-                                                th:onclick="|location.href='@{/comment_modify(bid=${boardDTO.id}, id=${data.id})}'|"
+                                        <button class="btn btn-outline-dark btn-sm text-right"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                th:attr="data-bs-target='#collapseModify'+ ${data.id}"
+                                                aria-expanded="false"
                                                 th:if="${data.userId}==${userId}">수정
                                         </button>
                                         <button class="btn btn-outline-danger btn-sm text-right" type="button"
@@ -157,6 +160,22 @@
                                                 th:if="${data.userId}==${userId}">삭제
                                         </button>
                                         <div class="mt-3" th:text="${data.comment}"></div>
+                                        <form th:attr="id='collapseModify'+${data.id}" class="collapse"
+                                              th:action="@{/comment_modify}" method="post">
+                                            <input type="hidden" name="id" th:value="*{data.id}">
+                                            <input type="hidden" name="goodCnt" th:value="*{data.goodCnt}">
+                                            <input type="hidden" name="boardId" th:value="*{data.boardId}">
+                                            <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                                            <div class="col-lg-11" style="float: left">
+                                            <textarea class="form-control" name="comment" rows="3"
+                                                      th:value="*{data.comment}" style="resize: none"></textarea>
+                                            </div>
+                                            <div class="col-lg-1" style="float: right">
+                                                <button type="submit" class="btn btn-dark" style="float: right; height: 86px">
+                                                    등록
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <!-- 댓글 목록 끝 -->
@@ -167,8 +186,7 @@
                                             type="button"
                                             data-bs-toggle="collapse"
                                             th:attr="data-bs-target='#collapseExample'+ ${data.id}"
-                                            aria-expanded="false"
-                                            aria-controls="multiCollapseExample">답글
+                                            aria-expanded="false">답글
                                     </button> <!-- 답글 버튼 끝 -->
                                     <div th:attr="id='collapseExample'+${data.id}" class="collapse"> <!-- 콜랩스 버튼 클릭 시 나올 내용 th:attr사용하여 콜랩스 id값 지정 -->
                                         <form th:action="@{/reply_register}" method="post"> <!-- 답글 등록 시작 -->
@@ -195,6 +213,7 @@
                                             </div>
                                         </form> <!-- 답글 등록 끝 -->
 
+
                                         <!-- 답글 목록 시작 -->
                                         <div th:each="replyDTO:${data.replyDTOList}" style="border-top: 1px solid black;">
                                             <div class="row">
@@ -209,8 +228,11 @@
                                                     &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d"
                                                                 th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
                                                     <!-- 답글 수정 버튼 -->
-                                                    <button class="btn btn-outline-dark btn-sm text-right" type="button"
-                                                            th:onclick="|location.href='@{/reply_modify(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_TIP')}'|"
+                                                    <button class="btn btn-outline-dark btn-sm text-right"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            th:attr="data-bs-target='#collapseReply'+ ${replyDTO.id}"
+                                                            aria-expanded="false"
                                                             th:if="${replyDTO.userId}==${userId}">수정
                                                     </button>
                                                     <!-- 답글 삭제 버튼 -->
@@ -219,6 +241,23 @@
                                                             th:if="${replyDTO.userId}==${userId}">삭제
                                                     </button>
                                                     <div class="mt-3" th:text="${replyDTO.reply}"></div>
+                                                    <form th:attr="id='collapseReply'+${replyDTO.id}" class="collapse"
+                                                          th:action="@{/reply_modify}" method="post">
+                                                        <input type="hidden" name="id" th:value="*{replyDTO.id}">
+                                                        <input type="hidden" name="commentId" th:value="*{replyDTO.commentId}">
+                                                        <input type="hidden" name="boardId" th:value="*{replyDTO.boardId}">
+                                                        <input type="hidden" name="categoryType"
+                                                               th:value="${boardDTO.categoryType.name()}">
+                                                        <div class="col-lg-11" style="float: left">
+                                                        <textarea class="form-control" name="reply" rows="3"
+                                                                  th:value="*{replyDTO.reply}" style="resize: none"></textarea>
+                                                        </div>
+                                                        <div class="col-lg-1" style="float: right">
+                                                            <button type="submit" class="btn btn-dark" style="float: right; height: 86px">
+                                                                등록
+                                                            </button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div> <!-- 답글 목록 끝 -->

@@ -81,7 +81,9 @@ public class ReplyService {
         replyRepository.save(replyEntity);
     }
     //답글 수정
-    public void modify(ReplyDTO replyDTO) throws Exception {
+    public void modify(ReplyDTO replyDTO,
+                       HttpServletRequest request,
+                       Principal principal) throws Exception {
         //답글 조회
         ReplyEntity replyEntity = replyRepository.findById(replyDTO.getId()).orElseThrow();
 
@@ -89,12 +91,17 @@ public class ReplyService {
         CommentEntity commentEntity = commentRepository.findById(replyDTO.getCommentId()).orElseThrow();
 
         //답글 작성자 Entity 조회
-        UserEntity userEntity = userRepository.findById(replyDTO.getUserId()).orElseThrow();
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
 
         ReplyEntity updateEntity = modelMapper.map(replyDTO, ReplyEntity.class);
         updateEntity.setId(replyEntity.getId());
         updateEntity.setCommentEntity(commentEntity);
-        updateEntity.setUserEntity(userEntity);
+        updateEntity.setUserEntity(user);
 
         replyRepository.save(updateEntity);
     }

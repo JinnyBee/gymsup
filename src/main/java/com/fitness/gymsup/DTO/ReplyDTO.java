@@ -1,5 +1,6 @@
 package com.fitness.gymsup.DTO;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -17,6 +18,7 @@ public class ReplyDTO {
     private Integer boardId;            //원 게시글 id
     private Integer userId;             //답글 작성자 id
     private String userNickname;        //답글 작성자 닉네임
+    private BoardCategoryType boardCategoryType;
 
     @NotEmpty(message = "답글을 적어주세요.")
     private String  reply;              //답글 내용

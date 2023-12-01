@@ -2,10 +2,13 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.ReplyDTO;
+import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Service.CommentService;
 import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.annotations.Parameter;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,9 +43,14 @@ public class CommentController extends BaseController {
     }
     @PostMapping("/comment_modify")
     public String modifyCommentProc(CommentDTO commentDTO,
-                                    String categoryType) throws Exception{
+                                    String categoryType,
+                                    HttpServletRequest request,
+                                    Principal principal,
+                                    RedirectAttributes redirectAttributes) throws Exception{
 
-        commentService.modify(commentDTO);
+        commentService.modify(commentDTO, request, principal);
+        redirectAttributes.addAttribute("id", commentDTO.getBoardId());
+
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
@@ -76,14 +85,16 @@ public class CommentController extends BaseController {
         return "redirect:" + getRedirectUrl(categoryType);
     }
     @PostMapping("/reply_modify")
-    public String registerReplyProc(ReplyDTO replyDTO,
+    public String modifyReplyProc(ReplyDTO replyDTO,
                                     BindingResult bindingResult,
                                     HttpServletRequest request,
                                     Principal principal,
-                                    String categorType) throws Exception{
-        replyService.modify(replyDTO);
+                                    RedirectAttributes redirectAttributes,
+                                    String categoryType) throws Exception{
+        replyService.modify(replyDTO, request, principal);
+        redirectAttributes.addAttribute("id", replyDTO.getBoardId());
 
-        return "redirect:" + getRedirectUrl(categorType);
+        return "redirect:" + getRedirectUrl(categoryType);
     }
 
     @GetMapping("/reply_remove")

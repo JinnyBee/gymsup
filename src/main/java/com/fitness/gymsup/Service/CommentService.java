@@ -95,7 +95,9 @@ public class CommentService {
         commentRepository.save(commentEntity);
     }
     //댓글 수정
-    public void modify(CommentDTO commentDTO) throws Exception {
+    public void modify(CommentDTO commentDTO,
+                       HttpServletRequest request,
+                       Principal principal) throws Exception {
         //댓글 조회
         CommentEntity commentEntity = commentRepository.findById(commentDTO.getId()).orElseThrow();
 
@@ -103,12 +105,18 @@ public class CommentService {
         BoardEntity boardEntity = boardRepository.findById(commentDTO.getBoardId()).orElseThrow();
 
         //댓글 작성자 조회
-        UserEntity userEntity = userRepository.findById(commentDTO.getUserId()).orElseThrow();
+        //댓글 작성자 Entity
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
 
         CommentEntity updateEntity = modelMapper.map(commentDTO, CommentEntity.class);
         updateEntity.setId(commentEntity.getId());
         updateEntity.setBoardEntity(boardEntity);
-        updateEntity.setUserEntity(userEntity);
+        updateEntity.setUserEntity(writer);
 
         commentRepository.save(updateEntity);
     }
