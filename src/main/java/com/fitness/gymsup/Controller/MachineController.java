@@ -35,6 +35,7 @@ public class MachineController {
     private final MachineInfoService machineInfoService;
 
 
+    //운동기구 인식 Form
     @GetMapping("/machine_detect")
     public String detectForm(Model model) throws Exception {
         return "machine/detect";
@@ -43,7 +44,11 @@ public class MachineController {
     public String detectProc(@RequestParam("detectImg") MultipartFile detectImg,
                              Model model) throws Exception {
 
+        String errorMessage = "";
         if(detectImg.getOriginalFilename().isEmpty()) {
+            errorMessage="파일을 첨부해주세요.";
+            model.addAttribute("errorMessage",errorMessage);
+
             return "redirect:/machine_detect";
         }
         log.info(detectImg.getOriginalFilename());

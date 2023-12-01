@@ -9,32 +9,62 @@
     <script>
         $(document).ready(function () {
             $('#searchFoodBtn').click(function () {
-                alert("111");
+                var keyId = "be61650aef44488a9029";
+                var serviceId = "I2790";
+                var dataType = "json";
+                var startIdx = "1"
+                var endIdx = "10"
+                var keyword = document.getElementById('keywordInput').value;
+
+                var requestURL = "http://openapi.foodsafetykorea.go.kr/api/"
+                                + keyId + "/"
+                                + serviceId + "/"
+                                + dataType + "/"
+                                + startIdx + "/"
+                                + endIdx + "/"
+                                + "DESC_KOR=" + keyword;
                 $.ajax({
-                    type: "GET",
-                    url: "http://openapi.foodsafetykorea.go.kr/api/be61650aef44488a9029/I2790/json/1/3/DESC_KOR=브라우니",
+                    type:"GET",
+                    url: requestURL,
                     data: {},
                     success: function (data) {
                         let dataStr = JSON.stringify(data);
-                        alert(dataStr);
+                        alert(requestURL + " ---> " + dataStr);
 
-                        var parseData = JSON.parse(dataStr);
-                        var result = "";
+                        let parseData = JSON.parse(dataStr);
+                        var foodTbl = document.getElementById('foodTbl');
+                        var printdata = "";
 
-                        alert(parseData.I2790.total_count);
-                        alert(parseData.I2790.RESULT.MSG);
-                        alert(parseData.I2790.row.length);
+                        printdata += "<thead class=\"text-center\">";
+                        printdata += "<tr><th>음식명<\/th><th>칼로리<\/th><\/tr><\/thead>"
+                        printdata += "<tbody>";
                         for(var i=0; i<parseData.I2790.row.length; i++) {
-                            var makerName = parseData.I2790.row[i].MAKER_NAME;
-                            var descKor = parseData.I2790.row[i].DESC_KOR;
-                            var servingSize = parseData.I2790.row[i].SERVING_SIZE;
-                            var servingUnit = parseData.I2790.row[i].SERVING_UNIT;
-                            var nutrCont1 = parseData.I2790.row[i].NUTR_CONT1;
-                            result = "[" + makerName + "]" + descKor + " : " + nutrCont1 + "kcal ("+ servingSize + servingUnit + ")";
-                            alert(result);
+                            let makerName = parseData.I2790.row[i].MAKER_NAME;
+                            let descKor = parseData.I2790.row[i].DESC_KOR;
+                            let servingSize = parseData.I2790.row[i].SERVING_SIZE;
+                            let servingUnit = parseData.I2790.row[i].SERVING_UNIT;
+                            let nutrCont1 = parseData.I2790.row[i].NUTR_CONT1;
+
+                            printdata += "<tr onclick='closeModal(this)'>";
+                            printdata += "<td>["+makerName+"] "+descKor+"<\/td>"
+                            printdata += "<td>"+nutrCont1+"kcal ("+servingSize+servingUnit+")<\/td>"
+                            printdata += "<\/tr>"
                         }
+                        printdata += "<\/tbody>";
+                        alert(printdata);
+                        foodTbl.innerHTML = printdata;
                     }
                 });
+            });
+            $(document).on('click', 'foodTbl tr', function() {
+                var row = $(this);
+                var columns = row.find('td');
+
+                var foodName = columns.eq(0).text();
+                var nutrInfo = columns.eq(1).text();
+
+                alert(foodName);
+                alert(nutrInfo);
             });
         });
     </script>
@@ -93,35 +123,18 @@
 
                                     <!-- Modal body -->
                                     <div class="modal-body"> <!-- 음식칼로리 검색 모달창 -->
-                                        <ul id="names-q1">
-                                        </ul>
-<!--                                        <form id="food_calorieForm" name="food_calorieForm">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="검색어 입력"
-                                                       name="keyword">
-                                                <button type="submit" class="btn btn-dark"
-                                                        id="searchBtn" onclick="clickSearch(food_calorieForm)">@</button>
-                                            </div>
-                                        </form>-->
-                                        <!--<form th:action="@{/food_calorie_list(keyword=${keyword})}" method="get">-->
                                         <form>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="검색어 입력"
-                                                       name="keyword">
+                                                       id="keywordInput" name="keywordInput">
+                                                <div class="invalid-feedback">검색어를 입력해주세요.</div>
                                                 <button type="button" class="btn btn-dark"
                                                         id="searchFoodBtn" name="searchFoodBtn">검색</button>
                                             </div>
                                         </form>
-                                        <p/>
+                                        <p/><p/>
                                         <div>
-                                            <table class="table text-center">
-                                                <thead>
-                                                <tr>
-                                                    <th style="width: 150px;">음식명</th>
-                                                    <th style="width: 600px;">칼로리</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="food_calorieList"></tbody>
+                                            <table class="table table-bordered" id="foodTbl">
                                             </table>
                                         </div>
                                     </div> <!-- End 음시칼로리 모달창 -->
