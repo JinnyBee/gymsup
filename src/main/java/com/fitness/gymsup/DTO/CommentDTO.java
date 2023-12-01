@@ -1,5 +1,6 @@
 package com.fitness.gymsup.DTO;
 
+import com.fitness.gymsup.Constant.BoardCategoryType;
 import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class CommentDTO {
     private Integer id;                     //댓글 id
     private Integer boardId;                //원 게시글 id
     private String boardTitle;
+    private BoardCategoryType boardCategoryType;
     private Integer boardViewCnt;
     private LocalDateTime boardRegDate;
     private Integer userId;                 //user 테이블의 댓글 작성자 id
