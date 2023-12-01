@@ -15,7 +15,6 @@ public class CommentDTO {
     private Integer id;                     //댓글 id
     private Integer boardId;                //원 게시글 id
     private String boardTitle;
-    private BoardCategoryType boardCategoryType;
     private Integer boardViewCnt;
     private LocalDateTime boardRegDate;
     private Integer userId;                 //user 테이블의 댓글 작성자 id

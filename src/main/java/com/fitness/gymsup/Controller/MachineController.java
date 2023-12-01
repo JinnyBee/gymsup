@@ -43,21 +43,14 @@ public class MachineController {
     public String detectProc(@RequestParam("detectImg") MultipartFile detectImg,
                              Model model) throws Exception {
 
-/*        if(detectImg.getOriginalFilename().isEmpty()) {
+        if(detectImg.getOriginalFilename().isEmpty()) {
             return "redirect:/machine_detect";
-        }*/
+        }
+        log.info(detectImg.getOriginalFilename());
 
         //플라스크 서버에 분석할 이미지를 전달하여 처리
-        //FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(detectImg);
-        FlaskResponseDTO flaskResponseDTO = new FlaskResponseDTO();
+        FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(detectImg);
         List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
-
-        List<String> names = new ArrayList<>();
-        names.add("foamroller");
-        names.add("dumbbell");
-        names.add("kettlebell");
-
-        flaskResponseDTO.setName(names);
 
         log.info("Flask Response DTO (resultFilename) : " + flaskResponseDTO.getResultFilename());
         for(String name : flaskResponseDTO.getName()) {

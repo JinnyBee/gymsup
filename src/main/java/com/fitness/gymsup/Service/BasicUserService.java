@@ -241,7 +241,6 @@ public class BasicUserService implements UserDetailsService {
                 .id(data.getId())
                 .comment(data.getComment())
                 .boardTitle(data.getBoardEntity().getTitle())
-                .boardCategoryType(data.getBoardEntity().getCategoryType())
                 .boardViewCnt(data.getBoardEntity().getViewCnt())
                 .boardRegDate(data.getBoardEntity().getRegDate())
                 .boardId(data.getBoardEntity().getId())
