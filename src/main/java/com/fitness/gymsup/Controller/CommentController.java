@@ -47,10 +47,11 @@ public class CommentController extends BaseController {
                                     HttpServletRequest request,
                                     Principal principal,
                                     RedirectAttributes redirectAttributes) throws Exception{
+        log.info(commentDTO);
+        log.info(categoryType);
 
         commentService.modify(commentDTO, request, principal);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
-
 
         return "redirect:" + getRedirectUrl(categoryType);
     }

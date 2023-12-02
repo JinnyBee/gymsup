@@ -6,67 +6,92 @@
 <body>
 <div layout:fragment="content">
     <main id="main">
-        <!-- ======= Search Results ======= -->
-        <section id="search-result" class="search-result">
+        <section id="search-result" class="search-result"> <!-- Search Results -->
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-7"> <!-- 작업공간 -->
-                        <div class="container mt-3"> <!-- 전체목록 -->
-                            <h3 class="text-center" th:text="${categoryType}">게시판 이름</h3>
-                            <div class="mt-3 mb-3 text-end"> <!-- 글쓰기 -->
-                                <button type="button" class="btn btn-primary"
-                                        th:onclick="|location.href='@{/board_diary_register}'|">글쓰기</button>
-                            </div> <!-- End 글쓰기 -->
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
+                        <div class="container mt-3"> <!-- 게시판 전체 목록 -->
+                            <h2 th:text="${categoryType}">게시판 이름</h2>
+                            <hr>
                             <table class="table table-hover">
                                 <thead>
-                                <tr>
-                                    <th>게시판</th>
-                                    <th>제목</th>
-                                    <th>작성자</th>
-                                    <th>조회수</th>
-                                    <th>작성일</th>
-                                </tr>
+                                    <tr style="text-align: center">
+                                        <th style="width: 20%">게시판</th>
+                                        <th style="width: 35%">제목</th>
+                                        <th style="width: 20%">작성자</th>
+                                        <th style="width: 10%">조회수</th>
+                                        <th style="width: 15%">작성일</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="data:${boardDTOS}">
-                                    <td th:text="${data.getCategoryType().getDescription()}">게시판</td>
-                                    <td><a th:href="@{/board_diary_detail(id=${data.id})}" th:text="${data.title}">11월 17일 운동</a></td>
-                                    <td th:text="${data.userNickname}">Jinny</td>
-                                    <td th:text="${data.viewCnt}">100</td>
-                                    <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">2023.11.17</td>
-                                </tr>
+                                    <tr th:each="data:${boardDTOS}">
+                                        <td style="text-align: center"
+                                            th:text="${data.getCategoryType().getDescription()}">게시판</td>
+                                        <td class="align-text-top">
+                                            <a class="d-inline-block text-truncate"
+                                               style="max-width: 180px;"
+                                               th:href="@{/board_diary_detail(id=${data.id})}" th:text="${data.title}">제목</a>&nbsp;&nbsp;
+                                            <span class="d-inline-block text-truncate" style="color: #ff4930"
+                                                  th:text="${data.commentCount}">9</span>
+                                        </td>
+                                        <td style="text-align: center" th:text="${data.userNickname}">이름</td>
+                                        <td style="text-align: center" th:text="${data.viewCnt}">100</td>
+                                        <td style="text-align: center" th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">2023.11.17</td>
+                                    </tr>
                                 </tbody>
                             </table>
-                        </div> <!-- End 전체목록 -->
-                        <ul class="pagination justify-content-center" th:if="${lastPage>0}"> <!-- 페이지 -->
-                            <!-- startPage가 1번 페이지가 아니면 나타낸다. -->
-                            <li class="page-item" th:unless="${startPage==1}"> <!-- 첫페이지 이동 -->
-                                <a class="page-link" th:href="@{/board_diary_list(page=1)}">첫페이지</a>
-                            </li>
 
-                            <!-- startPage가 1번 페이지가 아니면 나타낸다. -->
-                            <li class="page-item" th:unless="${currentPage==1}"> <!-- 이전페이지 이동 -->
-                                <a class="page-link" th:href="@{/board_diary_list(page=${prevPage})}">이전페이지</a>
-                            </li>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6 text-center">
+                                    <!-- Paging -->
+                                    <div class="custom-pagination py-4" th:if="${lastPage>0}">
+                                        <!-- 첫페이지 이동 : startPage가 1번 페이지가 아니면 나타낸다. -->
+                                        <div class="start" th:unless="${startPage==1}">
+                                            <a th:href="@{/board_diary_list(page=1)}">
+                                                <<
+                                            </a>
+                                        </div>
 
-                            <span th:each="page:${#numbers.sequence(startPage, endPage)}">
-                                <li class="page-item" th:unless="${page==currentPage}"> <!-- 현재페이지가 아니면 -->
-                                    <a class="page-link" th:href="@{/board_diary_list(page=${page})}">[[${page}]]</a>
-                                </li>
-                                <li class="page-item active" th:if="${page==currentPage}"> <!-- 현재페이지이면 -->
-                                    <a class="page-link" href="#">[[${page}]]</a>
-                                </li>
-                            </span>
+                                        <!-- 이전페이지 이동 : startPage가 1번 페이지가 아니면 나타낸다. -->
+                                        <div class="prev" th:unless="${currentPage==1}">
+                                            <a th:href="@{/board_diary_list(page=${prevPage})}">
+                                                <
+                                            </a>
+                                        </div>
 
-                            <li class="page-item" th:unless="${currentPage==lastPage}"> <!-- 다음페이지 이동 -->
-                                <a class="page-link" th:href="@{/board_diary_list(page=${nextPage})}">다음페이지</a>
-                            </li>
-
-                            <li class="page-item" th:unless="${endPage==lastPage}"> <!-- 끝페이지 이동 -->
-                                <a class="page-link" th:href="@{/board_diary_list(page=${lastPage})}">끝페이지</a>
-                            </li>
-                        </ul> <!-- End 페이지 -->
+                                        <span th:each="page:${#numbers.sequence(startPage, endPage)}">
+                                            <!-- 현재페이지가 아니면 -->
+                                            <div th:unless="${page==currentPage}">
+                                                <a th:href="@{/board_diary_list(page=${page})}">[[${page}]]</a>
+                                            </div>
+                                            <!-- 현재페이지이면 -->
+                                            <div class="active" th:if="${page==currentPage}">
+                                                [[${page}]]
+                                            </div>
+                                        </span>
+                                        <!-- 다음페이지 이동 -->
+                                        <div class="next" th:unless="${currentPage==lastPage}">
+                                            <a th:href="@{/board_diary_list(page=${nextPage})}">
+                                                >
+                                            </a>
+                                        </div>
+                                        <!-- 마지막 페이지 이동 -->
+                                        <div class="last" th:unless="${endPage==lastPage}">
+                                            <a th:href="@{/board_diary_list(page=${lastPage})}">
+                                                >>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div> <!-- End Paging -->
+                                <div class="col-md-3"> <!-- 게시글 작성 버튼 -->
+                                    <button type="button" class="btn btn-primary float-end btn-sm"
+                                            th:onclick="|location.href='@{/board_diary_register}'|">글쓰기
+                                    </button>
+                                </div> <!-- End 게시글 작성 버튼 -->
+                            </div> <!-- End Paging -->
+                        </div> <!-- End 게시판 전체 목록 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

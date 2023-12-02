@@ -5,10 +5,7 @@ import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
 import com.fitness.gymsup.DTO.ReplyDTO;
-import com.fitness.gymsup.Entity.BoardEntity;
-import com.fitness.gymsup.Entity.BoardImageEntity;
-import com.fitness.gymsup.Entity.CommentEntity;
-import com.fitness.gymsup.Entity.UserEntity;
+import com.fitness.gymsup.Entity.*;
 import com.fitness.gymsup.Repository.*;
 import com.fitness.gymsup.Util.FileUploader;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +41,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardImageRepository boardImageRepository;
     private final CommentRepository commentRepository;
+    private final ReplyRepository replyRepository;
     private final BookmarkRepository bookmarkRepository;
     private final FileUploader fileUploader;
     private final ModelMapper modelMapper = new ModelMapper();
@@ -76,7 +74,7 @@ public class BoardService {
     //특정게시글 전체목록
     public Page<BoardDTO> list(BoardCategoryType categoryType, Pageable page) throws Exception {
         int curPage = page.getPageNumber()-1;
-        int pageLimit = 5;
+        int pageLimit = 10;
 
         log.info(categoryType.name());
 
@@ -203,10 +201,10 @@ public class BoardService {
         for(BoardImageDTO boardImageDTO : boardImageDTOS) {
             imgFileList.add(boardImageDTO.getImgFile());
         }
+        boardDTO.setImgFileList(imgFileList);
+
         log.info("imgFileList.size() : " + imgFileList.size());
         log.info(imgFileList);
-
-        boardDTO.setImgFileList(imgFileList);
 
         //게시글 조회하고 있는 사용자 Entity
         HttpSession session = request.getSession();
@@ -215,6 +213,8 @@ public class BoardService {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
+        boardDTO.setLoginUserId(user.getId());
+
         //북마크, 좋아요 확인
         if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
                 user, boardEntity, BookmarkType.BOOKMARK) >= 1) {
@@ -292,19 +292,25 @@ public class BoardService {
 
         for(BoardImageEntity boardImageEntity : boardImageEntities) {
             log.info(boardImageEntity.getImgFile());
-            //물리적으로 저장된 이미지파일 삭제
+            //업로드된 이미지파일 삭제
             fileUploader.deleteFile(imgUploadLocation,
                                     boardImageEntity.getImgFile());
-            //board_image 테이블에서 이미지파일 정보 삭제
-            boardImageRepository.deleteAllByBoardId(boardImageEntity.getId());
         }
+        //board_image 테이블에서 등록된 모든 이미지파일 정보 삭제
+        boardImageRepository.deleteAllByBoardId(id);
 
         //해당 게시글에 등록된 댓글 조회
         List<CommentEntity> commentEntities = commentRepository.findByBoardId(id);
         for(CommentEntity commentEntity : commentEntities) {
-            //comment 테이블에서 댓글 삭제
-            commentRepository.deleteAllByBoardId(id);
+            log.info(commentEntity.getId());
+            //reply 테이블에서 답글 삭제
+            replyRepository.deleteAllByCommentId(commentEntity.getId());
         }
+        //comment 테이블에서 댓글 삭제
+        commentRepository.deleteAllByBoardId(id);
+
+        //bookmark 테이블에서 해당 게시글 북마크한 bookmark 삭제
+        bookmarkRepository.deleteAllByBoardId(id);
 
         //board 테이블에서 해당 게시글 삭제
         boardRepository.deleteById(id);
@@ -332,14 +338,14 @@ public class BoardService {
         return userLoginConfirm;
     }
 
-    public Integer userId(HttpServletRequest request, Principal principal)throws Exception{
+    public Integer userId(HttpServletRequest request, Principal principal) throws Exception {
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
         if(user == null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
-        Integer userId = user.getId();
-        return userId;
+
+        return user.getId();
     }
 }

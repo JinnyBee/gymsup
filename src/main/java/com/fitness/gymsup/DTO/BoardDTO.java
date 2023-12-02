@@ -30,7 +30,8 @@ public class BoardDTO {
     private List<String> imgFileList;           //게시글 첨부 이미지파일 리스트
     private Integer goodCnt;                    //게시글 추천수
     private Integer viewCnt;                    //게시글 조회수
-    
+
+    private Integer loginUserId;                //게시글 조회하고 있는 사용자 id
     private Boolean bookmarkOn;                 //게시글 조회하고 있는 사용자가 북마크 눌렀는지
     private Boolean goodOn;                     //게시글 조회하고 있는 사용자가 좋아요 눌렀는지
     
