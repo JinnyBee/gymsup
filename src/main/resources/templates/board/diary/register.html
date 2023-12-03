@@ -95,8 +95,14 @@
                                 <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
                             </div>
                             <div class="mb-3">
+<!--
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#food_calorieModal">
+                                    음식 칼로리 계산하기
+                                </button>
+-->
+                                <button type="button" class="btn btn-primary"
+                                        th:onclick="|location.href='@{/food_calorie_calc}'|">
                                     음식 칼로리 계산하기
                                 </button>
                             </div>
