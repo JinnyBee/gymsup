@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"> <!-- 작업공간 -->
+                        <form th:action="@{/food_calorie_search}"> <!-- 음식검색 폼 -->
+                            <h2>음식칼로리</h2>
+                            <hr>
+                            <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="검색어 입력"
+                                           id="keyword" name="keyword">
+                                    <div class="invalid-feedback">검색어를 입력해주세요.</div>
+                                    <button type="submit" class="btn btn-dark">검색</button>
+                            </div>
+                        </form> <!-- End 음식검색 폼 -->
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2">
+                        <div class="trending">
+                            <ul class="trending-post">
+                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

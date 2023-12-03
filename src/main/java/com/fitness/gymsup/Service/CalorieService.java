@@ -1,7 +1,9 @@
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.BookmarkType;
+import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BookmarkDTO;
+import com.fitness.gymsup.DTO.FoodCalorieDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BookmarkEntity;
 import com.fitness.gymsup.Entity.UserEntity;
@@ -10,17 +12,33 @@ import com.fitness.gymsup.Repository.BookmarkRepository;
 import com.fitness.gymsup.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -33,86 +51,78 @@ public class CalorieService {
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
+    @Value("${fooddb.Server.Url}")
+    private String fooddbServerUrl;
 
     public void myBMICalculate(Integer userId, Integer boardId) throws Exception{
         //bookmark 테이블에서 해당 북마크 삭제
         //bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
     }
 
+    public List<FoodCalorieDTO> requestToFoodDB(String keyword) throws Exception {
+        StringBuffer response = new StringBuffer();
 
-    //북마크 전체목록
-    public Page<BookmarkDTO> list(BookmarkType bookmarkType,
-                                  Pageable page,
-                                  HttpServletRequest request,
-                                  Principal principal) throws Exception{
-        int curPage = page.getPageNumber()-1;
-        int pageLimit = 5;
+        try {
+            String requestUrl = fooddbServerUrl + "DESC_KOR=" + keyword;
 
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user ==null){
-            String email = principal.getName();
-            user = userRepository.findByEmail(email);
-        }
+            log.info("REQ : " + requestUrl);
 
-        Pageable pageable = PageRequest.of
-                (curPage, pageLimit, Sort.by(Sort.Direction.DESC,"id"));
+            URL url = new URL(requestUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
-        //Page<BookmarkEntity> bookmarkEntities = bookmarkRepository.findAllByUserEntity(pageable,user);
-        Page<BookmarkEntity> bookmarkEntities = bookmarkRepository
-                .findAllByUserEntityAndBookmarkType(pageable, user, bookmarkType);
-        Page<BookmarkDTO> bookmarkDTOS = bookmarkEntities.map(data->BookmarkDTO.builder()
-                .id(data.getId())
-                .userId(data.getUserEntity().getId())
-                .boardId(data.getBoardEntity().getId())
-                .boardTitle(data.getBoardEntity().getTitle())
-                .boardViewCnt(data.getBoardEntity().getViewCnt())
-                .categoryType(data.getBoardEntity().getCategoryType())
-                .bookmarkType(data.getBookmarkType())
-                .regDate(data.getRegDate())
-                .modDate(data.getModDate())
-                .build()
-        );
-        return bookmarkDTOS;
-    }
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(30000);
+            urlConnection.setUseCaches(false);
 
-    //북마크(북마크|좋아요) 등록
-    public void register(BookmarkDTO bookmarkDTO,
-                         HttpServletRequest request,
-                         Principal principal) throws Exception{
-        //북마크 게시글 Entity
-        BoardEntity board = boardRepository.findById(bookmarkDTO.getBoardId()).orElseThrow();
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+            String returnLine;
 
-        //북마크 선택한 사용자 Entity
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user == null) {
-            String email = principal.getName();
-            user = userRepository.findByEmail(email);
-        }
-
-        log.info(board);
-        log.info(user);
-        log.info(bookmarkDTO);
-
-        BookmarkEntity bookmarkEntity = modelMapper.map(bookmarkDTO, BookmarkEntity.class);
-        bookmarkEntity.setBoardEntity(board);
-        bookmarkEntity.setUserEntity(user);
-
-        //기존에 등록되어 있지 않을 경우
-        if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
-                user, board, bookmarkDTO.getBookmarkType()) == 0) {
-            //bookmark 테이블에 등록
-            bookmarkRepository.save(bookmarkEntity);
-            //좋아요를 눌렀을 경우 board 테이블의 good_cnt 증가
-            if(bookmarkDTO.getBookmarkType().equals(BookmarkType.GOOD)) {
-                boardRepository.goodCntUp(bookmarkDTO.getBoardId());
+            while((returnLine = br.readLine()) != null) {
+                log.info(returnLine);
+                response.append(returnLine);
             }
+            urlConnection.disconnect();
+        } catch (Exception e) {
+            log.info(e.toString());
         }
-    }
-    //북마크(북마크) 삭제
-    public void remove(Integer userId, Integer boardId) throws Exception{
-        //bookmark 테이블에서 해당 북마크 삭제
-        //bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
+        log.info("RES : " + response.toString());
+
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(response.toString());
+        JSONObject i2790Object = (JSONObject) jsonObject.get("I2790");
+        JSONArray rowArray = (JSONArray) i2790Object.get("row");
+
+        //데이터를 저장할 DTO 리스트
+        List<FoodCalorieDTO> foodCalorieDTOS = new ArrayList<>();
+        for(Object obj : rowArray) {
+            JSONObject rowObject = (JSONObject) obj;
+            FoodCalorieDTO foodCalorieDTO = new FoodCalorieDTO();
+
+            foodCalorieDTO.setGroupName((String) rowObject.get("GROUP_NAME"));
+            foodCalorieDTO.setDescKor((String) rowObject.get("DESC_KOR"));
+
+            foodCalorieDTO.setResearchYear((String) rowObject.get("RESEARCH_YEAR"));
+            foodCalorieDTO.setMakerName((String) rowObject.get("MAKER_NAME"));
+            foodCalorieDTO.setSubRefName((String) rowObject.get("SUB_REF_NAME"));
+
+            foodCalorieDTO.setServingSize((String) rowObject.get("SERVING_SIZE"));
+            foodCalorieDTO.setServingUnit((String) rowObject.get("SERVING_UNIT"));
+
+            foodCalorieDTO.setNutrCont1((String) rowObject.get("NUTR_CONT1"));
+            foodCalorieDTO.setNutrCont2((String) rowObject.get("NUTR_CONT2"));
+            foodCalorieDTO.setNutrCont3((String) rowObject.get("NUTR_CONT3"));
+            foodCalorieDTO.setNutrCont4((String) rowObject.get("NUTR_CONT4"));
+            foodCalorieDTO.setNutrCont5((String) rowObject.get("NUTR_CONT5"));
+            foodCalorieDTO.setNutrCont6((String) rowObject.get("NUTR_CONT6"));
+            foodCalorieDTO.setNutrCont7((String) rowObject.get("NUTR_CONT7"));
+            foodCalorieDTO.setNutrCont8((String) rowObject.get("NUTR_CONT8"));
+            foodCalorieDTO.setNutrCont9((String) rowObject.get("NUTR_CONT9"));
+
+            foodCalorieDTOS.add(foodCalorieDTO);
+        }
+        log.info(foodCalorieDTOS);
+
+        return foodCalorieDTOS;
     }
 }

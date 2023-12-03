@@ -1,29 +1,55 @@
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.DTO.FoodCalorieDTO;
+import com.fitness.gymsup.Service.CalorieService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.catalina.connector.InputBuffer;
-import org.apache.http.protocol.HTTP;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
-@RestController
+@Controller
+@RequiredArgsConstructor
 @Log4j2
 public class CalorieController {
+    private final CalorieService calorieService;
+
     @GetMapping("/mybmi")
     public String myBmiForm(Model model) throws Exception {
         return "calorie/mybmi";
     }
+    @GetMapping("/food_calorie_calc")
+    public String foodCalorieCalcForm(Model model) throws Exception {
+        log.info("foodCalorieCalcForm");
+        return "calorie/food_calc";
+    }
+    @GetMapping("/food_calorie_search")
+    public String foodCalorieSearch(String keyword,
+                                    Model model) throws Exception {
+        log.info("keyword : " + keyword);
+        List<FoodCalorieDTO> foodCalorieDTOS = calorieService.requestToFoodDB(keyword);
+        model.addAttribute("foodCalorieDTOS", foodCalorieDTOS);
 
-    @GetMapping(value = "/food_calorie_list/{keyword}")
-    public String callFoodApi(@PathVariable("keyword") String keyword,
+        return "calorie/food_list";
+    }
+    @GetMapping("/food_calorie_detail")
+    public String foodCalorieDetail(FoodCalorieDTO foodCalorieDTO,
+                                    Model model) throws Exception {
+        log.info(foodCalorieDTO);
+        model.addAttribute("foodCalorieDTO", foodCalorieDTO);
+        return "calorie/food_detail";
+    }
+
+    @GetMapping(value = "/food_calorie_call")
+    public String callFoodApi(String keyword,
                               Model model) throws Exception {
         StringBuffer result = new StringBuffer();
         Integer startIdx = 1;

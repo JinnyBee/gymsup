@@ -12,14 +12,46 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8"> <!-- 작업공간 -->
-
+                        <h2>음식칼로리</h2>
+                        <hr>
+                        <form th:action="@{/food_calorie_detail}" method="get">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="width: 50%">음식명</th>
+                                    <th style="width: 30%">칼로리</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="data:${foodCalorieDTOS}">
+                                    <td>
+                                        <a th:href="@{/food_calorie_detail(
+                                            makerName=${data.getMakerName()}, descKor=${data.getDescKor()},
+                                            servingSize=${data.getServingSize()}, servingUnit=${data.getServingUnit()},
+                                            nutrCont1=${data.getNutrCont1()}, nutrCont2=${data.getNutrCont2()},
+                                            nutrCont3=${data.getNutrCont3()}, nutrCont4=${data.getNutrCont4()},
+                                            nutrCont5=${data.getNutrCont5()}, nutrCont6=${data.getNutrCont6()})}">
+                                        <span th:unless="${data.getMakerName().isEmpty()}"
+                                              th:text="'[' + ${data.getMakerName()} + ']'"></span>
+                                            <span th:text="${data.getDescKor()}"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span th:text="${data.getNutrCont1()} + 'kcal'"></span>
+                                        <span th:text="'(' + ${data.getServingSize()}"></span>
+                                        <span th:text="${data.getServingUnit()} + ')'"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
                             <ul class="trending-post">
                                 <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
                                 <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
-                                <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
                             </ul>
                         </div>
                     </div>
