@@ -36,7 +36,7 @@
                         var printdata = "";
 
                         printdata += "<thead class=\"text-center\">";
-                        printdata += "<tr><th>음식명<\/th><th>칼로리<\/th><\/tr><\/thead>"
+                        printdata += "<tr><th>음식명<\/th><th>칼로리<\/th><th><\/th><\/tr><\/thead>"
                         printdata += "<tbody>";
                         for(var i=0; i<parseData.I2790.row.length; i++) {
                             let makerName = parseData.I2790.row[i].MAKER_NAME;
@@ -45,10 +45,13 @@
                             let servingUnit = parseData.I2790.row[i].SERVING_UNIT;
                             let nutrCont1 = parseData.I2790.row[i].NUTR_CONT1;
 
-                            printdata += "<tr onclick='closeModal(this)'>";
-                            printdata += "<td>["+makerName+"] "+descKor+"<\/td>"
-                            printdata += "<td>"+nutrCont1+"kcal ("+servingSize+servingUnit+")<\/td>"
-                            printdata += "<\/tr>"
+                            printdata += "<tr class=\"foodRow\">";
+                            printdata += "<td>";
+                            if(makerName.length > 0) printdata += "["+makerName+"]";
+                            printdata += descKor+"<\/td>";
+                            printdata += "<td>"+nutrCont1+"kcal ("+servingSize+servingUnit+")<\/td>";
+                            printdata += "<td><input type=\"button\" class=\"selectBtn\" value=\"선택\"\/><\/td>"
+                            printdata += "<\/tr>" ;
                         }
                         printdata += "<\/tbody>";
                         alert(printdata);
@@ -56,16 +59,18 @@
                     }
                 });
             });
-            $(document).on('click', 'foodTbl tr', function() {
-                var row = $(this);
-                var columns = row.find('td');
+        });
+        $(".selectBtn").click(function() {
+            alert("!!!!!");
+            var selectBtn = $(this);
 
-                var foodName = columns.eq(0).text();
-                var nutrInfo = columns.eq(1).text();
+            var tr = selectBtn.parent().parent();
+            var td = tr.children();
 
-                alert(foodName);
-                alert(nutrInfo);
-            });
+            alert(tr.text());
+        });
+        $(document).on("click", "selectBtn", function (){
+            console.log();
         });
     </script>
     <main id="main">
@@ -74,11 +79,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-2"></div>
-                    <div class="col-md-7"> <!-- 작업공간 -->
+                    <div class="col-md-8"> <!-- 작업공간 -->
                         <form th:action="@{/board_diary_register}" method="post"
                               enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 가입폼 -->
-                            <h3 class="text-center">
-                                [글쓰기] [[*{getCategoryType().getDescription()}]]</h3>
+                            <h3 class="text-center">[[*{getCategoryType().getDescription()}]]</h3>
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
                                 <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
@@ -148,11 +152,10 @@
                             <ul class="trending-post">
                                 <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
                                 <li><a th:href="@{/exercise_calorie_list}"><h3>운동 칼로리 계산</h3></a></li>
-                                <li><a th:href="@{/food_calorie_list}"><h3>음식 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-1"></div>
                 </div>
             </div>
         </section> <!-- End Search Result -->
