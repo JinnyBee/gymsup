@@ -170,6 +170,9 @@ public class TipBoardController {
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         return "board/tip/detail";
     }
