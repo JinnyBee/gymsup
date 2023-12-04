@@ -5,7 +5,6 @@ import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
-import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -114,18 +113,22 @@ public class TipBoardController {
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+        //로그인 user id 조회
+        Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
         BoardDTO boardDTO = boardService.detail(id, true, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
-        boolean boardUserConfirm = boardService.userConfirm(id, request, principal);
+        boardDTO.setCommentCount(commentDTOS.size());
+        /*boolean boardUserConfirm = boardService.userConfirm(id, request, principal);*/
         log.info(boardDTO);
         log.info(commentDTOS);
 
-        Integer userId = boardService.userId(request, principal);
+        /*Integer userId = boardService.userId(request, principal);*/
 
-        model.addAttribute("userId", userId);
-        model.addAttribute("userConfirm", boardUserConfirm);
+        /*model.addAttribute("userId", userId);
+        model.addAttribute("userConfirm", boardUserConfirm);*/
+        model.addAttribute("loginUserId", loginUserId);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
@@ -138,30 +141,22 @@ public class TipBoardController {
                                    Model model,
                                    HttpServletRequest request,
                                    Principal principal) throws Exception {
-        log.info("id : " + id);
-
-        //해당게시글 상세조회
+        //로그인 user id 조회
+        Integer loginUserId = boardService.userId(request, principal);
+        //해당게시글 상세조회 Reload
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
-        boolean userConfirm = boardService.userConfirm(id, request, principal);
+
         log.info(boardDTO);
         log.info(commentDTOS);
 
-        Integer userId = boardService.userId(request, principal);
-
-        model.addAttribute("userId", userId);
-        model.addAttribute("userConfirm", userConfirm);
+        model.addAttribute("loginUserId", loginUserId);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
 
         return "board/tip/detail";
-    }
-
-    @GetMapping("/board_tip_goodcnt")
-    public String goodcntProc(Model model) throws Exception {
-        return "redirect:/board_tip_detail";
     }
 
     @GetMapping("/board_tip_modify")
@@ -171,7 +166,6 @@ public class TipBoardController {
                              Principal principal) throws Exception {
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         model.addAttribute("boardDTO", boardDTO);
-        log.info("111" + boardDTO.getCategoryType());
 
         return "board/tip/modify";
     }
@@ -181,8 +175,6 @@ public class TipBoardController {
                              BindingResult bindingResult,
                              List<MultipartFile> imgFiles,
                              Model model) throws Exception {
-        log.info(boardDTO);
-        log.info(imgFiles);
 
         if (bindingResult.hasErrors()) {
             return "board/tip/modify";
