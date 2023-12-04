@@ -91,6 +91,26 @@
                                     </button>
                                 </div> <!-- End 게시글 작성 버튼 -->
                             </div> <!-- End Paging -->
+                            <form class="d-flex justify-content-center"
+                                  th:action="@{/board_diary_list}" method="get"> <!-- 검색 -->
+                                <input type="hidden" name="page" value="1">
+                                <!-- 검색 type -->
+                                <select name="type" class="form-select form-select-sm" style="width: 100px; height: 31px;">
+                                    <option value="t" th:selected="${type == 't'}">제목</option>
+                                    <option value="c" th:selected="${type == 'c'}">내용</option>
+                                    <option value="n" th:selected="${type == 'n'}">닉네임</option>
+                                    <option value="tc" th:selected="${type == 'tc'}">제목+내용</option>
+                                    <option value="tcn" th:selected="${type == 'tcn'}">제목+내용+닉네임</option>
+                                </select>
+                                <!-- 검색 keyword -->
+                                <div class="ms-1">
+                                    <input type="text" class="form-control form-control-sm"
+                                           placeholder="찾을 내용을 입력하세요." name="keyword">
+                                </div>
+                                <div class="ms-1">
+                                    <button type="submit" class="btn btn-dark btn-sm">검색</button>
+                                </div>
+                            </form> <!-- End 검색 -->
                         </div> <!-- End 게시판 전체 목록 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">

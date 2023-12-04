@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,8 +79,15 @@ public class DiaryBoardController {
     //특정게시판 전체목록 조회
     @GetMapping("/board_diary_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
+                           @RequestParam(value = "type", defaultValue = "") String type,
+                           @RequestParam(value = "keyword", defaultValue = "") String keyword,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_DIARY, pageable);
+
+        log.info(type);
+        log.info(keyword);
+
+        Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_DIARY, type, keyword);
+
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -117,6 +125,8 @@ public class DiaryBoardController {
         log.info("lastPage : "+lastPage);
 
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+        model.addAttribute("type", type);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("boardDTOS", boardDTOS);
 
         for(BoardDTO dto : boardDTOS) {

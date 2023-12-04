@@ -72,7 +72,10 @@ public class BoardService {
         return boardDTOS;
     }
     //특정게시글 전체목록
-    public Page<BoardDTO> list(BoardCategoryType categoryType, Pageable page) throws Exception {
+    public Page<BoardDTO> list(Pageable page,
+                               BoardCategoryType categoryType,
+                               String searchType,
+                               String keyword) throws Exception {
         int curPage = page.getPageNumber()-1;
         int pageLimit = 10;
 
@@ -80,7 +83,25 @@ public class BoardService {
 
         Pageable pageable = PageRequest.of(curPage, pageLimit,Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<BoardEntity> boardEntities = boardRepository.findAllByCategoryType(pageable, categoryType);
+        //각 검색조건에 따른 조회
+        Page<BoardEntity> boardEntities;
+        if(searchType.equals("t") && keyword != null) {         //제목으로 검색
+            boardEntities = boardRepository.searchTitle(pageable, categoryType, keyword);
+        } else if(searchType.equals("c") && keyword != null) {  //내용으로 검색
+            boardEntities = boardRepository.searchContent(pageable, categoryType, keyword);
+        } else if(searchType.equals("n") && keyword != null) {  //닉네임으로 검색
+            boardEntities = boardRepository.searchNickname(pageable, categoryType, keyword);
+        } else if(searchType.equals("tc") && keyword != null) {  //제목+내용으로 검색
+            boardEntities = boardRepository.searchTitleContent(pageable, categoryType, keyword);
+        } else if(searchType.equals("tcn") && keyword != null) {  //제목+내용+닉네임으로 검색
+            boardEntities = boardRepository.searchTitleContentNickname(pageable, categoryType, keyword);
+        } else {
+            boardEntities = boardRepository.findAllByCategoryType(pageable, categoryType);
+        }
+
+        log.info(boardEntities.getTotalPages());
+        log.info(boardEntities.getTotalElements());
+
         Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
                 .id(data.getId())
                 .commentCount(commentRepository.countByBoardEntity_Id(data.getId()))

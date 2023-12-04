@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +32,10 @@ public class TipBoardController {
 
     @GetMapping("/board_tip_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
+                           @RequestParam(value = "type", defaultValue = "") String type,
+                           @RequestParam(value = "keyword", defaultValue = "") String keyword,
                            Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.list(BoardCategoryType.BTYPE_TIP, pageable);
+        Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_TIP, type, keyword);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 

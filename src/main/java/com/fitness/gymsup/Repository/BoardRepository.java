@@ -18,16 +18,27 @@ public interface BoardRepository extends
         JpaRepository<BoardEntity, Integer> {
     //검색이 없는 페이지처리 FindAll 사용
     //제목으로 검색시 페이지 처리
-    @Query("SELECT u FROM BoardEntity u where u.title like %:keyword%")
-    Page<BoardEntity> searchTitle(String keyword, Pageable pageable);
+    @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.title like %:keyword%")
+    Page<BoardEntity> searchTitle(Pageable pageable, BoardCategoryType categoryType, String keyword);
 
     //내용으로 검색시 페이지 처리
-    @Query("SELECT u FROM BoardEntity u where u.content like %:keyword%")
-    Page<BoardEntity> searchContent(String keyword, Pageable pageable);
+    @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.content like %:keyword%")
+    Page<BoardEntity> searchContent(Pageable pageable, BoardCategoryType categoryType, String keyword);
 
-    //작성자로 검색시 페이지처리
-    @Query("SELECT u FROM BoardEntity u where u.userEntity.email like %:keyword%")
-    Page<BoardEntity> searchWriter(String keyword, Pageable pageable);
+    //닉네임으로 검색시 페이지처리
+    @Query("SELECT b FROM BoardEntity b LEFT JOIN b.userEntity u WHERE b.categoryType=:categoryType and u.nickname like %:keyword%")
+    Page<BoardEntity> searchNickname(Pageable pageable, BoardCategoryType categoryType, String keyword);
+
+    @Query("SELECT b FROM BoardEntity b LEFT JOIN b.userEntity u WHERE b.categoryType=:categoryType")
+    Page<BoardEntity> searchNickname2(Pageable pageable, BoardCategoryType categoryType);
+
+    //제목+내용으로 검색시 페이지처리
+    @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.title like %:keyword% or b.content like %:keyword%")
+    Page<BoardEntity> searchTitleContent(Pageable pageable, BoardCategoryType categoryType, String keyword);
+
+    //제목+내용+닉네임으로 검색시 페이지처리
+    @Query("SELECT b FROM BoardEntity b LEFT JOIN b.userEntity u WHERE b.categoryType=:categoryType and b.title like %:keyword% or b.content like %:keyword% or u.nickname like %:keyword%")
+    Page<BoardEntity> searchTitleContentNickname(Pageable pageable, BoardCategoryType categoryType, String keyword);
 
     @Query(value = "UPDATE board SET view_cnt = view_cnt+1 WHERE id=:id",
             nativeQuery = true)
