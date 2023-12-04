@@ -7,6 +7,7 @@ import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,6 +28,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class DiaryBoardController {
+    @Value("${cloud.aws.s3.bucket}")
+    public String bucket;
+    @Value("${cloud.aws.region.static}")
+    public String region;
+    @Value("${imgUploadLocation}")
+    public String folder;
+
     private final BoardService boardService;
     private final CommentService commentService;
 
@@ -180,8 +188,13 @@ public class DiaryBoardController {
 
         model.addAttribute("loginUserId", loginUserId);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
+
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         return "board/diary/detail";
     }
@@ -203,8 +216,13 @@ public class DiaryBoardController {
 
         model.addAttribute("loginUserId", loginUserId);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
+
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         return "board/diary/detail";
     }

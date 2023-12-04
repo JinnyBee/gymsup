@@ -32,13 +32,12 @@ import java.util.List;
 @Transactional
 @Log4j2
 public class BoardService {
-    //게시글 업로드 사진파일이 저장될 경로
+    //S3 파일 업로드
+    private final S3Uploader s3Uploader;
+    //업로드 사진파일이 저장될 경로
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
 
-
-    //파일 저장을 위한 클래스
-    private final S3Uploader s3Uploader;
     //주입 : Repository, ModelMapper, 파일업로드 클래스
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;

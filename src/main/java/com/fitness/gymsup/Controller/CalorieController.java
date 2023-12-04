@@ -40,14 +40,13 @@ public class CalorieController {
 
         return "calorie/food_list";
     }
-    @GetMapping("/food_calorie_detail")
+    @PostMapping("/food_calorie_detail")
     public String foodCalorieDetail(FoodCalorieDTO foodCalorieDTO,
                                     Model model) throws Exception {
         log.info(foodCalorieDTO);
         model.addAttribute("foodCalorieDTO", foodCalorieDTO);
         return "calorie/food_detail";
     }
-
     @GetMapping(value = "/food_calorie_call")
     public String callFoodApi(String keyword,
                               Model model) throws Exception {

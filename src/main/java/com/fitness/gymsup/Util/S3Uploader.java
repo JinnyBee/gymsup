@@ -27,6 +27,8 @@ public class S3Uploader {
     public String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException{
+        log.info(multipartFile.getOriginalFilename());
+        log.info(dirName);
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("파일 전환 실패"));
         return upload(uploadFile, dirName);
     }
@@ -48,6 +50,8 @@ public class S3Uploader {
         //String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
         String fileName = dirName + "/" + newFileName;   // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+
+        log.info("fileName : " + fileName);
         removeNewFile(uploadFile);
 
         return newFileName;
@@ -71,6 +75,9 @@ public class S3Uploader {
 
     private Optional<File> convert(MultipartFile multipartFile) throws IOException{
         //System.out.println(System.getProperty("user.dir"));
+        log.info(System.getProperty("user.dir"));
+        log.info(multipartFile.getOriginalFilename());
+
         File convertFile = new File(System.getProperty("user.dir") + "/" + multipartFile.getOriginalFilename());
         // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
         if (convertFile.createNewFile()) {
