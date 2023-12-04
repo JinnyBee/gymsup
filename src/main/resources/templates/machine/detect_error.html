@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
+                        <div class="container mt-3">
+                            <h2>운동기구 검색하기</h2>
+                            <hr>
+                            <div class="container mt-3">
+                                <form th:action="@{/machine_detect}" method="post"
+                                      id="detectForm"
+                                      enctype="multipart/form-data">
+                                    <div class="mb-3 mt-3">
+                                        <label for="detectImg">※운동기구 이미지만 가능합니다!!</label>
+                                        <input type="file" class="form-control" id="detectImg" name="detectImg">
+                                    </div>
+                                    <div class="text-center">
+                                        <!--<img src="#" alt="#">-->
+                                        <button type="submit" class="btn btn-primary"
+                                                onclick="return checkDetectImg()">운동기구 이미지 검색하기</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <hr>
+                            <div class="container">
+                                <div class="row">
+                                    <h6>등록되어 있지 않은 기구입니다.</h6>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="container">
+                                <div class="container mt-3" th:each="data:${machineInfoDTOS}">
+                                    <h4 class="text-center">[[${data.name}]] 사용 설명을 위한 유튜브 </h4>
+                                    <table class="table">
+                                        <thead>
+                                        <tr class="text-center">
+                                            <th>썸네일</th>
+                                            <th>제목</th>
+                                            <th>조회수</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="usage:${data.getMachineUsageDTOList()}">
+                                            <td>
+                                                <img th:src="|/images/@{${usage.getThumbnail()}}|" alt="썸네일">
+                                            </td>
+                                            <td>
+                                                <a th:text="${usage.getTitle()}"
+                                                   th:href="@{/machine_detail(id=${usage.getId()})}">제목 들어갈 공간</a>
+                                            </td>
+                                            <td th:text="${usage.getViewCnt()}">조회수 나올 공간</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2">
+                        <div class="trending">
+                            <ul class="trending-post">
+                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_food_list}"><h3>음식 칼로리 계산</h3></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

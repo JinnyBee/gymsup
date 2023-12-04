@@ -58,6 +58,13 @@ public class MachineController {
         List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
 
         log.info("Flask Response DTO (resultFilename) : " + flaskResponseDTO.getResultFilename());
+        if(flaskResponseDTO.getName().isEmpty()) {
+            machineInfoDTOS = machineInfoService.list();
+            model.addAttribute("machineInfoDTOS", machineInfoDTOS);
+
+            return "machine/detect_error";
+        }
+
         for(String name : flaskResponseDTO.getName()) {
             log.info("Flask Response DTO (name) : " + name);
             machineInfoDTOS.add(machineInfoService.find(name));

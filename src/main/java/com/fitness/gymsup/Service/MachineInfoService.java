@@ -1,13 +1,9 @@
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.MachineInfoDTO;
 import com.fitness.gymsup.DTO.MachineUsageDTO;
-import com.fitness.gymsup.DTO.ReplyDTO;
-import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Entity.MachineInfoEntity;
 import com.fitness.gymsup.Entity.MachineUsageEntity;
-import com.fitness.gymsup.Entity.ReplyEntity;
 import com.fitness.gymsup.Repository.MachineInfoRepository;
 import com.fitness.gymsup.Repository.MachineUsageRepository;
 import com.fitness.gymsup.Util.FileUploader;
@@ -38,10 +34,43 @@ public class MachineInfoService {
     private final FileUploader fileUploader;
 
     public List<MachineInfoDTO> list() throws Exception {
+        //List<MachineInfoEntity> machineInfoEntities = machineInfoRepository.findAll();
+        //List<MachineInfoDTO> machineInfoDTOS = Arrays.asList(modelMapper.map(machineInfoEntities, MachineInfoDTO[].class));
+
         List<MachineInfoEntity> machineInfoEntities = machineInfoRepository.findAll();
+        List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
 
-        List<MachineInfoDTO> machineInfoDTOS = Arrays.asList(modelMapper.map(machineInfoEntities, MachineInfoDTO[].class));
+        for(MachineInfoEntity machineInfoEntity : machineInfoEntities) {
+            List<MachineUsageEntity> machineUsageEntities = machineUsageRepository.findAllByMachineInfoEntity(machineInfoEntity);
+            List<MachineUsageDTO> machineUsageDTOS = new ArrayList<>();
 
+            for(MachineUsageEntity machineUsageEntity : machineUsageEntities) {
+                MachineUsageDTO machineUsageDTO = MachineUsageDTO.builder()
+                        .id(machineUsageEntity.getId())
+                        .machineInfoId(machineUsageEntity.getMachineInfoEntity().getId())
+                        .viewCnt(machineUsageEntity.getViewCnt())
+                        .title(machineUsageEntity.getTitle())
+                        .content(machineUsageEntity.getContent())
+                        .url(machineUsageEntity.getUrl())
+                        .regDate(machineUsageEntity.getRegDate())
+                        .modDate(machineUsageEntity.getModDate())
+                        .build();
+                machineUsageDTOS.add(machineUsageDTO);
+            }
+
+            MachineInfoDTO machineInfoDTO = MachineInfoDTO.builder()
+                    .id(machineInfoEntity.getId())
+                    .name(machineInfoEntity.getName())
+                    .content(machineInfoEntity.getContent())
+                    .img(machineInfoEntity.getImg())
+                    .result(machineInfoEntity.getResult())
+                    .machineUsageDTOList(machineUsageDTOS)
+                    .regDate(machineInfoEntity.getRegDate())
+                    .modDate(machineInfoEntity.getModDate())
+                    .build();
+
+            machineInfoDTOS.add(machineInfoDTO);
+        }
         return machineInfoDTOS;
     }
     public MachineInfoDTO detail(Integer id) throws Exception {
