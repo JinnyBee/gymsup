@@ -4,10 +4,10 @@ import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
-import com.fitness.gymsup.DTO.ReplyDTO;
 import com.fitness.gymsup.Entity.*;
 import com.fitness.gymsup.Repository.*;
 import com.fitness.gymsup.Util.FileUploader;
+import com.fitness.gymsup.Util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -36,6 +36,9 @@ public class BoardService {
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
 
+
+    //파일 저장을 위한 클래스
+    private final S3Uploader s3Uploader;
     //주입 : Repository, ModelMapper, 파일업로드 클래스
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
@@ -184,9 +187,10 @@ public class BoardService {
             //게시글에 첨부된 이미지파일이 존재하면
             if(originalFileName.length() != 0) {
                 //이미지파일을 이미지 저장경로에 업로드
-                newFileName = fileUploader.uploadFile(imgUploadLocation,
+                newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+                /*newFileName = fileUploader.uploadFile(imgUploadLocation,
                                                       originalFileName,
-                                                      imgFile.getBytes());
+                                                      imgFile.getBytes());*/
                 log.info("newFileName : "+ newFileName);
 
                 //board_image 테이블에 이미지파일 정보 저장
