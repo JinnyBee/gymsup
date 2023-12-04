@@ -7,8 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -40,7 +38,7 @@ public class CalorieController {
 
         return "calorie/food_list";
     }
-    @PostMapping("/food_calorie_detail")
+    @GetMapping("/food_calorie_detail")
     public String foodCalorieDetail(FoodCalorieDTO foodCalorieDTO,
                                     Model model) throws Exception {
         log.info(foodCalorieDTO);
@@ -83,16 +81,18 @@ public class CalorieController {
 
         return result.toString();
     }
-    @GetMapping("/calorie_food_detail")
-    public String foodDetailForm(Model model) throws Exception {
-        return "calorie/food_detail";
+    @GetMapping("/exercise_calorie_calc")
+    public String exerciseCalorieCalcForm(Model model) throws Exception {
+        return "calorie/exercise_calc";
     }
-    @GetMapping("/calorie_exercise_list")
-    public String exerciseListForm(Model model) throws Exception {
+    @GetMapping("/exercise_calorie_search")
+    public String exerciseCalorieSearch(String keyword,
+                                        Model model) throws Exception {
         return "calorie/exercise_list";
     }
-    @GetMapping("/calorie_exercise_detail")
-    public String exerciseDetailForm(Model model) throws Exception {
+    @GetMapping("/exercise_calorie_detail")
+    public String exerciseCalorieDetail(FoodCalorieDTO foodCalorieDTO,
+                                        Model model) throws Exception {
         return "calorie/exercise_detail";
     }
 }

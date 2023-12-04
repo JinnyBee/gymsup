@@ -31,7 +31,7 @@
                                             nutrCont1=${data.getNutrCont1()}, nutrCont2=${data.getNutrCont2()},
                                             nutrCont3=${data.getNutrCont3()}, nutrCont4=${data.getNutrCont4()},
                                             nutrCont5=${data.getNutrCont5()}, nutrCont6=${data.getNutrCont6()})}">
-                                        <span th:unless="${data.getMakerName().isEmpty()}"
+                                            <span th:unless="${data.getMakerName().isEmpty()}"
                                               th:text="'[' + ${data.getMakerName()} + ']'"></span>
                                             <span th:text="${data.getDescKor()}"></span>
                                         </a>
@@ -50,7 +50,7 @@
                         <div class="trending">
                             <ul class="trending-post">
                                 <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
-                                <li><a th:href="@{/calorie_exercise_list}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/calorie_exercise_calc}"><h3>운동 칼로리 계산</h3></a></li>
                                 <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
                             </ul>
                         </div>
