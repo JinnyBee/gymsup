@@ -87,15 +87,15 @@ public class BoardService {
 
         //각 검색조건에 따른 조회
         Page<BoardEntity> boardEntities;
-        if(searchType.equals("t") && keyword != null) {         //제목으로 검색
+        if(searchType.equals("t") && keyword != null) {             //제목으로 검색
             boardEntities = boardRepository.searchTitle(pageable, categoryType, keyword);
-        } else if(searchType.equals("c") && keyword != null) {  //내용으로 검색
+        } else if(searchType.equals("c") && keyword != null) {      //내용으로 검색
             boardEntities = boardRepository.searchContent(pageable, categoryType, keyword);
-        } else if(searchType.equals("n") && keyword != null) {  //닉네임으로 검색
+        } else if(searchType.equals("n") && keyword != null) {      //닉네임으로 검색
             boardEntities = boardRepository.searchNickname(pageable, categoryType, keyword);
-        } else if(searchType.equals("tc") && keyword != null) {  //제목+내용으로 검색
+        } else if(searchType.equals("tc") && keyword != null) {     //제목+내용으로 검색
             boardEntities = boardRepository.searchTitleContent(pageable, categoryType, keyword);
-        } else if(searchType.equals("tcn") && keyword != null) {  //제목+내용+닉네임으로 검색
+        } else if(searchType.equals("tcn") && keyword != null) {    //제목+내용+닉네임으로 검색
             boardEntities = boardRepository.searchTitleContentNickname(pageable, categoryType, keyword);
         } else {
             boardEntities = boardRepository.findAllByCategoryType(pageable, categoryType);
@@ -154,6 +154,42 @@ public class BoardService {
                     .build();
             boardDTOS.add(boardDTO);
         }        
+
+        return boardDTOS;
+    }
+    //특정게시글 최신글(5개)
+    public List<BoardDTO> latest(BoardCategoryType categoryType) throws Exception {
+        log.info(categoryType.name());
+
+        //등록일 기준 최신글 5개 조회
+        List<BoardEntity> boardEntities = boardRepository.findTop5ByCategoryTypeOrderByRegDateDesc(categoryType);
+        List<BoardDTO> boardDTOS = new ArrayList<>();
+
+        for(BoardEntity data : boardEntities) {
+            //게시글 첨부이미지 조회
+            List<String> imgFileList = new ArrayList<>();
+            List<BoardImageDTO> boardImageDTOS = Arrays.asList(
+                    modelMapper.map(boardImageRepository.findAllByBoardId(data.getId()), BoardImageDTO[].class));
+
+            for(BoardImageDTO boardImageDTO : boardImageDTOS) {
+                imgFileList.add(boardImageDTO.getImgFile());
+            }
+
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .id(data.getId())
+                    .categoryType(data.getCategoryType())
+                    .userId(data.getUserEntity().getId())
+                    .userNickname(data.getUserEntity().getNickname())
+                    .title(data.getTitle())
+                    .content(data.getContent())
+                    .imgFileList(imgFileList)
+                    .viewCnt(data.getViewCnt())
+                    .goodCnt(data.getGoodCnt())
+                    .regDate(data.getRegDate())
+                    .modDate(data.getModDate())
+                    .build();
+            boardDTOS.add(boardDTO);
+        }
 
         return boardDTOS;
     }
