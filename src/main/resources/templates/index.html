@@ -29,8 +29,36 @@
                             </div> <!-- End 로그인 -->
                             <div class="card mb-5"> <!-- 운동기구 사용법 링크 -->
                                 <div class="card-body text-center">
-                                    <div class="text-center">
-                                        <a th:href="@{/machine_detect}"><img class="img-fluid" src="/assets/img/gymimg.png"></a>
+                                    <!-- Carousel -->
+                                    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+                                        <!-- Indicators/dots -->
+                                        <div class="carousel-indicators">
+                                            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                                            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                                            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                                        </div>
+
+                                        <!-- The slideshow/carousel -->
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <a th:href="@{/machine_detect}"><img class="img-fluid d-block w-100" src="/assets/img/gym_main1.png"></a>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <a th:href="@{/machine_detect}"><img class="img-fluid d-block w-100" src="/assets/img/gym_main2.jpg"></a>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <a th:href="@{/machine_detect}"><img class="img-fluid d-block w-100" src="/assets/img/gym_main3.png"></a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Left and right controls/icons -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </button>
                                     </div>
                                     <h3><a th:href="@{/machine_detect}">운동기구 사용법</a></h3>
                                 </div>
