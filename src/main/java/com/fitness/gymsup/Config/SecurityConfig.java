@@ -20,18 +20,21 @@ public class SecurityConfig {
     private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
     private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
     private final OAuthUserService oAuthUserService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http.authorizeHttpRequests((auth)->{
             auth.antMatchers("/","/user_login", "/user_join") .permitAll();
             auth.antMatchers("/user_logout").hasRole("USER");
-            auth.antMatchers("/user_logout").hasRole("ADMIN");
+            auth.antMatchers("/user_logout", "/admin_detail").hasRole("ADMIN");
             auth.antMatchers("/board_all_detail", "/board_notify_detail",
                                         "/board_tip_detail", "/board_qna_detail",
                                         "/board_diary_detail", "/machine_about",
@@ -51,6 +54,9 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user_logout"))
                 .logoutSuccessUrl("/");
 
+        http.exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
         http.oauth2Login()
                 .loginPage("/user_login")
                 .authorizationEndpoint()

@@ -34,7 +34,7 @@ public class ContactEntity extends BaseEntity{
     @Column(name = "content", length = 500, nullable = false)
     private String  content;
 
-    @Column(name= "answer", length = 500, nullable = false)
+    @Column(name= "answer", length = 500)
     private String answer;
 
     @Column(name= "is_answer",nullable = false)

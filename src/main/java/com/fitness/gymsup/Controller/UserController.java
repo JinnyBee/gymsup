@@ -264,4 +264,15 @@ public class UserController {
         return "redirect:/user_detail";
     }
 
+    @GetMapping("/user_access_error")
+    public String accessDenied(RedirectAttributes redirectAttributes){
+        redirectAttributes.addAttribute("errorMessage","권한이 없습니다.");
+        return "redirect:/";
+    }
+
+    @GetMapping("/user_entry_error")
+    public String entryDenied(RedirectAttributes redirectAttributes){
+        redirectAttributes.addAttribute("errorMessage","로그인 후 이용해주세요.");
+        return "redirect:/user_login";
+    }
 }
