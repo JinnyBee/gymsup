@@ -19,7 +19,7 @@
                                 <div class="col-lg-4 text-center">
                                     <div class="row">
                                         <div class="col">
-                                            <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="200" height="200">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.imgFileList}|" width="200" height="200">
                                         </div>
                                     </div>
 
@@ -34,7 +34,7 @@
                                 <div class="col-lg-4 text-center">
                                     <div class="row">
                                         <div class="col">
-                                            <img th:src="|/gymsup/@{${machineInfoDTOid2.img}}|" width="200" height="200">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.imgFileList}|" width="200" height="200">
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -49,7 +49,7 @@
                                 <div class="col-lg-4 text-center">
                                     <div class="row">
                                         <div class="col">
-                                            <img th:src="|/gymsup/@{${machineInfoDTOid3.img}}|" width="200" height="200">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${boardDTO.imgFileList}|" width="200" height="200">
                                         </div>
                                     </div>
                                     <div class="row mt-3">
