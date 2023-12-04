@@ -12,7 +12,259 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
+                        <div class="container mt-3">
+                            <div class="row" style="border-bottom: 2px solid black"> <!-- 게시판 타이틀 -->
+                                <div class="col-lg-12"><h2>공지사항</h2></div>
+                            </div>
+                            <div class="row mt-3 mb-2"> <!-- 제목 시작 -->
+                                <div class="col-lg-12">
+                                    <p style="font-size: 26px; margin-bottom: 0px;" th:text="${boardDTO.title}">제목</p>
+                                </div>
+                            </div>
+                            <div class="row mb-3 text-start"
+                                 style="border-bottom: 1px solid black; border-top: 1px solid black; height: 45px; background-color: #f2f2f2">
+                                <div class="col-lg-5 mt-2"> <!-- 글쓴이 닉네임 -->
+                                    <div style="display: inline-block"
+                                         th:text="'닉네임 : ' + ${boardDTO.userNickname}"></div>
+                                </div>
+                                <div class="col-lg-2 mt-2"></div>
+                                <div class="col-lg-3 mt-2 text-end"> <!-- 게시물 작성 날짜 -->
+                                    <div style="display: inline-block"
+                                         th:text="'날짜 : ' + ${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div>
+                                </div>
+                                <div class="col-lg-2 mt-2 text-end">
+                                    <div style="display: inline-block" th:text="'조회수 : ' + ${boardDTO.viewCnt}"></div>
+                                </div>
+                            </div>
 
+                            <div class="row"> <!-- 게시판 내용 이미지 -->
+                                <div class="col-lg-12" th:each="data:${boardDTO.imgFileList}">
+                                    <img style="max-width: 50%; height: auto" th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data}|">
+                                </div>
+                            </div>
+                            <div class="row"> <!-- 게시판 내용 -->
+                                <div class="col-lg-12" th:text="${boardDTO.content}"
+                                     style="height: auto; min-height: 500px">
+                                    내용
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <!-- 북마크 -->
+                                <div class="col-lg-10 text-end" style="padding-right: 0px;">
+                                    <div>
+                                        <input type="hidden" th:value="${boardDTO.id}" name="boardId">
+                                        <!-- 북마크가 OFF인 경우 (북마크ON 버튼) -->
+                                        <button th:unless="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                                th:onclick="|location.href='@{/bookmark_on(id=${boardDTO.id}, categoryType='BTYPE_NOTIFY')}'|">
+                                            <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
+                                            북마크
+                                        </button>
+                                        <!-- 북마크가 ON인 경우 (북마크OFF 버튼) -->
+                                        <button th:if="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                                th:onclick="|location.href='@{/bookmark_off(id=${boardDTO.id}, categoryType='BTYPE_NOTIFY')}'|">
+                                            <img src="/assets/img/bookmark_on.png" alt="" width="25" height="20">
+                                            북마크
+                                        </button>
+                                    </div>
+                                </div> <!-- 북마크 끝 -->
+                                <div class="col-lg-2 text-end"> <!-- 추천 버튼 -->
+                                    <div>
+                                        <input type="hidden" th:value="${boardDTO.id}" name="boardId">
+                                        <!-- 좋아요가 OFF인 경우 (좋아요 기능 활성화) -->
+                                        <button th:unless="${boardDTO.goodOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                                th:onclick="|location.href='@{/good_on(id=${boardDTO.id}, categoryType='BTYPE_NOTIFY')}'|">
+                                            <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
+                                            추천
+                                        </button>
+                                        <!-- 좋아요가 ON인 경우 (좋아요 기능 비활성화) -->
+                                        <button th:if="${boardDTO.goodOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                                onclick="event.preventDefault()">
+                                            <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
+                                            추천
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 추천 끝 -->
+                            </div>
+                            <!-- 게시글 수정 삭제 목록 -->
+                            <div class="row" style="border-top: 1px solid black; height: 100px;">
+                                <div class="col-lg-4 mt-2"></div>
+                                <div class="col-lg-4 mt-2"></div>
+                                <div class="col-lg-4 mt-2" style="text-align: right">
+                                    <button class="btn btn-outline-dark" type="button"
+                                            th:onclick="|location.href='@{/board_notify_modify(id=${boardDTO.id})}'|"
+                                            th:if="${boardDTO.userId}==${loginUserId}">
+                                        수정
+                                    </button>
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                            th:onclick="|location.href='@{/board_notify_remove(id=${boardDTO.id})}'|"
+                                            th:if="${boardDTO.userId}==${loginUserId}">
+                                        삭제
+                                    </button>
+                                    <button class="btn btn-outline-primary" type="button"
+                                            th:onclick="|location.href='@{/board_notify_list}'|">
+                                        목록으로
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- 게시글 수정 삭제 목록 끝 -->
+
+                            <!-- 댓글 작성 -->
+                            <div class="row">
+                                <div class="col-lg-4 mt-2">댓글 작성</div>
+                                <div class="col-lg-4 mt-2"></div>
+                                <div class="col-lg-4 mt-2"></div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <form th:action="@{/comment_register}" method="post">
+
+                                    <div class="col-lg-11" style="float: left">
+                                        <textarea class="form-control" name="comment" id="comment" rows="3"
+                                                  style="resize: none"></textarea>
+                                    </div>
+                                    <div class="col-lg-1" style="float: right">
+                                        <button type="submit" class="btn btn-dark" style="float: right; height: 86px">
+                                            등록
+                                        </button>
+                                    </div>
+                                    <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                    <input type="hidden" name="goodCnt" value="0">
+                                    <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                                </form>
+                            </div>
+                            <!-- 댓글 작성 끝 -->
+
+                            <div class="row mt-5" style="border-bottom: 2px solid black;">
+                                <div class="col-lg-12 mb-2">댓글 목록</div>
+                            </div>
+
+                            <!--댓글 목록 시작-->
+                            <div style="border-bottom: 1px solid black;" th:each="data:${commentDTOS}">
+                                <div class="row mt-2">
+                                    <div class="col-lg-12 mb-2">
+                                        <span class="text-left" th:text="${data.userNickname}"></span>
+                                        &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d"
+                                                    th:text="${#temporals.format(data.modDate, 'yyyy-MM-dd HH:mm')}"></span>
+                                        <button class="btn btn-outline-dark btn-sm text-right"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                th:attr="data-bs-target='#collapseModify'+ ${data.id}"
+                                                aria-expanded="false"
+                                                th:if="${data.userId}==${loginUserId}">수정
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm text-right" type="button"
+                                                th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id}, categoryType='BTYPE_NOTIFY')}'|"
+                                                th:if="${data.userId}==${loginUserId}">삭제
+                                        </button>
+                                        <div class="mt-3" th:text="${data.comment}"></div>
+                                        <form th:attr="id='collapseModify'+${data.id}" class="collapse"
+                                              th:action="@{/comment_modify}" method="post">
+                                            <input type="hidden" name="id" th:value="*{data.id}">
+                                            <input type="hidden" name="goodCnt" th:value="*{data.goodCnt}">
+                                            <input type="hidden" name="boardId" th:value="*{data.boardId}">
+                                            <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                                            <div class="col-lg-11" style="float: left">
+                                            <textarea class="form-control" name="comment" rows="3"
+                                                      th:value="*{data.comment}" style="resize: none"></textarea>
+                                            </div>
+                                            <div class="col-lg-1" style="float: right">
+                                                <button type="submit" class="btn btn-dark" style="float: right; height: 86px">
+                                                    수정
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- 댓글 목록 끝 -->
+
+
+                                <div> <!-- 답글 버튼 콜랩스 사용하여 만듬 -->
+                                    <button class="btn btn-outline-secondary btn-sm mb-2"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            th:attr="data-bs-target='#collapseExample'+ ${data.id}"
+                                            aria-expanded="false">답글
+                                    </button> <!-- 답글 버튼 끝 -->
+                                    <div th:attr="id='collapseExample'+${data.id}" class="collapse"> <!-- 콜랩스 버튼 클릭 시 나올 내용 th:attr사용하여 콜랩스 id값 지정 -->
+                                        <form th:action="@{/reply_register}" method="post"> <!-- 답글 등록 시작 -->
+                                            <div class="row">
+                                                <div class="col-lg-11" style="float: left">
+                                                    <div class="mb-3">
+                                                        <textarea class="form-control" id="reply" name="reply"
+                                                                  rows="2" style=" resize: none"></textarea>
+                                                        <!-- 답글 등록 시 필요한 값들을 hidden으로 설정 -->
+                                                        <input type="hidden" name="commentId" th:value="${data.id}">
+                                                        <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                                        <input type="hidden" name="goodCnt" value="0">
+                                                        <input type="hidden" name="categoryType"
+                                                               th:value="${boardDTO.categoryType.name()}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <div class="mb-3">
+                                                        <button type="submit" class="btn btn-dark"
+                                                                style="font-size: 12px; height: 62px">등록
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form> <!-- 답글 등록 끝 -->
+
+
+                                        <!-- 답글 목록 시작 -->
+                                        <div th:each="replyDTO:${data.replyDTOList}" style="border-top: 1px solid black;">
+                                            <div class="row">
+                                                <div class="col-lg-1 d-flex justify-content-center align-items-center"
+                                                     style="font-size: 12px">
+                                                    └
+                                                </div>
+                                                <div class="col-lg-11 mt-2 mb-2">
+                                                    <!--답글 단 사람 닉네임-->
+                                                    <span class="text-left" th:text="${replyDTO.userNickname}"></span>
+                                                    <!-- 답글 시간-->
+                                                    &nbsp;<span class="text-left" style="font-size: 14px; color: #6c757d"
+                                                                th:text="${#temporals.format(replyDTO.modDate, 'yyyy-MM-dd HH:mm')}"></span>
+                                                    <!-- 답글 수정 버튼 -->
+                                                    <button class="btn btn-outline-dark btn-sm text-right"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            th:attr="data-bs-target='#collapseReply'+ ${replyDTO.id}"
+                                                            aria-expanded="false"
+                                                            th:if="${replyDTO.userId}==${loginUserId}">수정
+                                                    </button>
+                                                    <!-- 답글 삭제 버튼 -->
+                                                    <button class="btn btn-outline-danger btn-sm text-right" type="button"
+                                                            th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_NOTIFY')}'|"
+                                                            th:if="${replyDTO.userId}==${loginUserId}">삭제
+                                                    </button>
+                                                    <div class="mt-3" th:text="${replyDTO.reply}"></div>
+                                                    <form th:attr="id='collapseReply'+${replyDTO.id}" class="collapse"
+                                                          th:action="@{/reply_modify}" method="post">
+                                                        <input type="hidden" name="id" th:value="*{replyDTO.id}">
+                                                        <input type="hidden" name="commentId" th:value="*{replyDTO.commentId}">
+                                                        <input type="hidden" name="boardId" th:value="*{replyDTO.boardId}">
+                                                        <input type="hidden" name="categoryType"
+                                                               th:value="${boardDTO.categoryType.name()}">
+                                                        <div class="col-lg-11" style="float: left">
+                                                        <textarea class="form-control" name="reply" rows="3"
+                                                                  th:value="*{replyDTO.reply}" style="resize: none"></textarea>
+                                                        </div>
+                                                        <div class="col-lg-1" style="float: right">
+                                                            <button type="submit" class="btn btn-dark" style="float: right; height: 86px">
+                                                                수정
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div> <!-- 답글 목록 끝 -->
+                                    </div> <!-- 답글 버튼 클릭시 나올 내용 끝 -->
+                                </div>
+                            </div>
+                        </div>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">
