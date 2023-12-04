@@ -5,6 +5,7 @@ import com.fitness.gymsup.Service.MachineInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +22,11 @@ public class MachineInfoController {
     }
 
     @PostMapping("/machine_info_register")
-    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO, MultipartFile imgFile)throws Exception{
+    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO, MultipartFile imgFile, Model model)throws Exception{
+
         machineInfoService.register(machineInfoDTO, imgFile);
+
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
         return "machine/register";
     }
 }

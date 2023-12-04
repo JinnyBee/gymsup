@@ -142,6 +142,7 @@ public class DiaryBoardController {
         }
         return "board/diary/list";
     }
+
     @GetMapping("/board_diary_register")
     public String registerForm(Model model) throws Exception {
         BoardDTO boardDTO = new BoardDTO();

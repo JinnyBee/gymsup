@@ -12,7 +12,31 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-
+                        <form th:action="@{/board_qna_register}" method="post"
+                              enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 가입폼 -->
+                            <h3 class="text-center" th:text="*{getCategoryType().getDescription()}"></h3>
+                            <div class="mb-3 mt-3">
+                                <label for="title" class="form-label">제목:</label>
+                                <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
+                                <p class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="content">내용:</label>
+                                <textarea class="form-control" rows="5" id="content" name="content"
+                                          th:field="*{content}"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="img1" class="form-label">사진1:</label>
+                                <input type="file" class="form-control" id="img1" name="imgFiles">
+                                <label for="img2" class="form-label">사진2:</label>
+                                <input type="file" class="form-control" id="img2" name="imgFiles">
+                            </div>
+                            <input type="hidden" name="categoryType" th:field="*{categoryType}">
+                            <input type="hidden" name="userId" value="33">
+                            <input type="hidden" name="viewCnt" value="0">
+                            <input type="hidden" name="goodCnt" value="0">
+                            <button type="submit" class="btn btn-primary">등록</button>
+                        </form> <!-- End 가입폼 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

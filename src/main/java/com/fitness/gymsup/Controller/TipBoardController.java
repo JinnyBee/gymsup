@@ -82,6 +82,8 @@ public class TipBoardController {
         log.info("lastPage : " + lastPage);
 
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
+        model.addAttribute("type", type);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("boardDTOS", boardDTOS);
 
         for (BoardDTO dto : boardDTOS) {
@@ -132,14 +134,13 @@ public class TipBoardController {
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
         boardDTO.setCommentCount(commentDTOS.size());
-        /*boolean boardUserConfirm = boardService.userConfirm(id, request, principal);*/
+
         log.info(boardDTO);
         log.info(commentDTOS);
 
-        /*Integer userId = boardService.userId(request, principal);*/
+        /*Integer userId = boardService.userId(request, principal);
 
-        /*model.addAttribute("userId", userId);
-        model.addAttribute("userConfirm", boardUserConfirm);*/
+        model.addAttribute("userId", userId);*/
         model.addAttribute("loginUserId", loginUserId);
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);

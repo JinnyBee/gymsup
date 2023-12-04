@@ -87,7 +87,6 @@ public class CommentController extends BaseController {
     }
     @PostMapping("/reply_modify")
     public String modifyReplyProc(ReplyDTO replyDTO,
-                                    BindingResult bindingResult,
                                     HttpServletRequest request,
                                     Principal principal,
                                     RedirectAttributes redirectAttributes,
