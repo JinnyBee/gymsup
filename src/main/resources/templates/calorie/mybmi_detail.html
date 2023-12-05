@@ -32,11 +32,13 @@
                             <tr>
                                 <td style="width: 30%">나의 BMI(비만도) 지수</td>
                                 <td style="width: 50%">
-                                    <span th:text="${bmiDTO.getMyBMI()}"></span>
+                                    <span th:text="${bmiDTO.getMyBMI()} + '(' + ${bmiDTO.getWeightStatus()} + ')'"></span>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        <img class="img-fluid" src="/assets/img/img_bmi.png">
+                        <br>
                         <h4 th:text="${bmiDTO.getWeightStatus()}"></h4>
                         <hr>
                         <p style="font-size: small">
