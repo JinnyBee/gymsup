@@ -75,40 +75,7 @@
 
             const bookmark = document.getElementById("bookmark")
         }
-
-        function bmiCalc() {
-            var ht, wt, bmi;
-
-            ht = document.getElementById("height").value;
-            if(ht <= 0) alert("신장을 올바르게 입력해주세요.")
-
-            wt = document.getElementById("weight").value;
-            if(wt <= 0) alert("체중을 올바르게 입력해주세요.")
-
-            ht = ht/100;
-            bmi = wt/Math.pow(ht, 2);
-            bmi = Math.round(bmi*10)/10;
-
-            if(bmi < 18.5) {
-                weightStatus = "저체중";
-            } else if(bmi >= 18.5 && bmi < 23) {
-                weightStatus = "정상";
-            } else if(bmi >= 23 && bmi < 25) {
-                weightStatus = "과체중";
-            } else if(bmi >= 25 && bmi < 30) {
-                weightStatus = "비만";
-            } else if(bmi >= 30 && bmi < 35) {
-                weightStatus = "고도비만";
-            } else {
-                weightStatus = "초고도비만"
-            }
-
-            let message = "당신의 비만도(BMI) 지수는 " + bmi + "로 \"" + weightStatus + "\" 입니다.";
-            document.getElementById("result").innerHTML = message;
-            bmi = document.getElementById("bmi").value;
-        }
         /*네이버 지도*/
-
         function initMap() {
             var map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(37.4868788, 126.7829829), //지도의 초기 중심 좌표
