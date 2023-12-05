@@ -2,6 +2,7 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
+import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.Service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +13,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -73,6 +77,24 @@ public class AllBoardController {
         model.addAttribute("categoryType", BoardCategoryType.BTYPE_ALL.getDescription());
         model.addAttribute("notiBoardLatestDTOS", notiBoardLatestDTOS);
         model.addAttribute("boardDTOS", boardDTOS);
+
+        return "board/list";
+    }
+    @GetMapping("/board_detail")
+    public String detailForm(Integer id,
+                             String categoryType,
+                             RedirectAttributes redirectAttributes,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+        log.info(categoryType);
+        if(categoryType.equals(BoardCategoryType.BTYPE_TIP.name())) {
+            redirectAttributes.addAttribute("id", id);
+            return "redirect:/board_tip_detail";
+        } else if(categoryType.equals(BoardCategoryType.BTYPE_DIARY.name())) {
+            redirectAttributes.addAttribute("id", id);
+            return "redirect:/board_diary_detail";
+        }
 
         return "board/list";
     }

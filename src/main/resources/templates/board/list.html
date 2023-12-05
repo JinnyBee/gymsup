@@ -42,7 +42,9 @@
                                 <tr th:each="data:${boardDTOS}">
                                     <td th:text="${data.getCategoryType().getDescription()}">[운동+식단 일기]</td>
                                     <td class="align-text-top">
-                                        <a class="d-inline-block text-truncate" th:href="@{/board_list(id=${data.id})}" th:text="${data.title}" style="max-width: 180px;"></a>&nbsp;&nbsp;
+                                        <a class="d-inline-block text-truncate"
+                                           th:href="@{/board_detail(id=${data.id}, categoryType=${data.getCategoryType().name()})}"
+                                           th:text="${data.title}" style="max-width: 180px;"></a>&nbsp;&nbsp;
                                         <span class="d-inline-block text-truncate" style=" color: #ff4930" th:text="${data.commentCount}">9</span>
                                     </td>
                                     <td style="text-align: center" th:text="${data.userNickname}">Jinny</td>
