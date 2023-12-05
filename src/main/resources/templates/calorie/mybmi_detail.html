@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
+                        <div class="row mb-5" style="border-bottom: 3px solid black;">
+                            <h2>나의 BMI 지수 확인하기</h2>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td style="width: 30%">키</td>
+                                <td style="width: 50%">
+                                    <span th:text="${bmiDTO.getHeight()}+'cm'"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">몸무게</td>
+                                <td style="width: 50%">
+                                    <span th:text="${bmiDTO.getWeight()}+'kg'"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">나의 BMI(비만도) 지수</td>
+                                <td style="width: 50%">
+                                    <span th:text="${bmiDTO.getMyBMI()} + '(' + ${bmiDTO.getWeightStatus()} + ')'"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <img class="img-fluid" src="/assets/img/img_bmi.png">
+                        <br>
+                        <h4 th:text="${bmiDTO.getWeightStatus()}"></h4>
+                        <hr>
+                        <p style="font-size: small">
+                            <strong>체질량지수(BMI) 측정이란?</strong><br>
+                            체질량지수는 자신의 몸무게(kg)를 키의 제곱(m)으로 나눈 값으로 비만을 판정하는 비만 지수입니다.<br>
+                            체질량지수는 근육량, 유전적 원인, 다른 개인적 차이를 반영하지 못하는 단점이 있음에도 불구하고
+                            조사자들이나 의료인들이 가장 많이 쓰는 방법 중 하나입니다.
+                        </p>
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2">
+                        <div class="trending">
+                            <ul class="trending-post">
+                                <li><a th:href="@{/mybmi_calc}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/exercise_calorie_calc}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

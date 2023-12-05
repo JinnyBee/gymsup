@@ -15,7 +15,7 @@
                         <div class="row mb-5" style="border-bottom: 3px solid black;">
                             <h2>나의 BMI 지수 확인하기</h2>
                         </div>
-                        <form name="bmiCalcForm">
+                        <form th:action="@{/mybmi_calc}" method="post">
                             <!-- 신장 입력 -->
                             <hr>
                             <div class="form-group row">
@@ -36,12 +36,11 @@
                             <hr>
                             <div class="form-group row"> <!-- BMI 지수 계산 자바스크립트 호출 -->
                                 <div class="col-sm-6 text-center">
-                                    <button type="button" class="btn btn-primary" onclick="bmiCalc()">확인</button>
+                                    <button type="submit" class="btn btn-primary">확인</button>
                                     <button type="reset" class="btn btn-secondary">다시입력</button>
                                 </div>
                             </div>
                             <hr>
-                            <h5><div id="result" style="color: green"></div></h5> <!-- BMI 지수 및 비만도 출력 -->
                         </form>
                         <p/><p/>
                         <p style="font-size: small">
@@ -54,7 +53,7 @@
                     <div class="col-md-2">
                         <div class="trending">
                             <ul class="trending-post">
-                                <li><a th:href="@{/mybmi}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/mybmi_calc}"><h3>BMI 계산</h3></a></li>
                                 <li><a th:href="@{/exercise_calorie_calc}"><h3>운동 칼로리 계산</h3></a></li>
                                 <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
                             </ul>
