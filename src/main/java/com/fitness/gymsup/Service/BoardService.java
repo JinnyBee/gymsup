@@ -32,8 +32,6 @@ import java.util.List;
 @Transactional
 @Log4j2
 public class BoardService {
-    //S3 파일 업로드
-    private final S3Uploader s3Uploader;
     //업로드 사진파일이 저장될 경로
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
@@ -45,11 +43,14 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final ReplyRepository replyRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final FileUploader fileUploader;
+    private final FileUploader fileUploader;    //로컬 파일업로드
+    private final S3Uploader s3Uploader;        //S3 파일업로드
+
     private final ModelMapper modelMapper = new ModelMapper();
 
     //게시글 전체목록
     public Page<BoardDTO> listAll(Pageable page) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 10;
 
@@ -73,8 +74,10 @@ public class BoardService {
 
         return boardDTOS;
     }
-    //특정 카테고리 제외한 전체목록
-    public Page<BoardDTO> listAllWithoutCategory(Pageable page, BoardCategoryType categoryType) throws Exception {
+    //특정 카테고리 제외한 게시글 전체목록
+    public Page<BoardDTO> listAllWithoutCategory(Pageable page,
+                                                 BoardCategoryType categoryType) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 10;
 
@@ -102,12 +105,14 @@ public class BoardService {
     //특정카테고리 게시글 전체목록
     public Page<BoardDTO> list(Pageable page,
                                BoardCategoryType categoryType) throws Exception {
+
         return list(page, categoryType, "", "");
     }
     public Page<BoardDTO> list(Pageable page,
                                BoardCategoryType categoryType,
                                String searchType,
                                String keyword) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 10;
 
@@ -153,7 +158,6 @@ public class BoardService {
     }
     //특정카테고리 게시글 인기글(TOP2)
     public List<BoardDTO> best(BoardCategoryType categoryType) throws Exception {
-        log.info(categoryType.name());
 
         //좋아요 높은 순으로 TOP2 게시글 조회
         List<BoardEntity> boardEntities = boardRepository.findTop2ByCategoryTypeOrderByGoodCntDesc(categoryType);
@@ -189,22 +193,12 @@ public class BoardService {
     }
     //특정카테고리 게시글 최신글(5개)
     public List<BoardDTO> latest(BoardCategoryType categoryType) throws Exception {
-        log.info(categoryType.name());
 
-        //등록일 기준 최신글 5개 조회
+        //등록일 기준 최근5개 게시글 조회
         List<BoardEntity> boardEntities = boardRepository.findTop5ByCategoryTypeOrderByRegDateDesc(categoryType);
         List<BoardDTO> boardDTOS = new ArrayList<>();
 
         for(BoardEntity data : boardEntities) {
-            //게시글 첨부이미지 조회
-            List<String> imgFileList = new ArrayList<>();
-            List<BoardImageDTO> boardImageDTOS = Arrays.asList(
-                    modelMapper.map(boardImageRepository.findAllByBoardId(data.getId()), BoardImageDTO[].class));
-
-            for(BoardImageDTO boardImageDTO : boardImageDTOS) {
-                imgFileList.add(boardImageDTO.getImgFile());
-            }
-
             BoardDTO boardDTO = BoardDTO.builder()
                     .id(data.getId())
                     .categoryType(data.getCategoryType())
@@ -213,7 +207,6 @@ public class BoardService {
                     .userNickname(data.getUserEntity().getNickname())
                     .title(data.getTitle())
                     .content(data.getContent())
-                    .imgFileList(imgFileList)
                     .viewCnt(data.getViewCnt())
                     .goodCnt(data.getGoodCnt())
                     .regDate(data.getRegDate())
@@ -225,8 +218,11 @@ public class BoardService {
         return boardDTOS;
     }
     //게시글 등록
-    public void register(BoardDTO boardDTO, List<MultipartFile> imgFiles,
-                         HttpServletRequest request, Principal principal) throws Exception {
+    public void register(BoardDTO boardDTO,
+                         List<MultipartFile> imgFiles,
+                         HttpServletRequest request,
+                         Principal principal) throws Exception {
+
         BoardEntity boardEntity = modelMapper.map(boardDTO, BoardEntity.class);
         String originalFileName = "";
         String newFileName = "";
@@ -264,18 +260,18 @@ public class BoardService {
                         .boardEntity(newBoard)
                         .imgFile(newFileName)
                         .build();
-
-                log.info(boardImageEntity.toString());
-                log.info(boardImageEntity.getImgFile());
-
                 boardImageRepository.save(boardImageEntity);
+
+                log.info(boardImageEntity);
             }
         }
     }
     //게시글 상세보기
-    public BoardDTO detail(Integer id, Boolean isFirst,
+    public BoardDTO detail(Integer id,
+                           Boolean isFirst,
                            HttpServletRequest request,
                            Principal principal) throws Exception {
+
         //조회수 증가 (첫 상세보기에만 증가)
         if(isFirst) {
             log.info("id : "+id);
@@ -297,7 +293,7 @@ public class BoardService {
         log.info("imgFileList.size() : " + imgFileList.size());
         log.info(imgFileList);
 
-        //게시글 조회하고 있는 사용자 Entity
+        //게시글 조회하고 있는 login 사용자 Entity
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
         if(user == null) {
@@ -323,9 +319,10 @@ public class BoardService {
         return boardDTO;
     }
     //게시글 수정
-    public void modify(BoardDTO boardDTO, List<MultipartFile> imgFiles) throws Exception {
-        BoardEntity boardEntity = boardRepository.findById(boardDTO.getId()).orElseThrow();
+    public void modify(BoardDTO boardDTO,
+                       List<MultipartFile> imgFiles) throws Exception {
 
+        BoardEntity boardEntity = boardRepository.findById(boardDTO.getId()).orElseThrow();
         String originalFileName = "";
         String newFileName = "";
         Boolean existUploadImgFile = false;
@@ -340,25 +337,29 @@ public class BoardService {
         log.info("existUploadImgFile : "+existUploadImgFile);
         //새로 업로드할 이미지파일이 존재한다면 기존 이미지파일을 삭제 후 새 이미지파일 업로드
         if( existUploadImgFile ) {
+            //board_image 테이블에 저장된 기존 이미지파일 데이터 모두 조회
             List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(boardDTO.getId());
-            //기존 파일 삭제
+            //기존 이미지파일 삭제
             for (BoardImageEntity boardImageEntity : boardImageEntities) {
                 log.info(boardImageEntity);
-                fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
+                //fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
+                s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
             }
-            //board_image 테이블에서 해당게시판에 올라간 이미지 데이터 모두 삭제
+            //board_image 테이블에 저장된 기존 이미지파일 데이터 모두 삭제
             boardImageRepository.deleteAllByBoardId(boardDTO.getId());
 
             //새 이미지 업로드 후 board_image 테이블에 저장
             for(MultipartFile imgFile : imgFiles) {
                 originalFileName = imgFile.getOriginalFilename();
                 if(originalFileName.length() != 0) {
-                    newFileName = fileUploader.uploadFile(imgUploadLocation,
-                            originalFileName,
-                            imgFile.getBytes());
+                    //이미지파일을 이미지 저장경로에 업로드
+                    newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+                    /*newFileName = fileUploader.uploadFile(imgUploadLocation,
+                                                          originalFileName,
+                                                          imgFile.getBytes());*/
                     log.info(newFileName);
 
-                    //board_image 테이블에 이미지파일 정보 저장
+                    //board_image 테이블에 이미지파일 데이터 저장
                     BoardImageEntity boardImageEntity = BoardImageEntity.builder()
                             .boardEntity(boardEntity)
                             .imgFile(newFileName)
@@ -377,17 +378,19 @@ public class BoardService {
     }
     //게시글 삭제
     public void remove(Integer id) throws Exception {
+
         //해당 게시글에 등록된 이미지파일 조회
         List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(id);
         log.info("boardImageEntities.size() : " + boardImageEntities.size());
 
         for(BoardImageEntity boardImageEntity : boardImageEntities) {
             log.info(boardImageEntity.getImgFile());
-            //업로드된 이미지파일 삭제
-            fileUploader.deleteFile(imgUploadLocation,
-                                    boardImageEntity.getImgFile());
+            //이미지파일 삭제
+            s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
+            /*fileUploader.deleteFile(imgUploadLocation,
+                                    boardImageEntity.getImgFile());*/
         }
-        //board_image 테이블에서 등록된 모든 이미지파일 정보 삭제
+        //board_image 테이블에서 해당 게시글에 등록된 모든 이미지파일 데이터 삭제
         boardImageRepository.deleteAllByBoardId(id);
 
         //해당 게시글에 등록된 댓글 조회
