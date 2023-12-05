@@ -7,6 +7,7 @@ import com.fitness.gymsup.Entity.MachineUsageEntity;
 import com.fitness.gymsup.Repository.MachineInfoRepository;
 import com.fitness.gymsup.Repository.MachineUsageRepository;
 import com.fitness.gymsup.Util.FileUploader;
+import com.fitness.gymsup.Util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,8 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class MachineInfoService {
+    //S3 파일 업로드
+    private final S3Uploader s3Uploader;
 
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
@@ -116,13 +119,10 @@ public class MachineInfoService {
         String newFileName = "";
         if(originalFileName.length() != 0) {
             if(deleteFile.length() != 0) {
-                fileUploader.deleteFile(imgUploadLocation, deleteFile);
+                s3Uploader.deleteFile(deleteFile, imgUploadLocation);
             }
 
-            newFileName = fileUploader.uploadFile(
-                    imgUploadLocation,
-                    originalFileName,
-                    imgFile.getBytes());
+            newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
 
             machineInfoDTO.setImg((newFileName));
 
