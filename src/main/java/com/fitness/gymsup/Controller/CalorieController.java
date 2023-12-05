@@ -22,7 +22,7 @@ import java.util.List;
 public class CalorieController {
     private final CalorieService calorieService;
 
-    @GetMapping("/mybmi")
+    @GetMapping("/mybmi_calc")
     public String myBmiForm(Model model) throws Exception {
         return "calorie/mybmi_calc";
     }
