@@ -95,10 +95,14 @@ public class MachineController {
         int id1 = 1;
         int id2 = 2;
         int id3 = 3;
+        int id4 = 4;
+        int id5 = 5;
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
         MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
         MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);
+        MachineInfoDTO machineInfoDTOid4 = machineInfoService.detail(id4);
+        MachineInfoDTO machineInfoDTOid5 = machineInfoService.detail(id5);
 
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
@@ -106,6 +110,8 @@ public class MachineController {
         model.addAttribute("machineInfoDTO", machineInfoDTO);
         model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
         model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
+        model.addAttribute("machineInfoDTOid4", machineInfoDTOid4);
+        model.addAttribute("machineInfoDTOid5", machineInfoDTOid5);
         return "machine/about";
     }
 
