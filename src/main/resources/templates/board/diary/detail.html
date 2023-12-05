@@ -3,6 +3,88 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<head>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#btnCommentRegister").click(function() {
+                    var isRun = false;
+                    alert(isRun);
+                    alert("btnComment click!!!");
+                    CommentRegister();
+                });
+
+                // $(document).on("click", ".btnCommentDelete",function(){
+                //     CommentDelete();
+                // });
+            });
+
+            //Json방식으로 댓글 등록
+            function CommentRegister() {
+                //hidden 값으로 보내는 값 설정
+                var boardIdElement = document.getElementsByName('boardId')[0];              //'boardId' 이름으로 된 요소 가져오기
+                var categoryTypeElement = document.getElementsByName('categoryType')[0];    //'categoryType' 이름으로 된 요소 가져오기
+
+                var boardId = parseInt(boardIdElement.value);   //원 게시글 id
+                var categoryType = categoryTypeElement.value;   //게시판 카테고리 타입
+                var comment =$("#comment").val();               //댓글 내용
+
+                isRun = true;
+                alert(isRun);
+                //alert("boardId: " + boardId + ", categoryType: " + categoryType + ", comment: " + comment);
+                $.ajax({
+                    type: "POST",
+                    url: "/comment_register/" + boardId,
+                    contentType : "application/json",
+                    data: JSON.stringify({
+                        comment : comment,
+                        goodCnt : 0
+                    }),
+                    success: function() {
+                        //alert("댓글이 등록되었습니다.");
+                        if(categoryType == 'BTYPE_NOTIFY') {
+                            location.href = "/board_notify_reload/" + boardId;
+                        } else if(categoryType == 'BTYPE_TIP') {
+                            location.href = "/board_tip_reload/" + boardId;
+                        } else if(categoryType == 'BTYPE_DIARY') {
+                            location.href = "/board_diary_reload/" + boardId;
+                        } else if(categoryType == 'BTYPE_QNA') {
+                            location.href = "/board_qna_reload/" + boardId;
+                        } else {
+                            location.href = "/board_list/";
+                        }
+                        isRun = false;
+                    },
+                    error: function (){
+                        alert("등록을 실패하였습니다.");
+                        isRun = false;
+                    }
+                });
+            }
+
+            //Json방식으로 댓글 삭제
+            function CommentDelete(comment_id) {
+                var noElement = document.getElementsByName('no')[0]; // 'no' 이름으로 된 요소 가져오기
+                var no = parseInt(noElement.value); // 게시글번호
+                var id = parseInt(comment_id);
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/comment/remove/"+no+"/"+id,
+                    contentType : "application/json",
+                    success: function() {
+                        alert("댓글이 삭제되었습니다.");
+                        location.href="/article/reload/"+no;
+                    },
+                    error: function (){
+                        alert("삭제를 실패하였습니다.");
+                    }
+                });
+            }
+
+        </script>
+    </th:block>
+</head>
 <body>
 <div layout:fragment="content">
     <main id="main">
@@ -12,8 +94,8 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <!-- 상세보기폼 -->
-                        <div class="row" style="border-bottom: 2px solid black"> <!-- 게시판 카테고리 -->
-                            <div class="col-lg-12" th:text="${categoryType}"><h2>일기 게시판</h2></div>
+                        <div class="row" style="border-bottom: 2px solid black"> <!-- 게시판 타이틀 -->
+                            <div class="col-lg-12"><h2 th:text="${categoryType}">일기</h2></div>
                         </div>
                         <div class="row mt-3 mb-2" > <!-- 게시글 제목 -->
                             <div class="col-lg-12">
@@ -111,7 +193,8 @@
                             <div class="col-lg-4 mt-2"></div>
                         </div>
                         <div class="row mt-1">
-                            <form th:action="@{/comment_register}" method="post">
+                            <!--<form th:action="@{/comment_register}" method="post">-->
+                            <div>
                                 <div class="col-lg-11" style="float: left">
                                     <textarea class="form-control" name="comment" id="comment" rows="3"
                                               style="resize:none"></textarea>
@@ -122,10 +205,13 @@
                                 <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
 
                                 <div class="col-lg-1" style="float: right">
-                                    <button type="submit" class="btn btn-dark"
+<!--                                    <button type="submit" class="btn btn-dark"
+                                            style="float: right; height: 86px">등록</button>-->
+                                    <button type="button" id="btnCommentRegister" class="btn btn-dark"
                                             style="float: right; height: 86px">등록</button>
                                 </div>
-                            </form>
+                            </div>
+                            <!--</form>-->
                         </div> <!-- End 댓글 작성 -->
 
                         <!-- 댓글 목록 -->
