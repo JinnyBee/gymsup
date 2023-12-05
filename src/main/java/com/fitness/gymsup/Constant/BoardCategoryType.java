@@ -5,8 +5,7 @@ public enum BoardCategoryType {
     BTYPE_NOTIFY("공지사항"),
     BTYPE_TIP("운동 팁"),
     BTYPE_DIARY("운동+식단 일기"),
-    BTYPE_QNA("고민나눔"),
-    BTYPE_CONTACT("문의남기기");
+    BTYPE_QNA("고민나눔");
 
     private String description;
 

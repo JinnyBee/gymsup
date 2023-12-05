@@ -3,6 +3,7 @@ package com.fitness.gymsup.Controller;
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
+import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -38,52 +39,6 @@ public class DiaryBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
 
-    //모든게시판 전체목록 조회
-    @GetMapping("/board_list")
-    public String listAllForm(@PageableDefault(page = 1) Pageable pageable,
-                           Model model) throws Exception {
-        Page<BoardDTO> boardDTOS = boardService.listAll(pageable);
-        int blockLimit = 5;
-        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
-
-        if(boardDTOS.isEmpty()) {
-            startPage = 0;
-            endPage = 0;
-            prevPage = 0;
-            currentPage = 0;
-            nextPage = 0;
-            lastPage = 0;
-        } else {
-            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
-            //endPage = Math.min(startPage+blockLimit-1, boardDTOS.getTotalPages());
-            endPage = ((startPage+blockLimit-1)<boardDTOS.getTotalPages()) ? startPage+blockLimit-1 : boardDTOS.getTotalPages();
-
-            prevPage = boardDTOS.getNumber();
-            currentPage = boardDTOS.getNumber() + 1;
-            nextPage = boardDTOS.getNumber() + 2;
-            lastPage = boardDTOS.getTotalPages();
-        }
-
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("prevPage", prevPage);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("lastPage", lastPage);
-
-        log.info("getTotalPages : " + boardDTOS.getTotalPages());
-        log.info("startPage : "+startPage);
-        log.info("endPage : "+endPage);
-        log.info("prevPage : "+prevPage);
-        log.info("currentPage : "+currentPage);
-        log.info("nextPage : "+nextPage);
-        log.info("lastPage : "+lastPage);
-
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_ALL.getDescription());
-        model.addAttribute("boardDTOS", boardDTOS);
-
-        return "board/list";
-    }
     //특정게시판 전체목록 조회
     @GetMapping("/board_diary_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
