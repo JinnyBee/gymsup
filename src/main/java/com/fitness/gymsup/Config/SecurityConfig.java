@@ -17,20 +17,31 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    //간편로그인 성공 헨들러
     private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
+
+    //간편로그인 실패 헨들러
     private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
+
+    //간편로그인 서비스
     private final OAuthUserService oAuthUserService;
+
+    //권한이 없을때 예외처리
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    //비로그인일떄 예외처리
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     PasswordEncoder passwordEncoder(){
+        //비밀번호 암호화
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
+        //유저, 관리자 사이트 권한 설정
         http.authorizeHttpRequests((auth)->{
             auth.antMatchers("/","/user_login", "/user_join").permitAll();
             auth.antMatchers("/user_logout").hasRole("USER");
@@ -43,20 +54,25 @@ public class SecurityConfig {
         });
 
 
-
+        //유저 로그인 설정
         http.formLogin()
                 .loginPage("/user_login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .failureUrl("/user_login_error");
         http.csrf().disable();
+
+        //유저 로그아웃 설정
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user_logout"))
                 .logoutSuccessUrl("/");
 
+        //권한이 없거나 비로그인 예외처리
         http.exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .authenticationEntryPoint(customAuthenticationEntryPoint);
+
+        //간편로그인(카카오, 구글, 네이버) 설정
         http.oauth2Login()
                 .loginPage("/user_login")
                 .authorizationEndpoint()

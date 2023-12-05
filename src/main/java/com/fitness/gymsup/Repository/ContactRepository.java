@@ -12,5 +12,6 @@ import java.util.List;
 @Repository
 public interface ContactRepository extends JpaRepository<ContactEntity, Integer> {
 
+    //유저정보를 이용하여 모든 문의 조회
     List<ContactEntity> findAllByUserEntity(UserEntity userEntity);
 }

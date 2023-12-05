@@ -34,6 +34,7 @@ public class ContactService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
+    //문의 등록
     public void contactRegister(ContactDTO contactDTO, HttpServletRequest request, Principal principal){
         ContactEntity contactEntity = modelMapper.map(contactDTO, ContactEntity.class);
 
@@ -51,6 +52,7 @@ public class ContactService {
         ContactEntity result  = contactRepository.save(contactEntity);
     }
 
+    //내 문의 보기
     public List<ContactDTO> userContact(HttpServletRequest request, Principal principal)throws Exception{
 
         HttpSession session = request.getSession();
@@ -65,7 +67,8 @@ public class ContactService {
 
         return contactDTOS;
     }
-    
+
+    //전체 문의 보기
     public Page<ContactDTO> contactList(Pageable page) throws Exception{
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
@@ -90,6 +93,7 @@ public class ContactService {
         return contactDTOS;
     }
 
+    //문의 상세보기
     public ContactDTO contactDetail(int id)throws Exception{
         Optional<ContactEntity> contactEntity = contactRepository.findById(id);
 
@@ -98,6 +102,7 @@ public class ContactService {
         return contactDTO;
     }
 
+    //답변 등록
     public void adminContactRegister(String answer, boolean is_answer,int id)throws Exception{
         ContactEntity contactEntity = contactRepository.findById(id).orElseThrow();
         contactEntity.setAnswer(answer);
@@ -105,10 +110,12 @@ public class ContactService {
         contactRepository.save(contactEntity);
     }
 
+    //문의 삭제
     public void contactDelete(int id)throws Exception{
         contactRepository.deleteById(id);
     }
 
+    //유저 문의 수정
     public void userContactModify(ContactDTO contactDTO, int id)throws Exception{
         ContactEntity contactEntity = contactRepository.findById(id).orElseThrow();
         contactEntity.setTitle(contactDTO.getTitle());

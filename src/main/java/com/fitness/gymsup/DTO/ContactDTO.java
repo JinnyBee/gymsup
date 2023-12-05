@@ -12,22 +12,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ContactDTO {
-    private Integer id;
-    private Integer userId;
-    private String userNickname;
-    private String userEmail;
+    private Integer id;                             //문의 번호
+    private Integer userId;                         //유저 번호
+    private String userNickname;                    //유저 닉네임
+    private String userEmail;                       //유저 이메일
 
     @NotEmpty(message = "제목을 적어주세요.")
-    private String title;
+    private String title;                           //문의 제목
 
     @NotEmpty(message = "내용을 적어주세요.")
-    private String content;
+    private String content;                         //문의 내용
 
-    private String answer;
+    private String answer;                          //답변
 
-    private boolean is_answer;
+    private boolean is_answer;                      //답변여부
 
-    private LocalDateTime regDate;
-    private LocalDateTime modDate;
-
+    private LocalDateTime regDate;                  //생성일
+    private LocalDateTime modDate;                  //수정일
 }

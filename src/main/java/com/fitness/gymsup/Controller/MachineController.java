@@ -30,6 +30,7 @@ import java.util.List;
 @Log4j2
 public class MachineController {
 
+    //S3 관련 주소
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
     @Value("${cloud.aws.region.static}")
@@ -49,6 +50,8 @@ public class MachineController {
     public String detectForm(Model model) throws Exception {
         return "machine/detect";
     }
+
+    //운동기구 인식 proc
     @PostMapping("/machine_detect")
     public String detectProc(@RequestParam("detectImg") MultipartFile detectImg,
                              Model model) throws Exception {
@@ -85,12 +88,9 @@ public class MachineController {
 
         return "machine/howto";
     }
-    @GetMapping("/machine_howto")
-    public String howtoProc(Model model) throws Exception {
 
-        return "machine/howto";
-    }
-    @GetMapping("/machine_about") //운동기구 전체 페이지
+    //운동기구 전체 페이지
+    @GetMapping("/machine_about")
     public String aboutForm(Model model) throws Exception {
         int id1 = 1;
         int id2 = 2;
@@ -109,16 +109,92 @@ public class MachineController {
         return "machine/about";
     }
 
-    //운동기구 영상 상세보기
-    @GetMapping("/machine_detail")
-    public String detailForm(int id,Model model) throws Exception {
-        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
-
-        model.addAttribute("machineUsageDTO",machineUsageDTO);
-        return "machine/detail";
+    //운동 기구 등록 form
+    @GetMapping("/machine_info_register")
+    public String machineInfoRegisterForm()throws Exception{
+        return "machine/register";
     }
 
+    //운동 기구 등록 proc
+    @PostMapping("/machine_info_register")
+    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO, MultipartFile imgFile, Model model)throws Exception{
 
+        machineInfoService.register(machineInfoDTO, imgFile);
+
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+        return "machine/register";
+    }
+
+    //운동 기구 수정 form
+    @GetMapping("/machine_info_modify")
+    public String infoModifyForm(Integer id, Model model) throws Exception {
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+        return "machine/modify";
+    }
+
+    //운동 기구 수정 proc
+    @PostMapping("/machine_info_modify")
+    public String infoModifyProc(MachineInfoDTO machineInfoDTO,
+                                 RedirectAttributes redirectAttributes,
+                                 MultipartFile imgFile) throws Exception {
+
+        int id = machineInfoDTO.getId();
+
+        redirectAttributes.addAttribute("id",id);
+        machineInfoService.modify(machineInfoDTO, imgFile);
+        return "redirect:/machine_select_list";
+    }
+
+    //운동 기구, 영상 리스트
+    @GetMapping("/machine_select_list")
+    public String selectList(@PageableDefault(page =1) Pageable pageable,
+                             Model model, int id, String errorMessage)throws Exception{
+        Page<MachineUsageDTO> machineUsageDTOS =  machineUsageService.partList(id,pageable);
+        int blockLimit = 5;
+        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
+
+        if(machineUsageDTOS.isEmpty()) {
+            startPage = 0;
+            endPage = 0;
+            prevPage = 0;
+            currentPage = 0;
+            nextPage = 0;
+            lastPage = 0;
+        } else {
+            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
+            //endPage = Math.min(startPage+blockLimit-1, machineUsageDTOS.getTotalPages());
+            endPage = ((startPage+blockLimit-1)<machineUsageDTOS.getTotalPages()) ? startPage+blockLimit-1 : machineUsageDTOS.getTotalPages();
+
+            prevPage = machineUsageDTOS.getNumber();
+            currentPage = machineUsageDTOS.getNumber() + 1;
+            nextPage = machineUsageDTOS.getNumber() + 2;
+            lastPage = machineUsageDTOS.getTotalPages();
+        }
+
+        //S3 관련 주소
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
+
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+
+        model.addAttribute("errorMessage",errorMessage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("prevPage", prevPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("lastPage", lastPage);
+
+        model.addAttribute("machineUsageDTOS",machineUsageDTOS);
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+
+        return "machine/list";
+    }
+
+    //관리자페이지 운동 기구 수정
     @GetMapping("/admin_machine_list")
     public String listForm(Model model) throws Exception {
         /*Page<MachineUsageDTO> machineUsageDTOS = machineUsageService.listAll(pageable);
@@ -169,10 +245,14 @@ public class MachineController {
         model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
         return "machine/alllist";
     }
+
+    //운동 기구 영상 등록 form
     @GetMapping("/machine_usage_register")
     public String registerForm(Model model) throws Exception {
         return "machine/usageregister";
     }
+
+    //운동 기구 영상 등록 proc
     @PostMapping("/machine_usage_register")
     public String registerProc(MachineUsageDTO machineUsageDTO, MultipartFile imgFile,
                                RedirectAttributes redirectAttributes) throws Exception {
@@ -183,6 +263,7 @@ public class MachineController {
         return "redirect:/machine_select_list";
     }
 
+    //운동 기구 영상 수정 form
     @GetMapping("/machine_usage_modify")
     public String usageModifyForm(Integer id, Model model)throws Exception{
         MachineUsageDTO machineUsageDTO = machineUsageService.detail(id, false);
@@ -191,6 +272,7 @@ public class MachineController {
         return "machine/usagemodify";
     }
 
+    //운동 기구 영상 수정 proc
     @PostMapping("/machine_usage_modify")
     public String usageModifyProc(MachineUsageDTO machineUsageDTO,
                                   RedirectAttributes redirectAttributes,
@@ -202,6 +284,7 @@ public class MachineController {
         return "redirect:/machine_select_list";
     }
 
+    //운동 기구 영상 삭제
     @GetMapping("/machine_usage_delete")
     public String usageDelete(Integer uid, Integer id, RedirectAttributes redirectAttributes)throws Exception{
         machineUsageService.delete(uid);
@@ -210,72 +293,14 @@ public class MachineController {
         return "redirect:/machine_select_list";
     }
 
-    @GetMapping("/machine_info_modify")
-    public String infoModifyForm(Integer id, Model model) throws Exception {
-        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+    //운동 기구 영상 상세보기
+    @GetMapping("/machine_detail")
+    public String detailForm(int id,Model model) throws Exception {
+        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
 
-        model.addAttribute("machineInfoDTO", machineInfoDTO);
-        return "machine/modify";
-    }
-    @PostMapping("/machine_info_modify")
-    public String infoModifyProc(MachineInfoDTO machineInfoDTO,
-                             RedirectAttributes redirectAttributes,
-                             MultipartFile imgFile) throws Exception {
-
-        int id = machineInfoDTO.getId();
-
-        redirectAttributes.addAttribute("id",id);
-        machineInfoService.modify(machineInfoDTO, imgFile);
-        return "redirect:/machine_select_list";
-    }
-    @GetMapping("/machine_remove")
-    public String removeProc(Model model) throws Exception {
-        return "redirect:/machine_list";
+        model.addAttribute("machineUsageDTO",machineUsageDTO);
+        return "machine/detail";
     }
 
-    @GetMapping("/machine_select_list")
-    public String selectList(@PageableDefault(page =1) Pageable pageable,
-                             Model model, int id, String errorMessage)throws Exception{
-        Page<MachineUsageDTO> machineUsageDTOS =  machineUsageService.partList(id,pageable);
-        int blockLimit = 5;
-        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
-        if(machineUsageDTOS.isEmpty()) {
-            startPage = 0;
-            endPage = 0;
-            prevPage = 0;
-            currentPage = 0;
-            nextPage = 0;
-            lastPage = 0;
-        } else {
-            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
-            //endPage = Math.min(startPage+blockLimit-1, machineUsageDTOS.getTotalPages());
-            endPage = ((startPage+blockLimit-1)<machineUsageDTOS.getTotalPages()) ? startPage+blockLimit-1 : machineUsageDTOS.getTotalPages();
-
-            prevPage = machineUsageDTOS.getNumber();
-            currentPage = machineUsageDTOS.getNumber() + 1;
-            nextPage = machineUsageDTOS.getNumber() + 2;
-            lastPage = machineUsageDTOS.getTotalPages();
-        }
-
-        //S3 관련 주소
-        model.addAttribute("bucket", bucket);
-        model.addAttribute("region", region);
-        model.addAttribute("folder", folder);
-
-        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
-
-        model.addAttribute("errorMessage",errorMessage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("prevPage", prevPage);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("lastPage", lastPage);
-
-        model.addAttribute("machineUsageDTOS",machineUsageDTOS);
-        model.addAttribute("machineInfoDTO", machineInfoDTO);
-
-        return "machine/list";
-    }
 }

@@ -44,6 +44,7 @@ public class BasicUserService implements UserDetailsService {
     private final ModelMapper modelMapper = new ModelMapper();
     private final PasswordEncoder passwordEncoder;
 
+    //회원가입
     public void saveMember(UserDTO userDTO) {
         String password = passwordEncoder.encode(userDTO.getPassword());
         UserEntity userEntity = new UserEntity();
@@ -56,6 +57,7 @@ public class BasicUserService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 
+    //중복체크
     private void validateDuplicateUser(UserEntity userEntity) {
         UserEntity findUser = userRepository.findByEmail(userEntity.getEmail());
         if (findUser != null) {
@@ -78,6 +80,7 @@ public class BasicUserService implements UserDetailsService {
                 .build();
     }
 
+    //접속 중인 유저 정보 (마이페이지)
     public UserEntity bringUserInfo(HttpServletRequest request, Principal principal) throws Exception {
         HttpSession session = request.getSession();
         UserEntity userEntity = (UserEntity) session.getAttribute("user");
@@ -91,6 +94,7 @@ public class BasicUserService implements UserDetailsService {
         }
     }
 
+    //닉네임 중복 체크
     public String dupNickname(UserDTO userDTO) throws Exception {
         String nickname = userDTO.getNickname();
         String message = "";
@@ -107,7 +111,7 @@ public class BasicUserService implements UserDetailsService {
         return message;
     }
 
-
+    //이메일 중복체크
     public String dupEmail(UserDTO userDTO) throws Exception {
         String email = userDTO.getEmail();
         String emessage = "";
@@ -124,6 +128,7 @@ public class BasicUserService implements UserDetailsService {
         return emessage;
     }
 
+    //내가 쓴 글 조회
     public Page<BoardDTO> myWrite(Pageable page, HttpServletRequest request, Principal principal) throws Exception {
         int curPage = page.getPageNumber() - 1;
         int pageLimit = 10;
@@ -154,73 +159,7 @@ public class BasicUserService implements UserDetailsService {
         return boardDTOS;
     }
 
-    public String bringPassword(Principal principal) throws Exception {
-        String email = principal.getName();
-        UserEntity userEntity = userRepository.findByEmail(email);
-        String bpassword = userEntity.getPassword();
-        return bpassword;
-    }
-
-    public void updatePassword(UserDTO userDTO, Principal principal) throws Exception {
-        String email = principal.getName();
-
-        String npassword = userDTO.getPassword();
-
-        String newPassword = passwordEncoder.encode(npassword);
-        UserEntity userEntity = userRepository.findByEmail(email);
-        userEntity.setPassword(newPassword);
-
-        userRepository.save(userEntity);
-    }
-
-    public void updateNickname(UserDTO userDTO, Principal principal, HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession();
-        String nickname = userDTO.getNickname();
-        UserEntity userEntity = (UserEntity) session.getAttribute("user");
-
-        if (userEntity != null) {
-            userEntity.setNickname(nickname);
-        } else {
-            String loginId = principal.getName();
-            userEntity = userRepository.findByEmail(loginId);
-            userEntity.setNickname(nickname);
-        }
-        userRepository.save(userEntity);
-    }
-
-    public void cancelUser(Principal principal, HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession();
-        UserEntity userEntity = (UserEntity) session.getAttribute("user");
-        String email = "";
-
-        if (userEntity != null) {
-            email = userEntity.getEmail();
-        } else {
-            email = principal.getName();
-        }
-        userRepository.deleteByEmail(email);
-    }
-
-    public Page<UserDTO> userList(Pageable page) throws Exception {
-        int curPage = page.getPageNumber() - 1;
-        int pageLimit = 10;
-
-        Pageable pageable = PageRequest.of(curPage, pageLimit,
-                Sort.by(Sort.Direction.DESC, "id"));
-
-        Page<UserEntity> userEntities = userRepository.findAll(pageable);
-        Page<UserDTO> userDTOS = userEntities.map(data -> UserDTO.builder()
-                .id(data.getId())
-                .email(data.getEmail())
-                .nickname(data.getNickname())
-                .regDate(data.getRegDate())
-                .modDate(data.getModDate())
-                .build()
-        );
-
-        return userDTOS;
-    }
-
+    //내가 쓴 댓글
     public Page<CommentDTO> myComment(Pageable page, HttpServletRequest request, Principal principal)throws Exception{
         int curPage = page.getPageNumber()-1;
         int pageLimit = 10;
@@ -251,5 +190,78 @@ public class BasicUserService implements UserDetailsService {
                 .build());
         return commentDTOS;
     }
+
+    //접속중인 유저 비밀번호 조회
+    public String bringPassword(Principal principal) throws Exception {
+        String email = principal.getName();
+        UserEntity userEntity = userRepository.findByEmail(email);
+        String bpassword = userEntity.getPassword();
+        return bpassword;
+    }
+
+    //비밀번호 변경
+    public void updatePassword(UserDTO userDTO, Principal principal) throws Exception {
+        String email = principal.getName();
+
+        String npassword = userDTO.getPassword();
+
+        String newPassword = passwordEncoder.encode(npassword);
+        UserEntity userEntity = userRepository.findByEmail(email);
+        userEntity.setPassword(newPassword);
+
+        userRepository.save(userEntity);
+    }
+
+    //닉네임 변경
+    public void updateNickname(UserDTO userDTO, Principal principal, HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        String nickname = userDTO.getNickname();
+        UserEntity userEntity = (UserEntity) session.getAttribute("user");
+
+        if (userEntity != null) {
+            userEntity.setNickname(nickname);
+        } else {
+            String loginId = principal.getName();
+            userEntity = userRepository.findByEmail(loginId);
+            userEntity.setNickname(nickname);
+        }
+        userRepository.save(userEntity);
+    }
+
+    //수정필요, 회원탈퇴
+    public void cancelUser(Principal principal, HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        UserEntity userEntity = (UserEntity) session.getAttribute("user");
+        String email = "";
+
+        if (userEntity != null) {
+            email = userEntity.getEmail();
+        } else {
+            email = principal.getName();
+        }
+        userRepository.deleteByEmail(email);
+    }
+
+    //전체 유저 리스트
+    public Page<UserDTO> userList(Pageable page) throws Exception {
+        int curPage = page.getPageNumber() - 1;
+        int pageLimit = 10;
+
+        Pageable pageable = PageRequest.of(curPage, pageLimit,
+                Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<UserEntity> userEntities = userRepository.findAll(pageable);
+        Page<UserDTO> userDTOS = userEntities.map(data -> UserDTO.builder()
+                .id(data.getId())
+                .email(data.getEmail())
+                .nickname(data.getNickname())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build()
+        );
+
+        return userDTOS;
+    }
+
 
 }

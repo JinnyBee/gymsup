@@ -76,12 +76,15 @@ public class MachineInfoService {
         }
         return machineInfoDTOS;
     }
+
+    //기구 상세보기
     public MachineInfoDTO detail(Integer id) throws Exception {
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(id).orElseThrow();
 
         MachineInfoDTO machineInfoDTO = modelMapper.map(machineInfoEntity, MachineInfoDTO.class);
         return machineInfoDTO;
     }
+
     public MachineInfoDTO find(String className) throws Exception {
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findByResult(className);
 
@@ -97,6 +100,7 @@ public class MachineInfoService {
         return machineInfoDTO;
     }
 
+    //기구 설명 등록
     public void register(MachineInfoDTO machineInfoDTO, MultipartFile imgFile)throws Exception{
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
@@ -109,6 +113,7 @@ public class MachineInfoService {
         machineInfoRepository.save(machineInfoEntity);
     }
 
+    //기구 수정
     public void modify(MachineInfoDTO machineInfoDTO, MultipartFile imgFile) throws Exception {
         //기존파일 삭제
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(machineInfoDTO.getId()).orElseThrow();

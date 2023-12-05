@@ -51,7 +51,7 @@ public class OAuthUserService extends DefaultOAuth2UserService {
 
         String mailType = null;
 
-
+        //이메일 중복 방지 설정
         if(oauthType.equals("kakao")){
             mailType = "(kakao)" + email;
         }else if (oauthType.equals("naver")){
@@ -74,10 +74,12 @@ public class OAuthUserService extends DefaultOAuth2UserService {
         return super.loadUser(userRequest);
     }
 
+    //저장
     public void save(UserEntity user){
         userRepository.save(user);
     }
 
+    //조회
     public UserEntity getUserByEmailAndOAuthType(String email, String oauthType){
         return userRepository.findByEmailAndOauthType(email, oauthType).orElse(null);
     }

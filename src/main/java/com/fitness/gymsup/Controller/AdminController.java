@@ -23,6 +23,7 @@ public class AdminController {
 
     private final BasicUserService basicUserService;
 
+    //관리자 정보
     @GetMapping("/admin_detail")
     public String adminDetailForm(HttpServletRequest request, Model model, Principal principal,
                                   String errorMessage, UserDTO userDTO, String message)throws Exception{
@@ -35,6 +36,7 @@ public class AdminController {
         return "admin/admindetail";
     }
 
+    //전체 유저 정보
     @GetMapping("/admin_user_list")
     public String adminUserList(@PageableDefault(page = 1)Pageable pageable,
                                 Model model)throws Exception{

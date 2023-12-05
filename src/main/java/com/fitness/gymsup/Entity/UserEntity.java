@@ -35,8 +35,8 @@ public class UserEntity extends BaseEntity{
     private String password;        //유저 비밀번호
 
     @Column(name = "oauth_type", columnDefinition = "VARCHAR(50)")
-    private String oauthType;
+    private String oauthType;       //간편로그인 타입 (구글, 네이버, 카카오)
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role;          //유저 역할
 }

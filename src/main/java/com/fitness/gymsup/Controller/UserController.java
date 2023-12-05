@@ -36,6 +36,7 @@ public class UserController {
 
 
 
+    //회원가입 form
     @GetMapping("/user_join")
     public String joinForm(Model model , String message, String emessage, HttpServletRequest request) throws Exception {
             Map<String, ?>flashMap = RequestContextUtils.getInputFlashMap(request);
@@ -51,6 +52,8 @@ public class UserController {
 
         return "user/join";
     }
+
+    //회원가입 proc
     @PostMapping("/user_join")
     public String joinProc(@Valid UserDTO userDTO, BindingResult bindingResult,
                            Model model,RedirectAttributes redirectAttributes) throws Exception {
@@ -78,18 +81,21 @@ public class UserController {
 
     }
 
+    //로그인 form
     @GetMapping("/user_login")
     public String loginForm(String errorMessage, Model model) throws Exception {
         model.addAttribute("errorMessage",errorMessage);
         return "user/login";
     }
 
+    //로그인 오류 form
     @GetMapping("/user_login_error")
     public String loginError(Model model)throws Exception {
         model.addAttribute("errorMessage", "아이디 또는 비밀번호를 확인해 주세요.");
         return "user/login";
     }
 
+    //마이페이지
     @GetMapping("/user_detail")
     public String detailForm(HttpServletRequest request, Model model, Principal principal,
                              String errorMessage, UserDTO userDTO, String message) throws Exception {
@@ -102,13 +108,14 @@ public class UserController {
         return "user/detail";
     }
 
-
+    //닉네임 수정
     @PostMapping("/user_nickname_update")
     public String nicknameUpdate(UserDTO userDTO, Principal principal, HttpServletRequest request)throws Exception{
         basicUserService.updateNickname(userDTO, principal, request);
         return "redirect:/user_detail";
     }
 
+    //마이페이지 닉네임 중복체크
     @PostMapping("/user_nickname_dup")
     public String nicknameDupt(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{
         String message = basicUserService.dupNickname(userDTO);
@@ -118,17 +125,20 @@ public class UserController {
         return "redirect:/user_detail";
     }
 
+    //회원탈퇴 수정필요
     @GetMapping("/user_cancel")
     public String cancelForm(Model model) throws Exception {
         return "user/cancel";
     }
 
+    //회원탈퇴 수정필요
     @GetMapping ("/user_cancel_proc")
     public String cancelProc(Model model,Principal principal, HttpServletRequest request) throws Exception {
         basicUserService.cancelUser(principal, request);
         return "redirect:/user_logout";
     }
 
+    //내가 쓴 글
     @GetMapping("/user_mywrite")
     public String myWrite(@PageableDefault(page = 1) Pageable pageable
             , Model model, HttpServletRequest request, Principal principal) throws Exception {
@@ -167,6 +177,7 @@ public class UserController {
         return "user/mywrite";
     }
 
+    //내가 쓴 댓글
     @GetMapping("/user_mycomment")
     public String myComment(@PageableDefault(page = 1) Pageable pageable
             , Model model, HttpServletRequest request, Principal principal) throws Exception {
@@ -205,6 +216,8 @@ public class UserController {
         
         return "user/mycomment";
     }
+
+    //회원가입 닉네임 중복체크
     @PostMapping("/user_regDupNickname")
     public String regDupNickname(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{
         String message = basicUserService.dupNickname(userDTO);
@@ -214,6 +227,7 @@ public class UserController {
         return "redirect:/user_join";
     }
 
+    //회원가입 이메일 중복체크
     @PostMapping("/user_regDupEmail")
     public String regDupEmail(UserDTO userDTO,RedirectAttributes redirectAttributes)throws Exception{
         String eMessage = basicUserService.dupEmail(userDTO);
@@ -222,12 +236,14 @@ public class UserController {
         return "redirect:/user_join";
     }
 
+    //비밀번호 확인 form
     @GetMapping("/user_password_confirm")
     public String passwordConfirmForm(String errorMessage, Model model)throws Exception{
         model.addAttribute("errorMessage",errorMessage);
         return "user/passwordform";
     }
 
+    //비밀번호 확인 proc
     @PostMapping("/user_password_confirm")
     public String passwordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
 
@@ -247,7 +263,7 @@ public class UserController {
 
     }
 
-
+    //비밀번호 수정
     @PostMapping("/user_password_update")
     public String passwordUpdateProc(@Valid UserDTO userDTO,BindingResult bindingResult,
                                      Principal principal, Model model,
@@ -262,12 +278,14 @@ public class UserController {
         return "redirect:/user_detail";
     }
 
+    //권한 오류
     @GetMapping("/user_access_error")
     public String accessDenied(RedirectAttributes redirectAttributes){
         redirectAttributes.addAttribute("errorMessage","권한이 없습니다.");
         return "redirect:/";
     }
 
+    //비로그인 오류
     @GetMapping("/user_entry_error")
     public String entryDenied(RedirectAttributes redirectAttributes){
         redirectAttributes.addAttribute("errorMessage","로그인 후 이용해주세요.");

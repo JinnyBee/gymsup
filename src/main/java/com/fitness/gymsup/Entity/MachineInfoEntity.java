@@ -23,17 +23,17 @@ public class MachineInfoEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
     generator = "machine_info_SEQ")
-    private int id;
+    private int id;         //운동기구 번호
 
     @Column(name = "name", length = 50, nullable = false)
-    private String name;
+    private String name;    //운동기구 이름
 
     @Column(name = "content", length = 500, nullable = false)
-    private String content;
+    private String content; //운동기구 설명
 
     @Column(name ="img_file", length = 255,nullable = false)
-    private String img;
+    private String img;     //운동기구 이미지
 
     @Column(name ="result", length = 50, nullable = false)
-    private String result;
+    private String result;  //운동기구 감지한 결과
 }

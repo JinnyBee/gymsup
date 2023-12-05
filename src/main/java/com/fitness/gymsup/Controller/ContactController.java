@@ -27,6 +27,7 @@ import java.util.List;
 public class ContactController {
     private final ContactService contactService;
 
+    //문의 등록 form
     @GetMapping("/contact_register")
     public String contactRegisterForm(Model model) throws Exception{
         ContactDTO contactDTO = new ContactDTO();
@@ -35,6 +36,7 @@ public class ContactController {
         return "contact/register";
     }
 
+    //문의 등록 proc
     @PostMapping("/contact_register")
     public String contactRegisterProc(@Valid ContactDTO contactDTO, BindingResult bindingResult,
                                       HttpServletRequest request, Principal principal, RedirectAttributes redirectAttributes)throws Exception{
@@ -47,6 +49,7 @@ public class ContactController {
         return "redirect:/";
     }
 
+    //유저 문의 목록
     @GetMapping("/user_contact")
     public String userContact(Principal principal, HttpServletRequest request, Model model, String errorMessage)throws Exception{
 
@@ -57,6 +60,7 @@ public class ContactController {
         return "contact/userlist";
     }
 
+    //유저 문의 상세보기
     @GetMapping("/user_contact_detail")
     public String userContactDetail(int id, Model model)throws Exception{
         ContactDTO contactDTO = contactService.contactDetail(id);
@@ -66,6 +70,7 @@ public class ContactController {
         return "contact/userdetail";
     }
 
+    //문의 삭제
     @GetMapping("/user_contact_delete")
     public String userContactDelete(int id, RedirectAttributes redirectAttributes)throws Exception{
         contactService.contactDelete(id);
@@ -73,6 +78,7 @@ public class ContactController {
         return "redirect:/user_contact";
     }
 
+    //문의 수정 form
     @GetMapping("/user_contact_modify")
     public String userContactModifyForm(int id, Model model)throws Exception{
         ContactDTO contactDTO = contactService.contactDetail(id);
@@ -80,12 +86,14 @@ public class ContactController {
         return "contact/usermodify";
     }
 
+    //문의 수정 proc
     @PostMapping("/user_contact_modify")
     public String userContactModifyProc(int id, ContactDTO contactDTO)throws Exception{
         contactService.userContactModify(contactDTO, id);
         return "redirect:/user_contact";
     }
 
+    //관리자 문의 전체보기
     @GetMapping("/admin_contact")
     public String adminContact(@PageableDefault(page = 1)Pageable pageable, Model model)throws Exception{
         Page<ContactDTO> contactDTOS = contactService.contactList(pageable);
@@ -123,12 +131,15 @@ public class ContactController {
         return "contact/adminlist";
     }
 
+    //관리자 답변 상세보기
     @GetMapping("/admin_contact_detail")
     public String adminContactDetail(int id,Model model)throws Exception{
         ContactDTO contactDTO = contactService.contactDetail(id);
         model.addAttribute("contactDTO",contactDTO);
         return "contact/admindetail";
     }
+
+    //관리자 답변 등록
     @PostMapping("/admin_contact_register")
     public String adminContactRegister(int id, String answer, boolean is_answer)throws Exception{
         contactService.adminContactRegister(answer, is_answer, id);

@@ -38,7 +38,7 @@ public class MachineUsageService {
     private final FileUploader fileUploader;
     private ModelMapper modelMapper = new ModelMapper();
 
-    //운동영상 등록
+    //운동 기구 영상 등록
     public void register(MachineUsageDTO machineUsageDTO, MultipartFile imgFile)throws Exception{
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
@@ -56,7 +56,7 @@ public class MachineUsageService {
 
     }
 
-    //전체목록
+    //운동 기구 영상 전체목록
     public Page<MachineUsageDTO> listAll(Pageable page)throws Exception{
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
@@ -81,7 +81,7 @@ public class MachineUsageService {
         return machineUsageDTOS;
     }
 
-    //부분목록
+    //운동 기구 영상 부분 목록
     public Page<MachineUsageDTO> partList(int id, Pageable page)throws Exception{
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
@@ -107,7 +107,7 @@ public class MachineUsageService {
         return machineUsageDTOS;
     }
 
-    //상세보기
+    //운동 기구 영상 상세보기
     public MachineUsageDTO detail(int id, boolean isFirst)throws Exception{
 
         if(isFirst){
@@ -120,6 +120,7 @@ public class MachineUsageService {
 
     }
 
+    //운동 기구 영상 수정
     public void modify(MachineUsageDTO machineUsageDTO, MultipartFile imgFile)throws Exception{
         MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(machineUsageDTO.getId()).orElseThrow();
         String deleteFile = machineUsageEntity.getThumbnail();
@@ -143,6 +144,7 @@ public class MachineUsageService {
         machineUsageRepository.save(data);
     }
 
+    //운동 기구 영상 삭제
     public void delete(Integer id)throws Exception{
         MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
 
