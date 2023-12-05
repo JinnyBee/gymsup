@@ -79,7 +79,7 @@ public class CalorieController {
         model.addAttribute("foodCalorieDTO", foodCalorieDTO);
         return "calorie/food_detail";
     }
-    @GetMapping(value = "/food_calorie_call")
+    /*@GetMapping(value = "/food_calorie_call")
     public String callFoodApi(String keyword,
                               Model model) throws Exception {
         StringBuffer result = new StringBuffer();
@@ -114,6 +114,34 @@ public class CalorieController {
         log.info("RES : " + result.toString());
 
         return result.toString();
+    }*/
+    @GetMapping("/myfood_calorie_main")
+    public String myfoodCalorieMain(Model model) throws Exception {
+
+        return "calorie/myfood_main";
+    }
+    @GetMapping("/myfood_calorie_calc")
+    public String myfoodCalorieCalcForm(Model model) throws Exception {
+
+        return "calorie/myfood_calc";
+    }
+    @GetMapping("/myfood_calorie_search")
+    public String myfoodCalorieSearch(String keyword,
+                                      Model model) throws Exception {
+        log.info("keyword : " + keyword);
+        List<FoodCalorieDTO> myfoodCalorieDTOS = calorieService.requestToFoodDB(keyword);
+
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("myfoodCalorieDTOS", myfoodCalorieDTOS);
+
+        return "calorie/myfood_list";
+    }
+    @GetMapping("/myfood_calorie_detail")
+    public String myfoodCalorieDetail(FoodCalorieDTO foodCalorieDTO,
+                                      Model model) throws Exception {
+        log.info(foodCalorieDTO);
+        model.addAttribute("foodCalorieDTO", foodCalorieDTO);
+        return "calorie/myfood_detail";
     }
     @GetMapping("/exercise_calorie_calc")
     public String exerciseCalorieCalcForm(Model model) throws Exception {

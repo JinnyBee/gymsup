@@ -171,15 +171,18 @@
                         </div> <!-- End 북마크/추천 -->
                         <!-- 게시글 수정/삭제/목록 -->
                         <div class="row" style="border-top: 1px solid black; height: 100px;">
-                            <div class="col-lg-4 mt-2"></div>
-                            <div class="col-lg-4 mt-2"></div>
-                            <div class="col-lg-4 mt-2" style="text-align: right"> <!-- 수정, 삭제, 목록 버튼 -->
+                            <div class="col-lg-3 mt-2"></div>
+                            <div class="col-lg-3 mt-2"></div>
+                            <div class="col-lg-6 mt-2" style="text-align: right"> <!-- 수정, 삭제, 목록 버튼 -->
                                 <button class="btn btn-outline-dark" type="button"
                                         th:if="${boardDTO.userId}==${boardDTO.loginUserId}"
                                         th:onclick="|location.href='@{/board_diary_modify(id=${boardDTO.id})}'|">수정</button>
                                 <button class="btn btn-outline-danger" type="button"
                                         th:if="${boardDTO.userId}==${boardDTO.loginUserId}"
                                         th:onclick="|location.href='@{/board_diary_remove(id=${boardDTO.id})}'|">삭제</button>
+                                <button class="btn btn-outline-success" type="button"
+                                        th:if="${boardDTO.userId}==${boardDTO.loginUserId}"
+                                        th:onclick="|location.href='@{/myfood_calorie_main(id=${boardDTO.id})}'|">음식칼로리 등록</button>
                                 <button class="btn btn-outline-primary" type="button"
                                         th:onclick="|location.href='@{/board_diary_list}'|">목록</button>
                             </div>

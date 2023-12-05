@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-9"> <!-- 작업공간 -->
+                        <h2>나의 음식칼로리</h2>
+                        <hr>
+                        <h6 th:text="${foodCalorieDTO.getDescKor()} + ' 검색 결과'"></h6>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td style="width: 30%">음식명</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getMakerName().isEmpty()}"
+                                          th:text="'['+${foodCalorieDTO.getMakerName()}+']'"></span>
+                                    <span th:text="${foodCalorieDTO.getDescKor()}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">총 내용량</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getServingSize().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getServingSize()}"></span>
+                                    <span th:unless="${foodCalorieDTO.getServingUnit().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getServingUnit()}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">칼로리</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getNutrCont1().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getNutrCont1()} + 'kcal'"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br><br>
+                        <h6>영양소 구성</h6>
+                        <hr>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td style="width: 30%">탄수화물(g)(1회제공량당)</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getNutrCont2().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getNutrCont2()} + 'g'"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">단백질(g)(1회제공량당)</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getNutrCont3().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getNutrCont3()} + 'g'"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">지방(g)(1회제공량당)</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getNutrCont4().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getNutrCont4()} + 'g'"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">당류(g)(1회제공량당)</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getNutrCont5().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getNutrCont5()} + 'g'"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">나트륨(mg)(1회제공량당)</td>
+                                <td style="width: 50%">
+                                    <span th:unless="${foodCalorieDTO.getNutrCont6().isEmpty()}"
+                                          th:text="${foodCalorieDTO.getNutrCont6()} + 'mg'"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2">
+                        <div class="trending">
+                            <ul class="trending-post">
+                                <li><a th:href="@{/mybmi_calc}"><h3>BMI 계산</h3></a></li>
+                                <li><a th:href="@{/exercise_calorie_calc}"><h3>운동 칼로리 계산</h3></a></li>
+                                <li><a th:href="@{/food_calorie_calc}"><h3>음식 칼로리 계산</h3></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

@@ -16,21 +16,18 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends
         JpaRepository<BoardEntity, Integer> {
-    //검색이 없을 경우 페이지처리 :  findAll 사용
-    //제목으로 검색시 페이지 처리
+    //검색어가 없을 경우 페이지처리 :  findAll 사용
+    //제목으로 검색시 페이지처리
     @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.title like %:keyword%")
     Page<BoardEntity> searchTitle(Pageable pageable, BoardCategoryType categoryType, String keyword);
 
-    //내용으로 검색시 페이지 처리
+    //내용으로 검색시 페이지처리
     @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.content like %:keyword%")
     Page<BoardEntity> searchContent(Pageable pageable, BoardCategoryType categoryType, String keyword);
 
     //닉네임으로 검색시 페이지처리
     @Query("SELECT b FROM BoardEntity b LEFT JOIN b.userEntity u WHERE b.categoryType=:categoryType and u.nickname like %:keyword%")
     Page<BoardEntity> searchNickname(Pageable pageable, BoardCategoryType categoryType, String keyword);
-
-    @Query("SELECT b FROM BoardEntity b LEFT JOIN b.userEntity u WHERE b.categoryType=:categoryType")
-    Page<BoardEntity> searchNickname2(Pageable pageable, BoardCategoryType categoryType);
 
     //제목+내용으로 검색시 페이지처리
     @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.title like %:keyword% or b.content like %:keyword%")
@@ -44,10 +41,12 @@ public interface BoardRepository extends
     @Query("SELECT b FROM BoardEntity b WHERE b.categoryType<>:categoryType")
     Page<BoardEntity> findAllWithoutCategoryType(Pageable pageable, BoardCategoryType categoryType);
 
+    //view_cnt(조회수) 증가
     @Query(value = "UPDATE board SET view_cnt = view_cnt+1 WHERE id=:id",
             nativeQuery = true)
     void viewCntUp(@Param("id") Integer id);
 
+    //good_cnt(추천수) 증가
     @Query(value = "UPDATE board SET good_cnt = good_cnt+1 WHERE id=:id",
             nativeQuery = true)
     void goodCntUp(@Param("id") Integer id);
