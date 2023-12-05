@@ -94,19 +94,34 @@
                                           th:field="*{content}"></textarea>
                                 <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
                             </div>
-                            <div class="mb-3">
-<!--
+<!--                            <div class="mb-3">
+&lt;!&ndash;
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#food_calorieModal">
                                     음식 칼로리 계산하기
                                 </button>
--->
+&ndash;&gt;
                                 <button type="button" class="btn btn-primary"
                                         th:onclick="|location.href='@{/food_calorie_calc}'|">
-                                    음식 칼로리 계산하기
+                                    음식 칼로리 등록하기
                                 </button>
-                            </div>
-                            <div class="mb-3">
+                            </div>-->
+                            <div class="row mb-3 mt-3">
+                                <div class="col-lg-3" style="float: left">
+                                    <button type="button" class="btn btn-dark"
+                                            style="float: left; height: 62px">오늘 먹은 음식칼로리 등록</button>
+                                </div>
+                                <div class="col-lg-9" style="float: right">
+                                <textarea class="form-control" name="comment" id="comment" rows="2"
+                                          style="resize:none"></textarea>
+                                </div>
+                                <!-- 댓글 등록 시 필요한 값들을 hidden으로 설정 -->
+                                <input type="hidden" name="boardId" th:value="${boardDTO.id}">
+                                <input type="hidden" name="goodCnt" value="0">
+                                <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
+                            </div> <!-- End 댓글 작성 -->
+
+                            <div class="mb-3 mt-3">
                                 <label for="img1" class="form-label">사진1:</label>
                                 <input type="file" class="form-control" id="img1" name="imgFiles">
                                 <label for="img2" class="form-label">사진2:</label>

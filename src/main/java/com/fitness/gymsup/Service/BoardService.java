@@ -51,7 +51,7 @@ public class BoardService {
     //게시글 전체목록
     public Page<BoardDTO> listAll(Pageable page) throws Exception {
         int curPage = page.getPageNumber()-1;
-        int pageLimit = 5;
+        int pageLimit = 10;
 
         Pageable pageable = PageRequest.of(curPage, pageLimit,
                 Sort.by(Sort.Direction.DESC, "id"));
@@ -73,7 +73,36 @@ public class BoardService {
 
         return boardDTOS;
     }
-    //특정게시글 전체목록
+    //특정 카테고리 제외한 전체목록
+    public Page<BoardDTO> listAllWithoutCategory(Pageable page, BoardCategoryType categoryType) throws Exception {
+        int curPage = page.getPageNumber()-1;
+        int pageLimit = 10;
+
+        Pageable pageable = PageRequest.of(curPage, pageLimit,
+                Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<BoardEntity> boardEntities = boardRepository.findAllWithoutCategoryType(pageable, categoryType);
+        Page<BoardDTO> boardDTOS = boardEntities.map(data->BoardDTO.builder()
+                .id(data.getId())
+                .categoryType(data.getCategoryType())
+                .userId(data.getUserEntity().getId())
+                .userNickname(data.getUserEntity().getNickname())
+                .title(data.getTitle())
+                .content(data.getContent())
+                .viewCnt(data.getViewCnt())
+                .goodCnt(data.getGoodCnt())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build()
+        );
+
+        return boardDTOS;
+    }
+    //특정카테고리 게시글 전체목록
+    public Page<BoardDTO> list(Pageable page,
+                               BoardCategoryType categoryType) throws Exception {
+        return list(page, categoryType, "", "");
+    }
     public Page<BoardDTO> list(Pageable page,
                                BoardCategoryType categoryType,
                                String searchType,
@@ -121,7 +150,7 @@ public class BoardService {
 
         return boardDTOS;
     }
-    //특정게시글 인기글(TOP2)
+    //특정카테고리 게시글 인기글(TOP2)
     public List<BoardDTO> best(BoardCategoryType categoryType) throws Exception {
         log.info(categoryType.name());
 
@@ -157,7 +186,7 @@ public class BoardService {
 
         return boardDTOS;
     }
-    //특정게시글 최신글(5개)
+    //특정카테고리 게시글 최신글(5개)
     public List<BoardDTO> latest(BoardCategoryType categoryType) throws Exception {
         log.info(categoryType.name());
 

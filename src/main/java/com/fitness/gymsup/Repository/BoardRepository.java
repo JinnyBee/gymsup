@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends
         JpaRepository<BoardEntity, Integer> {
-    //검색이 없는 페이지처리 FindAll 사용
+    //검색이 없을 경우 페이지처리 :  findAll 사용
     //제목으로 검색시 페이지 처리
     @Query("SELECT b FROM BoardEntity b WHERE b.categoryType=:categoryType and b.title like %:keyword%")
     Page<BoardEntity> searchTitle(Pageable pageable, BoardCategoryType categoryType, String keyword);
@@ -39,6 +39,10 @@ public interface BoardRepository extends
     //제목+내용+닉네임으로 검색시 페이지처리
     @Query("SELECT b FROM BoardEntity b LEFT JOIN b.userEntity u WHERE b.categoryType=:categoryType and b.title like %:keyword% or b.content like %:keyword% or u.nickname like %:keyword%")
     Page<BoardEntity> searchTitleContentNickname(Pageable pageable, BoardCategoryType categoryType, String keyword);
+
+    //특정게시판 제외한 게시판 전체 목록
+    @Query("SELECT b FROM BoardEntity b WHERE b.categoryType<>:categoryType")
+    Page<BoardEntity> findAllWithoutCategoryType(Pageable pageable, BoardCategoryType categoryType);
 
     @Query(value = "UPDATE board SET view_cnt = view_cnt+1 WHERE id=:id",
             nativeQuery = true)
