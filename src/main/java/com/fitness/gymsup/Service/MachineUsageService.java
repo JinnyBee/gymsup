@@ -143,5 +143,12 @@ public class MachineUsageService {
         machineUsageRepository.save(data);
     }
 
+    public void delete(Integer id)throws Exception{
+        MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
+
+        s3Uploader.deleteFile(machineUsageEntity.getThumbnail(), imgUploadLocation);
+
+        machineUsageRepository.deleteById(id);
+    }
 
 }

@@ -120,9 +120,8 @@ public class MachineController {
 
 
     @GetMapping("/admin_machine_list")
-    public String listForm(@PageableDefault(page = 1) Pageable pageable,
-                           Model model) throws Exception {
-        Page<MachineUsageDTO> machineUsageDTOS = machineUsageService.listAll(pageable);
+    public String listForm(Model model) throws Exception {
+        /*Page<MachineUsageDTO> machineUsageDTOS = machineUsageService.listAll(pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -153,6 +152,21 @@ public class MachineController {
 
         model.addAttribute("machineUsageDTOS",machineUsageDTOS);
 
+        return "machine/alllist";*/
+        int id1 = 1;
+        int id2 = 2;
+        int id3 = 3;
+
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
+        MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
+        MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);
+
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+        model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
+        model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
         return "machine/alllist";
     }
     @GetMapping("/machine_usage_register")
@@ -160,9 +174,13 @@ public class MachineController {
         return "machine/usageregister";
     }
     @PostMapping("/machine_usage_register")
-    public String registerProc(MachineUsageDTO machineUsageDTO, MultipartFile imgFile) throws Exception {
+    public String registerProc(MachineUsageDTO machineUsageDTO, MultipartFile imgFile,
+                               RedirectAttributes redirectAttributes) throws Exception {
+        Integer id = machineUsageDTO.getMachineInfoId();
         machineUsageService.register(machineUsageDTO, imgFile);
-        return "redirect:/";
+        redirectAttributes.addAttribute("id",id);
+        redirectAttributes.addAttribute("errorMessage","등록되었습니다.");
+        return "redirect:/machine_select_list";
     }
 
     @GetMapping("/machine_usage_modify")
@@ -178,12 +196,17 @@ public class MachineController {
                                   RedirectAttributes redirectAttributes,
                                   MultipartFile imgFile)throws Exception{
         int id = machineUsageDTO.getMachineInfoId();
-        log.info(machineUsageDTO.toString());
-        log.info(machineUsageDTO.toString());
-        log.info(machineUsageDTO.toString());
-        log.info(machineUsageDTO.toString());
         redirectAttributes.addAttribute("id",id);
+        redirectAttributes.addAttribute("errorMessage","수정되었습니다.");
         machineUsageService.modify(machineUsageDTO, imgFile);
+        return "redirect:/machine_select_list";
+    }
+
+    @GetMapping("/machine_usage_delete")
+    public String usageDelete(Integer uid, Integer id, RedirectAttributes redirectAttributes)throws Exception{
+        machineUsageService.delete(uid);
+        redirectAttributes.addAttribute("id",id);
+        redirectAttributes.addAttribute("errorMessage","삭제되었습니다.");
         return "redirect:/machine_select_list";
     }
 
@@ -211,7 +234,8 @@ public class MachineController {
     }
 
     @GetMapping("/machine_select_list")
-    public String selectList(@PageableDefault(page =1) Pageable pageable, Model model, int id)throws Exception{
+    public String selectList(@PageableDefault(page =1) Pageable pageable,
+                             Model model, int id, String errorMessage)throws Exception{
         Page<MachineUsageDTO> machineUsageDTOS =  machineUsageService.partList(id,pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
@@ -241,6 +265,7 @@ public class MachineController {
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
 
+        model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("prevPage", prevPage);
