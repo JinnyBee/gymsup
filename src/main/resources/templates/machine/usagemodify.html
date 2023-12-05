@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+  <main id="main">
+    <!-- ======= Search Results ======= -->
+    <section id="search-result" class="search-result">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8"> <!-- 작업공간 -->
+            <div class="row" style="border-bottom: 3px solid black">
+              <h2>운동기구 영상수정</h2>
+            </div>
+            <div class="row mt-5">
+              <div style="border: 2px solid lightgrey; height: auto;min-height: 200px">
+                <div class="row mt-3">
+                  <h5>유튜브 수정</h5>
+                </div>
+                <form th:action="@{/machine_usage_modify}" th:object="${machineUsageDTO}"
+                      method="post" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="title" class="form-label">제목:</label>
+                    <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="content" class="form-label">내용:</label>
+                    <textarea name="content" id="content" class="form-control" rows="10" th:field="*{content}"></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <input type="hidden" name="thumbnail" th:field="*{thumbnail}">
+                    <label for="imgFile" class="form-label">썸네일:</label>
+                    <input class="form-control" type="file" id="imgFile" name="imgFile">
+                  </div>
+                  <div class="mb-3">
+                    <label for="url" class="form-label">유튜브 src 주소:</label>
+                    <input class="form-control" type="text" id="url" name="url" th:field="*{url}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="url" class="form-label">기구 종류:</label>
+                    <select class="form-select" name="machineInfoId" th:field="*{machineInfoId}">
+                      <option value="1">폼롤러</option>
+                      <option value="2">덤벨</option>
+                      <option value="3">케틀벨</option>
+                    </select>
+                  </div>
+
+                  <input type="hidden" name="viewCnt" th:field="*{viewCnt}">
+                  <input type="hidden" name="id" th:field="*{id}">
+                  <button type="submit" class="btn btn-primary mb-3">수정</button>
+                </form>
+
+
+              </div>
+            </div>
+
+
+
+          </div> <!-- End 작업공간 -->
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+    </section> <!-- End Search Result -->
+  </main><!-- End #main -->
+</div>
+</body>
+</html>

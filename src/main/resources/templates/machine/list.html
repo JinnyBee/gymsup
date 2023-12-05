@@ -33,7 +33,12 @@
                                     </div>
                                 </div>
                                 <div class="container mt-3">
-                                    <h4>사용 설명을 위한 유튜브 </h4>
+                                    <h4>사용 설명을 위한 유튜브
+                                        <span>
+                                            <button type="button" class="btn btn-outline-dark"
+                                            th:onclick="|location.href='@{/machine_usage_register}'|">둥록</button>
+                                        </span>
+                                    </h4>
                                     <table class="table">
                                         <thead>
                                         <tr>
@@ -47,15 +52,16 @@
                                         <tbody>
                                         <tr th:each="data:${machineUsageDTOS}">
                                             <td>
-                                                <span class="badge bg-dark" th:if="${data.machineInfoId}==9">폼롤러</span>
-                                                <span class="badge bg-success" th:if="${data.machineInfoId}==10">덤벨</span>
-                                                <span class="badge bg-info" th:if="${data.machineInfoId}==11">케틀벨</span>
+                                                <span class="badge bg-dark" th:if="${data.machineInfoId}==1">폼롤러</span>
+                                                <span class="badge bg-success" th:if="${data.machineInfoId}==2">덤벨</span>
+                                                <span class="badge bg-info" th:if="${data.machineInfoId}==3">케틀벨</span>
                                             </td>
-                                            <td><img th:src="|/images/${data.thumbnail}|" alt="" height="125px" width="210px"></td>
+                                            <td><img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
+                                                    alt="" height="125px" width="210px"></td>
                                             <td><a th:href="@{/machine_detail(id=${data.id})}"  th:text="${data.title}"></a></td>
                                             <td th:text="${data.viewCnt}">john@example.com</td>
                                             <td>
-                                                <button class="btn btn-dark" type="button">수정</button>
+                                                <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>
                                                 <button class="btn btn-danger" type="button">삭제</button>
                                             </td>
                                         </tr>

@@ -7,6 +7,7 @@ import com.fitness.gymsup.Entity.MachineUsageEntity;
 import com.fitness.gymsup.Repository.MachineInfoRepository;
 import com.fitness.gymsup.Repository.MachineUsageRepository;
 import com.fitness.gymsup.Util.FileUploader;
+import com.fitness.gymsup.Util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -31,17 +32,19 @@ public class MachineUsageService {
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
 
+    private final S3Uploader s3Uploader;
     private final MachineUsageRepository machineUsageRepository;
     private final MachineInfoRepository machineInfoRepository;
     private final FileUploader fileUploader;
     private ModelMapper modelMapper = new ModelMapper();
 
+    //운동영상 등록
     public void register(MachineUsageDTO machineUsageDTO, MultipartFile imgFile)throws Exception{
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
 
         if(originalFileName !=null){
-            newFileName = fileUploader.uploadFile(imgUploadLocation, originalFileName,imgFile.getBytes());
+            newFileName = s3Uploader.upload(imgFile,imgUploadLocation);
         }
         machineUsageDTO.setThumbnail(newFileName);
         MachineInfoEntity machineInfo = machineInfoRepository.findById(machineUsageDTO.getMachineInfoId()).orElseThrow();
@@ -105,12 +108,40 @@ public class MachineUsageService {
     }
 
     //상세보기
-    public MachineUsageDTO detail(int id)throws Exception{
+    public MachineUsageDTO detail(int id, boolean isFirst)throws Exception{
 
+        if(isFirst){
+            machineUsageRepository.viewCntUp(id);
+        }
         MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
         MachineUsageDTO machineUsageDTO = modelMapper.map(machineUsageEntity, MachineUsageDTO.class);
 
         return machineUsageDTO;
 
     }
+
+    public void modify(MachineUsageDTO machineUsageDTO, MultipartFile imgFile)throws Exception{
+        MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(machineUsageDTO.getId()).orElseThrow();
+        String deleteFile = machineUsageEntity.getThumbnail();
+        MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(machineUsageDTO.getMachineInfoId()).orElseThrow();
+
+        String originalFileName = imgFile.getOriginalFilename();
+        String newFileName= "";
+        if (originalFileName.length()!= 0){
+            if(deleteFile.length() != 0){
+                s3Uploader.deleteFile(deleteFile, imgUploadLocation);
+            }
+
+            newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+
+            machineUsageDTO.setThumbnail(newFileName);
+        }
+        machineUsageDTO.setId(machineUsageEntity.getId());
+
+        MachineUsageEntity data = modelMapper.map(machineUsageDTO, MachineUsageEntity.class);
+        data.setMachineInfoEntity(machineInfoEntity);
+        machineUsageRepository.save(data);
+    }
+
+
 }

@@ -108,13 +108,17 @@ public class MachineController {
         model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
         return "machine/about";
     }
+
+    //운동기구 영상 상세보기
     @GetMapping("/machine_detail")
     public String detailForm(int id,Model model) throws Exception {
-        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id);
+        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
 
         model.addAttribute("machineUsageDTO",machineUsageDTO);
         return "machine/detail";
     }
+
+
     @GetMapping("/admin_machine_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
@@ -151,24 +155,47 @@ public class MachineController {
 
         return "machine/alllist";
     }
-    @GetMapping("/admin_machine_register")
+    @GetMapping("/machine_usage_register")
     public String registerForm(Model model) throws Exception {
         return "machine/usageregister";
     }
-    @PostMapping("/admin_machine_register")
+    @PostMapping("/machine_usage_register")
     public String registerProc(MachineUsageDTO machineUsageDTO, MultipartFile imgFile) throws Exception {
         machineUsageService.register(machineUsageDTO, imgFile);
         return "redirect:/";
     }
+
+    @GetMapping("/machine_usage_modify")
+    public String usageModifyForm(Integer id, Model model)throws Exception{
+        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id, false);
+
+        model.addAttribute("machineUsageDTO", machineUsageDTO);
+        return "machine/usagemodify";
+    }
+
+    @PostMapping("/machine_usage_modify")
+    public String usageModifyProc(MachineUsageDTO machineUsageDTO,
+                                  RedirectAttributes redirectAttributes,
+                                  MultipartFile imgFile)throws Exception{
+        int id = machineUsageDTO.getMachineInfoId();
+        log.info(machineUsageDTO.toString());
+        log.info(machineUsageDTO.toString());
+        log.info(machineUsageDTO.toString());
+        log.info(machineUsageDTO.toString());
+        redirectAttributes.addAttribute("id",id);
+        machineUsageService.modify(machineUsageDTO, imgFile);
+        return "redirect:/machine_select_list";
+    }
+
     @GetMapping("/machine_info_modify")
-    public String modifyForm(Integer id, Model model) throws Exception {
+    public String infoModifyForm(Integer id, Model model) throws Exception {
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
 
         model.addAttribute("machineInfoDTO", machineInfoDTO);
         return "machine/modify";
     }
     @PostMapping("/machine_info_modify")
-    public String modifyProc(MachineInfoDTO machineInfoDTO,
+    public String infoModifyProc(MachineInfoDTO machineInfoDTO,
                              RedirectAttributes redirectAttributes,
                              MultipartFile imgFile) throws Exception {
 
