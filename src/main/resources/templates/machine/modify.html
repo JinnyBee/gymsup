@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-                        <form th:action="@{/machine_modify}" method="post" enctype="multipart/form-data"
+                        <form th:action="@{/machine_info_modify}" method="post" enctype="multipart/form-data"
                         th:object="${machineInfoDTO}">
                             <input type="hidden" name="id" th:field="*{id}">
                             <div class="mb-3 mt-3">
@@ -25,9 +25,10 @@
                             </div>
                             <div class="mb-3">
                                 <input type="hidden" name="img" th:field="*{img}">
-                                <label for="img" class="form-label">사진: <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="150" height="100"></label>
+                                <label for="img" class="form-label">사진: </label>
                                 <input class="form-control" type="file" id="img" name="imgFile">
                             </div>
+                            <input type="hidden" th:field="*{result}" name="result">
                             <button type="submit" class="btn btn-primary">등록</button>
                         </form>
                     </div> <!-- End 작업공간 -->

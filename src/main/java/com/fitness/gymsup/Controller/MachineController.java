@@ -9,6 +9,7 @@ import com.fitness.gymsup.Util.Flask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -28,6 +29,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class MachineController {
+
+    @Value("${cloud.aws.s3.bucket}")
+    public String bucket;
+    @Value("${cloud.aws.region.static}")
+    public String region;
+    @Value("${imgUploadLocation}")
+    public String folder;
+
     @Autowired
     private Flask flask;
 
@@ -83,14 +92,17 @@ public class MachineController {
     }
     @GetMapping("/machine_about") //운동기구 전체 페이지
     public String aboutForm(Model model) throws Exception {
-        int id1 = 9;
-        int id2 = 10;
-        int id3 = 11;
+        int id1 = 1;
+        int id2 = 2;
+        int id3 = 3;
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
         MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
         MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);
 
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
         model.addAttribute("machineInfoDTO", machineInfoDTO);
         model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
         model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
@@ -148,14 +160,14 @@ public class MachineController {
         machineUsageService.register(machineUsageDTO, imgFile);
         return "redirect:/";
     }
-    @GetMapping("/machine_modify")
+    @GetMapping("/machine_info_modify")
     public String modifyForm(Integer id, Model model) throws Exception {
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
 
         model.addAttribute("machineInfoDTO", machineInfoDTO);
         return "machine/modify";
     }
-    @PostMapping("/machine_modify")
+    @PostMapping("/machine_info_modify")
     public String modifyProc(MachineInfoDTO machineInfoDTO,
                              RedirectAttributes redirectAttributes,
                              MultipartFile imgFile) throws Exception {
@@ -194,6 +206,11 @@ public class MachineController {
             nextPage = machineUsageDTOS.getNumber() + 2;
             lastPage = machineUsageDTOS.getTotalPages();
         }
+
+        //S3 관련 주소
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
 

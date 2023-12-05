@@ -34,10 +34,8 @@ public class UserController {
     private final BasicUserService basicUserService;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/user_list")
-    public String listForm(Model model) throws Exception {
-        return "user/list";
-    }
+
+
     @GetMapping("/user_join")
     public String joinForm(Model model , String message, String emessage, HttpServletRequest request) throws Exception {
             Map<String, ?>flashMap = RequestContextUtils.getInputFlashMap(request);

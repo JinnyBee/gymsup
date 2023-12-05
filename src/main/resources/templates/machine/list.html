@@ -17,14 +17,14 @@
                                 운동기구 사용방법
                                 <span>
                                     <button class="btn btn-outline-dark" type="button"
-                                            th:onclick="|location.href='@{/machine_modify(id=${machineInfoDTO.id})}'|">수정</button>
+                                            th:onclick="|location.href='@{/machine_info_modify(id=${machineInfoDTO.id})}'|">수정</button>
                                 </span>
                             </h2>
                             <hr>
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-5">
-                                        <img th:src="|/gymsup/@{${machineInfoDTO.img}}|" width="330" height="330">
+                                        <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTO.img}|" width="330" height="330">
                                     </div>
                                     <div class="col-lg-2"></div>
                                     <div class="col-lg-5">
