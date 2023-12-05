@@ -51,8 +51,8 @@
             </nav><!-- .navbar -->
 
             <div class="position-relative">
-                <a th:href="@{/admin_detail}" sec:authorize="isAuthenticated()">관리자 페이지</a>&nbsp;&nbsp;&nbsp;
-                <a th:href="@{/user_detail}" sec:authorize="isAuthenticated()">마이 페이지</a>&nbsp;&nbsp;&nbsp;
+                <a th:href="@{/admin_detail}" sec:authorize="hasRole('ADMIN')">관리자 페이지</a>&nbsp;&nbsp;&nbsp;
+                <a th:href="@{/user_detail}" sec:authorize="hasRole('USER')">마이 페이지</a>&nbsp;&nbsp;&nbsp;
                 <a th:href="@{/user_login}" sec:authorize="isAnonymous()">로그인</a>
                 <a th:href="@{/user_logout}" sec:authorize="isAuthenticated()">로그아웃</a>
             </div>

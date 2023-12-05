@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
@@ -15,7 +16,7 @@
                         <div class="container mt-3">
                             <h2>
                                 운동기구 사용방법
-                                <span>
+                                <span sec:authorize="hasRole('ADMIN')">
                                     <button class="btn btn-outline-dark" type="button"
                                             th:onclick="|location.href='@{/machine_info_modify(id=${machineInfoDTO.id})}'|">수정</button>
                                 </span>
@@ -29,12 +30,12 @@
                                     <div class="col-lg-2"></div>
                                     <div class="col-lg-5">
                                         <h3>이 기구는 <span th:text="${machineInfoDTO.name}">OO</span>입니다.</h3>
-                                        <p th:text="${machineInfoDTO.content}">운동기구에 대한 간략한 설명</p>
+                                        <pre th:text="${machineInfoDTO.content}" style="font-size: 20px">운동기구에 대한 간략한 설명</pre>
                                     </div>
                                 </div>
                                 <div class="container mt-3">
                                     <h4>사용 설명을 위한 유튜브
-                                        <span>
+                                        <span sec:authorize="hasRole('ADMIN')">
                                             <button type="button" class="btn btn-outline-dark"
                                             th:onclick="|location.href='@{/machine_usage_register}'|">둥록</button>
                                         </span>
@@ -46,7 +47,7 @@
                                             <th style="width: 30%;">썸네일</th>
                                             <th style="width: 30%;">제목</th>
                                             <th style="width: 10%;">조회수</th>
-                                            <th style="width: 20%;">수정&삭제</th>
+                                            <th style="width: 20%;" sec:authorize="hasRole('ADMIN')">수정&삭제</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -60,7 +61,7 @@
                                                     alt="" height="125px" width="210px"></td>
                                             <td><a th:href="@{/machine_detail(id=${data.id})}"  th:text="${data.title}"></a></td>
                                             <td th:text="${data.viewCnt}">john@example.com</td>
-                                            <td>
+                                            <td sec:authorize="hasRole('ADMIN')">
                                                 <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>
                                                 <button class="btn btn-danger" type="button" th:onclick="|location.href='@{/machine_usage_delete(uid=${data.id}, id=${machineInfoDTO.id})}'|">삭제</button>
                                             </td>
