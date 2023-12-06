@@ -15,6 +15,22 @@
                         <div class="container mt-3">
                             <h2>운동기구 사용방법</h2>
                             <hr>
+                            <div class="container mt-3">
+                                <form th:action="@{/machine_detect}" method="post"
+                                      id="detectForm"
+                                      enctype="multipart/form-data">
+                                    <div class="mb-3 mt-3">
+                                        <label for="detectImg">※운동기구 이미지만 가능합니다!!</label>
+                                        <input type="file" class="form-control" id="detectImg" name="detectImg" required>
+                                    </div>
+                                    <div class="text-center">
+                                        <!--<img src="#" alt="#">-->
+                                        <button type="submit" class="btn btn-primary"
+                                                onclick="return checkDetectImg()">운동기구 이미지 검색하기</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <br><hr><br>
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-6 text-center">

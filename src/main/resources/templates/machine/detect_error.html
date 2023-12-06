@@ -24,43 +24,20 @@
                                         <input type="file" class="form-control" id="detectImg" name="detectImg">
                                     </div>
                                     <div class="text-center">
-                                        <!--<img src="#" alt="#">-->
-                                        <button type="submit" class="btn btn-primary"
-                                                onclick="return checkDetectImg()">운동기구 이미지 검색하기</button>
+                                        <button type="submit" class="btn btn-primary">운동기구 이미지 검색하기</button>
                                     </div>
                                 </form>
                             </div>
-                            <hr>
+                            <hr><br><br>
                             <div class="container">
                                 <div class="row">
-                                    <h6>등록되어 있지 않은 기구입니다.</h6>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="container">
-                                <div class="container mt-3" th:each="data:${machineInfoDTOS}">
-                                    <h4 class="text-center">[[${data.name}]] 사용 설명을 위한 유튜브 </h4>
-                                    <table class="table">
-                                        <thead>
-                                        <tr class="text-center">
-                                            <th>썸네일</th>
-                                            <th>제목</th>
-                                            <th>조회수</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="usage:${data.getMachineUsageDTOList()}">
-                                            <td>
-                                                <img th:src="|/images/@{${usage.getThumbnail()}}|" alt="썸네일">
-                                            </td>
-                                            <td>
-                                                <a th:text="${usage.getTitle()}"
-                                                   th:href="@{/machine_detail(id=${usage.getId()})}">제목 들어갈 공간</a>
-                                            </td>
-                                            <td th:text="${usage.getViewCnt()}">조회수 나올 공간</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="col-lg-8">
+                                        <h4 class="text-center">등록되어 있지 않은 기구입니다.</h4>
+                                    </div>
+                                    <div class="col-lg-4 text-end">
+                                        <button class="btn btn-dark" type="button"
+                                                th:onclick="|location.href='@{/machine_about}'|">다양한 운동법 영상 보기</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
