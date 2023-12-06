@@ -16,7 +16,7 @@
                             <div class="card mb-5"> <!-- 로그인 -->
                                 <div class="card-body" style="text-align: center">
                                     <h3 style="margin-bottom: 10px" sec:authorize="isAnonymous()">로그인</h3>
-                                    <h3 style="margin-bottom: 10px" sec:authorize="isAuthenticated()"><span th:text="${userEntity.nickname}"></span>님 환영합니다</h3>
+                                    <h3 style="margin-bottom: 10px" sec:authorize="isAuthenticated()"><span th:text="${userEntity.nickname}"></span>님<br>환영합니다</h3>
                                     <div>
                                         <button class="btn btn-dark" type="button" style="height: 50px; font-size: 15px"
                                                 sec:authorize="isAnonymous()" th:onclick="|location.href='@{/user_login}'|">로그인 하러 가기</button>
