@@ -55,4 +55,6 @@ public interface BoardRepository extends
     Page<BoardEntity> findAllByUserEntity(Pageable pageable, UserEntity userEntity);
     List<BoardEntity> findTop2ByCategoryTypeOrderByGoodCntDesc(BoardCategoryType categoryType);
     List<BoardEntity> findTop5ByCategoryTypeOrderByRegDateDesc(BoardCategoryType categoryType);
+
+    List<BoardEntity> findAllByUserEntity(UserEntity userEntity);
 }

@@ -122,4 +122,14 @@ public class ContactService {
         contactEntity.setContent(contactDTO.getContent());
         contactRepository.save(contactEntity);
     }
+
+    public void userContactRemove(HttpServletRequest request, Principal principal)throws Exception{
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
+        contactRepository.deleteAllByUserEntity(writer);
+    }
 }

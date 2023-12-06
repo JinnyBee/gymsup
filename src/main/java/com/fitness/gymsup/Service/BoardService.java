@@ -448,4 +448,44 @@ public class BoardService {
 
         return user.getId();
     }
+
+    public void userBoardRemove(HttpServletRequest request, Principal principal)throws Exception{
+
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
+
+        List<BoardEntity> boardEntities = boardRepository.findAllByUserEntity(writer);
+
+        for(BoardEntity boardEntity : boardEntities){
+            int id = boardEntity.getId();
+            List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(id);
+
+            for(BoardImageEntity boardImageEntity : boardImageEntities) {
+                log.info(boardImageEntity.getImgFile());
+                //이미지파일 삭제
+                s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
+            }
+
+            boardImageRepository.deleteAllByBoardId(id);
+
+            List<CommentEntity> commentEntities = commentRepository.findByBoardId(id);
+            for(CommentEntity commentEntity : commentEntities) {
+                //reply 테이블에서 답글 삭제
+                replyRepository.deleteAllByCommentId(commentEntity.getId());
+            }
+
+            //comment 테이블에서 댓글 삭제
+            commentRepository.deleteAllByBoardId(id);
+
+            //bookmark 테이블에서 해당 게시글 북마크한 bookmark 삭제
+            bookmarkRepository.deleteAllByBoardId(id);
+
+            //board 테이블에서 해당 게시글 삭제
+            boardRepository.deleteById(id);
+        }
+    }
 }

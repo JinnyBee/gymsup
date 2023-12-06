@@ -23,4 +23,6 @@ public interface BookmarkRepository extends JpaRepository<BookmarkEntity, Intege
     @Query(value = "DELETE FROM bookmark WHERE board_id = :boardId",
            nativeQuery = true)
     void deleteAllByBoardId(Integer boardId);
+
+    void deleteAllByUserEntity(UserEntity userEntity);
 }

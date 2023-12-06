@@ -5,8 +5,7 @@ import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.MailDTO;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.UserEntity;
-import com.fitness.gymsup.Service.BasicUserService;
-import com.fitness.gymsup.Service.EmailService;
+import com.fitness.gymsup.Service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,6 +33,12 @@ import java.util.Map;
 @Slf4j
 
 public class UserController {
+    //회원탈퇴
+    private final BoardService boardService;
+    private final CommentService commentService;
+    private final ReplyService replyService;
+    private final BookmarkService bookmarkService;
+    private final ContactService contactService;
 
     private final EmailService emailService;
     private final BasicUserService basicUserService;
@@ -130,15 +135,46 @@ public class UserController {
         return "redirect:/user_detail";
     }
 
-    //회원탈퇴 수정필요
-    @GetMapping("/user_cancel")
-    public String cancelForm(Model model) throws Exception {
-        return "user/cancel";
+    //회원탈퇴 비밀번호 확인
+    @GetMapping("/user_cancel_confirm")
+    public String cancelPasswordConfirmForm(String errorMessage, Model model)throws Exception{
+        model.addAttribute("errorMessage",errorMessage);
+        return "user/cancelconfirm";
     }
 
-    //회원탈퇴 수정필요
+    //회원탈퇴 비밀번호 확인 proc
+    @PostMapping("/user_cancel_confirm")
+    public String cancelPasswordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
+
+        String errorMessage = "";
+        String bpassword = basicUserService.bringPassword(principal);
+
+        boolean result = passwordEncoder.matches(apassword, bpassword);
+        if(result){
+            errorMessage="현재 비밀번호와 일치합니다.";
+            model.addAttribute("errorMessage",errorMessage);
+            return "user/cancel";
+        }else {
+            errorMessage="현재 비밀번호와 다릅니다.";
+            redirectAttributes.addAttribute("errorMessage",errorMessage);
+            return "redirect:/user_password_confirm";
+        }
+
+    }
+
+    //회원탈퇴
     @GetMapping ("/user_cancel_proc")
-    public String cancelProc(Model model,Principal principal, HttpServletRequest request) throws Exception {
+    public String cancelProc(RedirectAttributes redirectAttributes,Principal principal,
+                             HttpServletRequest request) throws Exception {
+
+        boardService.userBoardRemove(request, principal);
+        commentService.userCommentRemove(request,principal);
+        replyService.userReplyRemove(request, principal);
+        bookmarkService.userBookmarkRemove(request, principal);
+        contactService.userContactRemove(request,principal);
+
+        redirectAttributes.addAttribute("errorMessage", "회원 탈퇴되었습니다,");
+
         basicUserService.cancelUser(principal, request);
         return "redirect:/user_logout";
     }

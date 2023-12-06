@@ -99,6 +99,13 @@ public class CommentController extends BaseController {
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
+    @GetMapping("/comment_user_all")
+    public String commentUserAll(HttpServletRequest request, Principal principal)throws Exception{
+        commentService.userCommentRemove(request, principal);
+        return "redirect:/";
+    }
+
+
     @PostMapping("/reply_register")
     public String registerReplyProc(@Valid ReplyDTO replyDTO,
                                     BindingResult bindingResult,

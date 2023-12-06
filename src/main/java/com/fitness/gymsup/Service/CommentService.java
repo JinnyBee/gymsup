@@ -132,4 +132,21 @@ public class CommentService {
         //comment 테이블에서 해당 댓글 삭제
         commentRepository.deleteById(id);
     }
+
+    public void userCommentRemove(HttpServletRequest request, Principal principal) throws Exception{
+
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
+
+        List<CommentEntity> commentEntities = commentRepository.findAllByUserEntity(writer);
+        for(CommentEntity commentEntity : commentEntities){
+            replyRepository.deleteAllByCommentId(commentEntity.getId());
+        }
+
+        commentRepository.deleteAllByUserEntity(writer);
+    }
 }

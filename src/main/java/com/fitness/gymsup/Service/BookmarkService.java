@@ -140,4 +140,15 @@ public class BookmarkService {
             bookmarkRepository.deleteById(bookmarkEntity.getId());
         }
     }
+
+    public void  userBookmarkRemove(HttpServletRequest request, Principal principal)throws Exception{
+
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
+        bookmarkRepository.deleteAllByUserEntity(writer);
+    }
 }

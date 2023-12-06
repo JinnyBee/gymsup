@@ -109,4 +109,15 @@ public class ReplyService {
     public void remove(Integer id) throws Exception {
         replyRepository.deleteById(id);
     }
+
+    //유저 답글 모두 삭제
+    public void userReplyRemove(HttpServletRequest request, Principal principal)throws Exception{
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
+        replyRepository.deleteAllByUserEntity(writer);
+    }
 }

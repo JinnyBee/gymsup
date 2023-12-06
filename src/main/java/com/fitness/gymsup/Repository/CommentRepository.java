@@ -29,4 +29,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     Page<CommentEntity> findDistinctByBoardId(@Param("userId") Integer userId, Pageable pageable);
 
     Integer countByBoardEntity_Id(Integer id);
+
+    List<CommentEntity> findAllByUserEntity(UserEntity userEntity);
+    void deleteAllByUserEntity(UserEntity userEntity);
 }
