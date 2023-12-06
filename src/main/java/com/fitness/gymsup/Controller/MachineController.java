@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,40 +52,29 @@ public class MachineController {
         return "machine/detect";
     }
 
-    //운동기구 인식 proc
+    //운동기구 인식 처리 (플라스크 AI 서버 연동)
     @PostMapping("/machine_detect")
     public String detectProc(@RequestParam("detectImg") MultipartFile detectImg,
                              Model model) throws Exception {
 
-        String errorMessage = "";
-        if(detectImg.getOriginalFilename().isEmpty()) {
-            errorMessage="파일을 첨부해주세요.";
-            model.addAttribute("errorMessage",errorMessage);
-
-            return "redirect:/machine_detect";
+        if(detectImg.getOriginalFilename().length() == 0) {
+            return "machine/detect_error";
         }
         log.info(detectImg.getOriginalFilename());
 
         //플라스크 서버에 분석할 이미지를 전달하여 처리
         FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(detectImg);
-        List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
-
         log.info("Flask Response DTO (resultFilename) : " + flaskResponseDTO.getResultFilename());
         if(flaskResponseDTO.getName().isEmpty()) {
-            machineInfoDTOS = machineInfoService.list();
-            model.addAttribute("machineInfoDTOS", machineInfoDTOS);
-
             return "machine/detect_error";
         }
 
-        for(String name : flaskResponseDTO.getName()) {
-            log.info("Flask Response DTO (name) : " + name);
-            machineInfoDTOS.add(machineInfoService.find(name));
-        }
-        log.info(machineInfoDTOS);
+        //flaskResponseDTO name 리스트 중 첫번째 값만 사용 (첫번째 class 이름)
+        MachineInfoDTO machineInfoDTO = machineInfoService.find(flaskResponseDTO.getName().get(0));
+        log.info(machineInfoDTO);
 
         model.addAttribute("flaskResponseDTO", flaskResponseDTO);
-        model.addAttribute("machineInfoDTOS", machineInfoDTOS);
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
 
         return "machine/howto";
     }

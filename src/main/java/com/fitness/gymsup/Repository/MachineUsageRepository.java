@@ -18,7 +18,7 @@ public interface MachineUsageRepository extends JpaRepository<MachineUsageEntity
     Page<MachineUsageEntity> findAllByMachineInfoEntity(Pageable pageable, MachineInfoEntity machineInfoEntity);
 
     //운동기구로 전체를 검색하고 난 뒤 리스트처리
-    List<MachineUsageEntity> findAllByMachineInfoEntity(MachineInfoEntity machineInfoEntity);
+    List<MachineUsageEntity> findAllByMachineInfoEntityOrderByViewCntDesc(MachineInfoEntity machineInfoEntity);
 
     //조회수
     @Query(value = "UPDATE machine_usage set view_cnt = view_cnt+1 where id=:id", nativeQuery = true)

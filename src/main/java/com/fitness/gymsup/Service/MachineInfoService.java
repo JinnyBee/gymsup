@@ -44,7 +44,7 @@ public class MachineInfoService {
         List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
 
         for(MachineInfoEntity machineInfoEntity : machineInfoEntities) {
-            List<MachineUsageEntity> machineUsageEntities = machineUsageRepository.findAllByMachineInfoEntity(machineInfoEntity);
+            List<MachineUsageEntity> machineUsageEntities = machineUsageRepository.findAllByMachineInfoEntityOrderByViewCntDesc(machineInfoEntity);
             List<MachineUsageDTO> machineUsageDTOS = new ArrayList<>();
 
             for(MachineUsageEntity machineUsageEntity : machineUsageEntities) {
@@ -76,22 +76,19 @@ public class MachineInfoService {
         }
         return machineInfoDTOS;
     }
-
-    //기구 상세보기
     public MachineInfoDTO detail(Integer id) throws Exception {
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(id).orElseThrow();
 
         MachineInfoDTO machineInfoDTO = modelMapper.map(machineInfoEntity, MachineInfoDTO.class);
         return machineInfoDTO;
     }
-
+    //운동 기구 정보 상세조회 (machine_info 테이블의 result 값 중 플라스크 AI 서버로부터 응답받은 class 값이 있는지 조회)
     public MachineInfoDTO find(String className) throws Exception {
+
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findByResult(className);
 
-        List<MachineUsageEntity> machineUsageEntities = machineUsageRepository
-                .findAllByMachineInfoEntity(machineInfoEntity);
         List<MachineUsageDTO> machineUsageDTOS = Arrays.asList(modelMapper
-                .map(machineUsageEntities, MachineUsageDTO[].class));
+                .map(machineUsageRepository.findAllByMachineInfoEntityOrderByViewCntDesc(machineInfoEntity), MachineUsageDTO[].class));
 
         MachineInfoDTO machineInfoDTO = modelMapper
                 .map(machineInfoRepository.findByResult(className), MachineInfoDTO.class);
@@ -100,7 +97,6 @@ public class MachineInfoService {
         return machineInfoDTO;
     }
 
-    //기구 설명 등록
     public void register(MachineInfoDTO machineInfoDTO, MultipartFile imgFile)throws Exception{
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
@@ -113,7 +109,6 @@ public class MachineInfoService {
         machineInfoRepository.save(machineInfoEntity);
     }
 
-    //기구 수정
     public void modify(MachineInfoDTO machineInfoDTO, MultipartFile imgFile) throws Exception {
         //기존파일 삭제
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(machineInfoDTO.getId()).orElseThrow();
