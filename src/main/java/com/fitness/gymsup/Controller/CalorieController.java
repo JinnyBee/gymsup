@@ -1,19 +1,24 @@
+/*
+    파일명 : CalorieController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.BmiDTO;
+import com.fitness.gymsup.DTO.ExerciseDTO;
 import com.fitness.gymsup.DTO.FoodCalorieDTO;
 import com.fitness.gymsup.Service.CalorieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 @Controller
@@ -22,13 +27,17 @@ import java.util.List;
 public class CalorieController {
     private final CalorieService calorieService;
 
+    //BMI계산 폼
     @GetMapping("/mybmi_calc")
     public String myBmiForm(Model model) throws Exception {
+
         return "calorie/mybmi_calc";
     }
 
+    //BMI계산 처리
     @PostMapping("/mybmi_calc")
     public String myBmiProc(BmiDTO bmiDTO, Model model) throws Exception {
+
         double weight = bmiDTO.getWeight();
         double height = bmiDTO.getHeight()/100;
         double bmi = weight/(height*height);
@@ -58,76 +67,62 @@ public class CalorieController {
 
         return "calorie/mybmi_detail";
     }
+
+    //음식칼로리 검색 폼
     @GetMapping("/food_calorie_calc")
     public String foodCalorieCalcForm(Model model) throws Exception {
+
         log.info("foodCalorieCalcForm");
         return "calorie/food_calc";
     }
+
+    //음식칼로리 검색 처리
     @GetMapping("/food_calorie_search")
     public String foodCalorieSearch(String keyword,
                                     Model model) throws Exception {
         log.info("keyword : " + keyword);
+
         List<FoodCalorieDTO> foodCalorieDTOS = calorieService.requestToFoodDB(keyword);
+
+        model.addAttribute("keyword", keyword);
         model.addAttribute("foodCalorieDTOS", foodCalorieDTOS);
 
         return "calorie/food_list";
     }
+
+    //음식칼로리 상세보기
     @GetMapping("/food_calorie_detail")
-    public String foodCalorieDetail(FoodCalorieDTO foodCalorieDTO,
+    public String foodCalorieDetail(String keyword,
+                                    FoodCalorieDTO foodCalorieDTO,
                                     Model model) throws Exception {
+
+        log.info(keyword);
         log.info(foodCalorieDTO);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("foodCalorieDTO", foodCalorieDTO);
+
         return "calorie/food_detail";
     }
-    /*@GetMapping(value = "/food_calorie_call")
-    public String callFoodApi(String keyword,
-                              Model model) throws Exception {
-        StringBuffer result = new StringBuffer();
-        Integer startIdx = 1;
-        Integer endIdx = 10;
 
-        try {
-            String urlstr = "http://openapi.foodsafetykorea.go.kr/api/be61650aef44488a9029/I2790"
-                          + "/JSON/"
-                          + Integer.toString(startIdx) + "/"
-                          + Integer.toString(endIdx) + "/"
-                          + "DESC_KOR=" + keyword;
-
-            log.info("REQ : " + urlstr);
-
-            URL url = new URL(urlstr);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-
-            String returnLine;
-
-            while((returnLine = br.readLine()) != null) {
-                log.info(returnLine);
-                result.append(returnLine);
-            }
-            urlConnection.disconnect();
-        } catch (Exception e) {
-            log.info(e.toString());
-        }
-        log.info("RES : " + result.toString());
-
-        return result.toString();
-    }*/
+    //나의 음식칼로리 등록 메인
     @GetMapping("/myfood_calorie_main")
     public String myfoodCalorieMain(Model model) throws Exception {
 
         return "calorie/myfood_main";
     }
+
+    //나의 음식칼로리 검색 폼
     @GetMapping("/myfood_calorie_calc")
     public String myfoodCalorieCalcForm(Model model) throws Exception {
 
         return "calorie/myfood_calc";
     }
+
+    //나의 음식칼로리 검색 처리
     @GetMapping("/myfood_calorie_search")
     public String myfoodCalorieSearch(String keyword,
                                       Model model) throws Exception {
+
         log.info("keyword : " + keyword);
         List<FoodCalorieDTO> myfoodCalorieDTOS = calorieService.requestToFoodDB(keyword);
 
@@ -136,22 +131,41 @@ public class CalorieController {
 
         return "calorie/myfood_list";
     }
+
+    //나의 음식칼로리 상세보기
     @GetMapping("/myfood_calorie_detail")
-    public String myfoodCalorieDetail(FoodCalorieDTO foodCalorieDTO,
+    public String myfoodCalorieDetail(String keyword,
+                                      FoodCalorieDTO foodCalorieDTO,
                                       Model model) throws Exception {
+
+        log.info(keyword);
         log.info(foodCalorieDTO);
+
+        model.addAttribute("keyword", keyword);
         model.addAttribute("foodCalorieDTO", foodCalorieDTO);
         return "calorie/myfood_detail";
     }
+
+    //운동칼로리 검색 폼
     @GetMapping("/exercise_calorie_calc")
-    public String exerciseCalorieCalcForm(Model model) throws Exception {
+    public String exerciseCalorieCalcForm(@RequestParam(value = "page", defaultValue = "1") int page,
+                                          @RequestParam(value = "keyword", defaultValue = "")String keyword,
+                                          Model model) throws Exception {
+        Page<ExerciseDTO> exerciseDTOS = calorieService.list(page, keyword);
+
+        model.addAttribute("keyword", keyword);                 // 검색 키워드
+        model.addAttribute("exerciseDTOS", exerciseDTOS);       // 데이터
         return "calorie/exercise_calc";
     }
+
+    //운동칼로리 검색 처리
     @GetMapping("/exercise_calorie_search")
     public String exerciseCalorieSearch(String keyword,
                                         Model model) throws Exception {
         return "calorie/exercise_list";
     }
+
+    //운동칼로리 상세보기
     @GetMapping("/exercise_calorie_detail")
     public String exerciseCalorieDetail(FoodCalorieDTO foodCalorieDTO,
                                         Model model) throws Exception {
