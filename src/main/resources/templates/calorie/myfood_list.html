@@ -33,7 +33,8 @@
                                 <tbody>
                                 <tr th:each="data:${myfoodCalorieDTOS}">
                                     <td>
-                                        <a th:href="@{/food_calorie_detail(
+                                        <input type="hidden" class="form-control" name="keyword">
+                                        <a th:href="@{/myfood_calorie_detail(
                                             makerName=${data.getMakerName()}, descKor=${data.getDescKor()},
                                             servingSize=${data.getServingSize()}, servingUnit=${data.getServingUnit()},
                                             nutrCont1=${data.getNutrCont1()}, nutrCont2=${data.getNutrCont2()},
