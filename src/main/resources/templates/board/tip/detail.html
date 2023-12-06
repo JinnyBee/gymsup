@@ -73,14 +73,14 @@
                                         <!-- 좋아요가 OFF인 경우 (좋아요 기능 활성화) -->
                                         <button th:unless="${boardDTO.goodOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
                                                 th:onclick="|location.href='@{/good_on(id=${boardDTO.id}, categoryType='BTYPE_TIP')}'|">
-                                            <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
-                                            추천
+                                            <img src="/assets/img/suggestioff.png" alt="" width="25" height="20">
+                                            <span th:text="${boardDTO.goodCnt}"></span>
                                         </button>
                                         <!-- 좋아요가 ON인 경우 (좋아요 기능 비활성화) -->
                                         <button th:if="${boardDTO.goodOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
                                                 onclick="event.preventDefault()">
                                             <img src="/assets/img/suggestion.png" alt="" width="25" height="20">
-                                            추천
+                                            <span th:text="${boardDTO.goodCnt}"></span>
                                         </button>
                                     </div>
                                 </div>

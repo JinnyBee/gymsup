@@ -16,78 +16,62 @@
                             <h2>운동기구 목록</h2> <!--제목-->
                             <hr>
                             <div class="row"> <!--공간 시작-->
-                                <div class="col-lg-4 text-center">
+                                <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="col">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTO.img}|" width="200" height="200">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTO.name}"
-                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTO.id})}'|"></button>
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTO.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTO.img}|">
+                                            <div class="card-body">
+                                                <h4 class="card-title" th:text="${machineInfoDTO.name}">John Doe</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 text-center">
+                                <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="col">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid2.img}|" width="200" height="200">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid2.name}"
-                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid2.id})}'|"></button>
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid2.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid2.img}|">
+                                            <div class="card-body">
+                                                <h4 class="card-title" th:text="${machineInfoDTOid2.name}">John Doe</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 text-center">
+                                <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="col">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid3.img}|" width="200" height="200">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid3.name}"
-                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid3.id})}'|"></button>
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid3.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid3.img}|">
+                                            <div class="card-body">
+                                                <h4 class="card-title" th:text="${machineInfoDTOid3.name}">John Doe</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div> <!--공간 끝-->
                             <br>
                             <div class="row">
-                                <div class="col-lg-5 text-end">
+                                <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="col">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid4.img}|" width="200" height="200">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col" style="padding-right: 82px">
-                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid4.name}"
-                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid4.id})}'|"></button>
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid4.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid4.img}|">
+                                            <div class="card-body">
+                                                <h4 class="card-title" th:text="${machineInfoDTOid4.name}">John Doe</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-2"></div>
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="col">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid5.img}|" width="200" height="200">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col" style="padding-left: 64px">
-                                            <button type="button" class="btn btn-primary" th:text="${machineInfoDTOid5.name}"
-                                                    th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid5.id})}'|"></button>
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid5.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid5.img}|">
+                                            <div class="card-body">
+                                                <h4 class="card-title" th:text="${machineInfoDTOid5.name}">John Doe</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-4"></div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4"></div>
