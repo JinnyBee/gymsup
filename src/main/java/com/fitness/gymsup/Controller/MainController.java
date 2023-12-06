@@ -7,6 +7,7 @@ import com.fitness.gymsup.Service.BasicUserService;
 import com.fitness.gymsup.Service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,13 @@ import java.util.List;
 @Log4j2
 public class MainController {
 
+    @Value("${cloud.aws.s3.bucket}")
+    public String bucket;
+    @Value("${cloud.aws.region.static}")
+    public String region;
+    @Value("${imgUploadLocation}")
+    public String folder;
+
     private final BasicUserService basicUserService;
     private final BoardService boardService;
 
@@ -27,6 +35,7 @@ public class MainController {
     public String main(Model model,
                        HttpServletRequest request,
                        Principal principal, String errorMessage) throws Exception {
+
         if(request != null && principal != null) {
             UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
             model.addAttribute("userEntity",userEntity);
@@ -38,6 +47,9 @@ public class MainController {
         model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("tipBoardBestDTOS", tipBoardBestDTOS);
         model.addAttribute("diaryBoardBestDTOS", diaryBoardBestDTOS);
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         log.info(tipBoardBestDTOS);
         log.info(diaryBoardBestDTOS);
