@@ -18,10 +18,11 @@
                             <table class="table table-hover">
                                 <thead>
                                 <tr style="text-align: center">
-                                    <th style="width: 20%">게시판</th>
-                                    <th style="width: 35%">제목</th>
+                                    <th style="width: 15%">게시판</th>
+                                    <th style="width: 30%">제목</th>
                                     <th style="width: 20%">작성자</th>
                                     <th style="width: 10%">조회수</th>
+                                    <th style="width: 10%">추천수</th>
                                     <th style="width: 15%">작성일</th>
                                 </tr>
                                 </thead>
@@ -34,6 +35,7 @@
                                     </td>
                                     <td style="text-align: center" th:text="${data.userNickname}">Jinny</td>
                                     <td style="text-align: center" th:text="${data.viewCnt}">100</td>
+                                    <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">2023.11.17</td>
                                 </tr>
                                 <tr th:each="data:${boardDTOS}">
@@ -46,6 +48,7 @@
                                     </td>
                                     <td style="text-align: center" th:text="${data.userNickname}">Jinny</td>
                                     <td style="text-align: center" th:text="${data.viewCnt}">100</td>
+                                    <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">2023.11.17</td>
                                 </tr>
                                 </tbody>
