@@ -3,12 +3,15 @@ package com.fitness.gymsup.Service;
 import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BookmarkDTO;
+import com.fitness.gymsup.DTO.ExerciseDTO;
 import com.fitness.gymsup.DTO.FoodCalorieDTO;
 import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.BookmarkEntity;
+import com.fitness.gymsup.Entity.ExerciseEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.BookmarkRepository;
+import com.fitness.gymsup.Repository.ExerciseRepository;
 import com.fitness.gymsup.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -49,6 +52,8 @@ public class CalorieService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final ExerciseRepository exerciseRepository;
+
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Value("${fooddb.Server.Url}")
@@ -124,5 +129,31 @@ public class CalorieService {
         log.info(foodCalorieDTOS);
 
         return foodCalorieDTOS;
+    }
+
+    public Page<ExerciseDTO> list(int page,
+                                  String keyword) throws Exception {
+        int pageLimit = 10;
+        Page<ExerciseEntity> exerciseEntitie;
+        Pageable pageable = PageRequest.of(page-1, pageLimit,Sort.by(Sort.Direction.DESC, "id"));
+        //검색조건에 따른 조회
+        if (keyword != null) {
+            exerciseEntitie = exerciseRepository.searchExercisename(pageable, keyword);
+        }else {
+            exerciseEntitie = exerciseRepository.findAll(pageable);
+        }
+
+        // 결과변환
+        Page<ExerciseDTO> exerciseDTOS = exerciseEntitie.map(data->ExerciseDTO.builder()
+                .id(data.getId())
+                .exercisename(data.getExercisename())
+                .kcal(data.getKcal())
+                .minute(data.getMinute())
+                .regDate(data.getRegDate())
+                .modDate(data.getModDate())
+                .build()
+        );
+
+        return exerciseDTOS;
     }
 }

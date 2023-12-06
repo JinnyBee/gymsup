@@ -1,14 +1,17 @@
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.BmiDTO;
+import com.fitness.gymsup.DTO.ExerciseDTO;
 import com.fitness.gymsup.DTO.FoodCalorieDTO;
 import com.fitness.gymsup.Service.CalorieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -128,12 +131,6 @@ public class CalorieController {
     @GetMapping("/myfood_calorie_search")
     public String myfoodCalorieSearch(String keyword,
                                       Model model) throws Exception {
-        log.info("keyword : " + keyword);
-        List<FoodCalorieDTO> myfoodCalorieDTOS = calorieService.requestToFoodDB(keyword);
-
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("myfoodCalorieDTOS", myfoodCalorieDTOS);
-
         return "calorie/myfood_list";
     }
     @GetMapping("/myfood_calorie_detail")
@@ -144,7 +141,13 @@ public class CalorieController {
         return "calorie/myfood_detail";
     }
     @GetMapping("/exercise_calorie_calc")
-    public String exerciseCalorieCalcForm(Model model) throws Exception {
+    public String exerciseCalorieCalcForm(@RequestParam(value = "page", defaultValue = "1") int page,
+                                          @RequestParam(value = "keyword", defaultValue = "")String keyword,
+                                          Model model) throws Exception {
+        Page<ExerciseDTO> exerciseDTOS = calorieService.list(page, keyword);
+
+        model.addAttribute("keyword", keyword);                 // 검색 키워드
+        model.addAttribute("exerciseDTOS", exerciseDTOS);       // 데이터
         return "calorie/exercise_calc";
     }
     @GetMapping("/exercise_calorie_search")
