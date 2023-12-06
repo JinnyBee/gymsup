@@ -13,7 +13,7 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <form th:action="@{/exercise_calorie_calc}"> <!-- 운동검색 폼 -->
-                            <h2>운동칼로리</h2>
+                            <h2>운동 칼로리</h2>
                             <hr>
                             <div class="input-group">
                                 <input type="hidden" name="page" value="1">
@@ -22,13 +22,13 @@
                                 <div class="invalid-feedback">검색어를 입력해주세요.</div>
                                 <button type="submit" class="btn btn-dark">검색</button>
                             </div>
-                        </form> <!-- End 운동검색 폼 -->
+                        </form> <!-- End 운동검색 폼 --> <br>
                         <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th style="width: 50%">운동명</th>
                                 <th style="width: 20%">분</th>
-                                <th style="width: 30%">칼로리</th>
+                                <th style="width: 30%">칼로리(kcal)</th>
                             </tr>
                             </thead>
                             <tbody>
