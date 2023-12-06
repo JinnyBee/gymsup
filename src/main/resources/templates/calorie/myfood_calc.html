@@ -12,14 +12,13 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-                        <form th:action="@{/myfood_calorie_search}"> <!-- 음식검색 폼 -->
-                            <h2>나의 아침식사 음식칼로리</h2>
-                            <hr>
+                        <form th:action="@{/myfood_calorie_search}" method="get"> <!-- 음식검색 폼 -->
+                            <h2 th:if="${foodtype}=='breakfast'">나의 아침 음식칼로리</h2>
                             <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="검색어 입력"
-                                           id="keyword" name="keyword" required>
-                                    <div class="invalid-feedback">검색어를 입력해주세요.</div>
-                                    <button type="submit" class="btn btn-dark">검색</button>
+                                <input type="hidden" name="foodtype" th:value="${foodtype}">
+                                <input type="text" class="form-control" placeholder="검색어 입력"
+                                       id="keyword" name="keyword" required>
+                                <button type="submit" class="btn btn-dark">검색</button>
                             </div>
                         </form> <!-- End 음식검색 폼 -->
                     </div> <!-- End 작업공간 -->

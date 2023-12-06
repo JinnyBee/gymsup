@@ -113,19 +113,26 @@ public class CalorieController {
 
     //나의 음식칼로리 검색 폼
     @GetMapping("/myfood_calorie_calc")
-    public String myfoodCalorieCalcForm(Model model) throws Exception {
+    public String myfoodCalorieCalcForm(String foodtype,
+                                        Model model) throws Exception {
+
+        log.info(foodtype);
+        model.addAttribute("foodtype", foodtype);
 
         return "calorie/myfood_calc";
     }
 
     //나의 음식칼로리 검색 처리
     @GetMapping("/myfood_calorie_search")
-    public String myfoodCalorieSearch(String keyword,
+    public String myfoodCalorieSearch(String foodtype,
+                                      String keyword,
                                       Model model) throws Exception {
 
+        log.info("foodtype : " + foodtype);
         log.info("keyword : " + keyword);
         List<FoodCalorieDTO> myfoodCalorieDTOS = calorieService.requestToFoodDB(keyword);
 
+        model.addAttribute("foodtype", foodtype);
         model.addAttribute("keyword", keyword);
         model.addAttribute("myfoodCalorieDTOS", myfoodCalorieDTOS);
 
@@ -133,17 +140,20 @@ public class CalorieController {
     }
 
     //나의 음식칼로리 상세보기
-    @GetMapping("/myfood_calorie_detail")
-    public String myfoodCalorieDetail(String keyword,
-                                      FoodCalorieDTO foodCalorieDTO,
+    @PostMapping("/myfood_calorie_register")
+    public String myfoodCalorieDetail(String foodtype,
+                                      String foodname,
+                                      String calorie,
                                       Model model) throws Exception {
 
-        log.info(keyword);
-        log.info(foodCalorieDTO);
+        log.info(foodtype);
+        log.info(foodname);
+        log.info(calorie);
+        //log.info(foodCalorieDTO);
 
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("foodCalorieDTO", foodCalorieDTO);
-        return "calorie/myfood_detail";
+        //model.addAttribute("keyword", keyword);
+        //model.addAttribute("foodCalorieDTO", foodCalorieDTO);
+        return "calorie/myfood_main";
     }
 
     //운동칼로리 검색 폼

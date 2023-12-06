@@ -12,16 +12,17 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-                        <h2>나의 아침식사 음식칼로리</h2>
-                        <hr>
-                        <div class="input-group">
-                            <input type="text" class="form-control"
-                                   id="keyword" name="keyword" th:value="${keyword}">
-                            <div class="invalid-feedback">검색어를 입력해주세요.</div>
-                            <button type="button" class="btn btn-dark">검색</button>
-                        </div>
+                        <form th:action="@{/myfood_calorie_search}"> <!-- 음식검색 폼 -->
+                            <h2 th:if="${foodtype}=='breakfast'">나의 아침 음식칼로리</h2>
+                            <hr>
+                            <div class="input-group">
+                                <input type="text" class="form-control" th:value="${keyword}"
+                                       id="keyword" name="keyword" required>
+                                <button type="submit" class="btn btn-dark">검색</button>
+                            </div>
+                        </form> <!-- End 음식검색 폼 -->
                         <br><br>
-                        <form th:action="@{/food_calorie_detail}" method="post">
+                        <form th:action="@{/myfood_calorie_register}" method="post">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
@@ -34,12 +35,6 @@
                                 <tr th:each="data:${myfoodCalorieDTOS}">
                                     <td>
                                         <input type="hidden" class="form-control" name="keyword">
-                                        <a th:href="@{/myfood_calorie_detail(
-                                            makerName=${data.getMakerName()}, descKor=${data.getDescKor()},
-                                            servingSize=${data.getServingSize()}, servingUnit=${data.getServingUnit()},
-                                            nutrCont1=${data.getNutrCont1()}, nutrCont2=${data.getNutrCont2()},
-                                            nutrCont3=${data.getNutrCont3()}, nutrCont4=${data.getNutrCont4()},
-                                            nutrCont5=${data.getNutrCont5()}, nutrCont6=${data.getNutrCont6()})}">
                                             <span th:unless="${data.getMakerName().isEmpty()}"
                                               th:text="'[' + ${data.getMakerName()} + ']'"></span>
                                             <span th:text="${data.getDescKor()}"></span>
@@ -51,7 +46,14 @@
                                         <span th:text="${data.getServingUnit()} + ')'"></span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-dark">등록</button>
+                                        <input type="hidden" name="foodtype" value="breakfast">
+                                        <input type="hidden" name="foodname" th:value="${data.getDescKor()}">
+                                        <input type="hidden" name="calorie" th:value="${data.getNutrCont1()}">
+                                        <button type="submit" class="btn btn-dark">등록</button>
+<!--
+                                        <button type="button" class="btn btn-dark"
+                                                th:onclick="|location.href='@{/myfood_calorie_register(foodtype='breakfast')}'|">등록</button>
+-->
                                     </td>
                                 </tr>
                                 </tbody>
