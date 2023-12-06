@@ -1,3 +1,9 @@
+/*
+    파일명 : BoardService.java
+    기 능 : 게시판 CRUD 기능
+    작성일 : 2023.12.08
+    작성자 : 전현진
+*/
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;

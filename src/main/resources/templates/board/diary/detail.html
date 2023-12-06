@@ -196,7 +196,7 @@
                             <div class="col-lg-4 mt-2"></div>
                         </div>
                         <div class="row mt-1">
-                            <!--<form th:action="@{/comment_register}" method="post">-->
+                            <form th:action="@{/comment_register}" method="post">
                             <div>
                                 <div class="col-lg-11" style="float: left">
                                     <textarea class="form-control" name="comment" id="comment" rows="3"
@@ -208,13 +208,13 @@
                                 <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
 
                                 <div class="col-lg-1" style="float: right">
-<!--                                    <button type="submit" class="btn btn-dark"
-                                            style="float: right; height: 86px">등록</button>-->
-                                    <button type="button" id="btnCommentRegister" class="btn btn-dark"
+                                    <button type="submit" class="btn btn-dark"
                                             style="float: right; height: 86px">등록</button>
+                                    <!--<button type="button" id="btnCommentRegister" class="btn btn-dark"
+                                            style="float: right; height: 86px">등록</button>-->
                                 </div>
                             </div>
-                            <!--</form>-->
+                            </form>
                         </div> <!-- End 댓글 작성 -->
 
                         <!-- 댓글 목록 -->
