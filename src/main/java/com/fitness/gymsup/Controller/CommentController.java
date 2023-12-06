@@ -32,7 +32,7 @@ public class CommentController extends BaseController {
     private final CommentService commentService;
     private final ReplyService replyService;
 
-/*    @PostMapping("/comment_register")
+    @PostMapping("/comment_register")
     public String registerCommentProc(CommentDTO commentDTO,
                                       String categoryType,
                                       HttpServletRequest request,
@@ -45,10 +45,10 @@ public class CommentController extends BaseController {
         log.info("#### " + commentDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
-    }*/
+    }
 
     //boardId: 조회할 게시글 id
-    @PostMapping("/comment_register/{boardId}")
+/*    @PostMapping("/comment_register/{boardId}")
     //no 게시글을 조회할 번호, commentDTO 댓글 정보
     public ResponseEntity<String> registerCommentProc(@PathVariable Integer boardId,
                                                       @RequestBody CommentDTO commentDTO,
@@ -57,10 +57,10 @@ public class CommentController extends BaseController {
         ResponseEntity<String> entity = null;
 
         try {
-            /*
+            *//*
             //섹션이 있는 경우 사용
             String userId = (String) session.getAttribute("userId"); //로드인시 섹션에 저장한 Id
-            commentDTO.setNickname(userId); //섹션에 Id를 댓글에 저장 */
+            commentDTO.setNickname(userId); //섹션에 Id를 댓글에 저장 *//*
 
             log.info(commentDTO);
             commentDTO.setBoardId(boardId);
@@ -71,7 +71,7 @@ public class CommentController extends BaseController {
             entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST); //오류메세지와 상태 저장
         }
         return entity; //요청한 페이지로 되돌아간다.
-    }
+    }*/
 
     @PostMapping("/comment_modify")
     public String modifyCommentProc(CommentDTO commentDTO,
