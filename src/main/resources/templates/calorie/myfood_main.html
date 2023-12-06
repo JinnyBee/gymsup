@@ -12,16 +12,20 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-                        <form th:action="@{/food_calorie_search}"> <!-- 음식검색 폼 -->
-                            <h2>음식칼로리</h2>
-                            <hr>
-                            <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="검색어 입력"
-                                           id="keyword" name="keyword" required>
-                                    <div class="invalid-feedback">검색어를 입력해주세요.</div>
-                                    <button type="submit" class="btn btn-dark">검색</button>
-                            </div>
-                        </form> <!-- End 음식검색 폼 -->
+                        <h2>나의 음식칼로리 등록하기</h2>
+                        <hr>
+                        <button type="button" class="btn btn-dark"
+                                th:onclick="|location.href='@{/myfood_calorie_calc}'|">
+                            아침식사</button>
+                        <button type="button" class="btn btn-dark"
+                                th:onclick="|location.href='@{/myfood_calorie_calc}'|">
+                            점심식사</button>
+                        <button type="button" class="btn btn-dark"
+                                th:onclick="|location.href='@{/myfood_calorie_calc}'|">
+                            저녁식사</button>
+                        <button type="button" class="btn btn-dark"
+                                th:onclick="|location.href='@{/myfood_calorie_calc}'|">
+                            간식</button>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

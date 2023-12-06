@@ -12,18 +12,26 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
-                        <h2>음식칼로리</h2>
+                        <h2>나의 아침식사 음식칼로리</h2>
                         <hr>
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                   id="keyword" name="keyword" th:value="${keyword}">
+                            <div class="invalid-feedback">검색어를 입력해주세요.</div>
+                            <button type="button" class="btn btn-dark">검색</button>
+                        </div>
+                        <br><br>
                         <form th:action="@{/food_calorie_detail}" method="post">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th style="width: 50%">음식명</th>
-                                    <th style="width: 30%">칼로리</th>
+                                    <th style="width: 40%">칼로리</th>
+                                    <th style="width: 10%"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="data:${foodCalorieDTOS}">
+                                <tr th:each="data:${myfoodCalorieDTOS}">
                                     <td>
                                         <a th:href="@{/food_calorie_detail(
                                             makerName=${data.getMakerName()}, descKor=${data.getDescKor()},
@@ -40,6 +48,9 @@
                                         <span th:text="${data.getNutrCont1()} + ' kcal'"></span>
                                         <span th:text="' (' + ${data.getServingSize()}"></span>
                                         <span th:text="${data.getServingUnit()} + ')'"></span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-dark">등록</button>
                                     </td>
                                 </tr>
                                 </tbody>

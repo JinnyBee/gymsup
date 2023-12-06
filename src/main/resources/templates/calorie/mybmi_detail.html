@@ -20,19 +20,19 @@
                             <tr>
                                 <td style="width: 30%">키</td>
                                 <td style="width: 50%">
-                                    <span th:text="${bmiDTO.getHeight()}+'cm'"></span>
+                                    <span th:text="${bmiDTO.getHeight()}+' cm'"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 30%">몸무게</td>
                                 <td style="width: 50%">
-                                    <span th:text="${bmiDTO.getWeight()}+'kg'"></span>
+                                    <span th:text="${bmiDTO.getWeight()}+' kg'"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="width: 30%">나의 BMI(비만도) 지수</td>
                                 <td style="width: 50%">
-                                    <span th:text="${bmiDTO.getMyBMI()} + '(' + ${bmiDTO.getWeightStatus()} + ')'"></span>
+                                    <span th:text="${bmiDTO.getMyBMI()} + ' (' + ${bmiDTO.getWeightStatus()} + ')'"></span>
                                 </td>
                             </tr>
                             </tbody>

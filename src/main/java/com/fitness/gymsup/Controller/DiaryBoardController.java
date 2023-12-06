@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -162,6 +163,34 @@ public class DiaryBoardController {
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회 Reload
+        BoardDTO boardDTO = boardService.detail(id, false, request, principal);
+        //댓글목록 조회
+        List<CommentDTO> commentDTOS = commentService.list(id);
+        boardDTO.setCommentCount(commentDTOS.size());
+
+        log.info(boardDTO);
+        log.info(commentDTOS);
+
+        model.addAttribute("loginUserId", loginUserId);
+        model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+
+        model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("commentDTOS", commentDTOS);
+
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
+
+        return "board/diary/detail";
+    }
+    @GetMapping("/board_diary_reload/{id}")
+    public String reloadForm(@PathVariable Integer id,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+        //로그인 user id 조회
+        Integer loginUserId = boardService.userId(request, principal);
+        //해당게시글 상세조회 reload
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
