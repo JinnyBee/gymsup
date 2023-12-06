@@ -28,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -38,6 +36,7 @@ import java.util.List;
 @Slf4j
 public class BasicUserService implements UserDetailsService {
 
+    private final EmailService emailService;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
@@ -263,5 +262,16 @@ public class BasicUserService implements UserDetailsService {
         return userDTOS;
     }
 
+    //이메일 확인
+    public boolean userEmailCheck(String email){
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if(userEntity!=null){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }

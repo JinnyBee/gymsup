@@ -21,6 +21,9 @@ public interface UserRepository extends
     //간편로그인타입, 이메일로 조회
     Optional<UserEntity> findByEmailAndOauthType(String email, String oauthType);
 
+    //비밀번호 재설정
+
+
     //수정 필요.
     void deleteByEmail(String email);
 }

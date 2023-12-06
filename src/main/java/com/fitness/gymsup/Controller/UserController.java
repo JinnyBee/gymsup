@@ -2,9 +2,11 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
+import com.fitness.gymsup.DTO.MailDTO;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Service.BasicUserService;
+import com.fitness.gymsup.Service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,12 +18,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +35,7 @@ import java.util.Map;
 
 public class UserController {
 
+    private final EmailService emailService;
     private final BasicUserService basicUserService;
     private final PasswordEncoder passwordEncoder;
 
@@ -291,4 +296,31 @@ public class UserController {
         redirectAttributes.addAttribute("errorMessage","로그인 후 이용해주세요.");
         return "redirect:/user_login";
     }
+
+    //비밀번호 찾기 form
+    @GetMapping("/password_change")
+    public String passwordChange()throws Exception{
+        return "user/passwordchange";
+    }
+
+    //이메일 일치여부 확인
+    @PostMapping("/password_change")
+    public String pw_find(String email, RedirectAttributes redirectAttributes, Model model){
+        boolean emailCheck = basicUserService.userEmailCheck(email);
+        String errorMessage= "";
+
+        if (emailCheck){
+            MailDTO mailDTO = emailService.createMailAndChangePassword(email);
+            emailService.mailSend(mailDTO);
+            errorMessage = "메일을 전송했습니다.";
+            redirectAttributes.addAttribute("errorMessage", errorMessage);
+            return "redirect:/user_login";
+        }else {
+            errorMessage = "가입하지 않은 이메일입니다.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "user/passwordchange";
+        }
+
+    }
+
 }

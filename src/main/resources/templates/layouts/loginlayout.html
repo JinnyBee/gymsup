@@ -81,6 +81,46 @@
             });
         }
     </script>
+
+    <script>
+
+
+        $("#checkEmail").click(function () {
+            let userEmail = $("#userEmail").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/check_findPw",
+                data: {
+                    "userEmail": userEmail,
+                },
+                success: function (res) {
+                    if (res['check']) {
+                        swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
+                            if(OK) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/check_findPw_sendEmail",
+                                    data: {
+                                        "userEmail": userEmail,
+                                    }
+                                })
+                                window.location = "/user_login";
+                            }
+
+
+                        }
+                    )
+                        $('#checkMsg').html('<p style="color:darkblue"></p>');
+                    } else {
+                        $('#checkMsg').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
+                    }
+                }
+            })
+        })
+    </script>
+
+
     <!--자바스크립트 jquery : 스크립트를 이용한 효과-->
     <th:block layout:fragment="script"></th:block>
     <th:block layout:fragment="css"></th:block>
