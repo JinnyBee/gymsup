@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
@@ -85,7 +86,7 @@
                                 <div class="col-md-3">
                                     <div><!--게시글 작성 버튼-->
                                         <button class="btn btn-primary float-end btn-sm" th:onclick="|location.href='@{/board_notify_register}'|"
-                                                type="button">글쓰기
+                                                type="button" sec:authorize="hasRole('ADMIN')">글쓰기
                                         </button>
                                     </div><!--게시글 작성 버튼 끝-->
                                 </div>
