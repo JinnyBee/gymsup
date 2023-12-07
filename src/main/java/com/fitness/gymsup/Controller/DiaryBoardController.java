@@ -3,7 +3,6 @@ package com.fitness.gymsup.Controller;
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.CommentDTO;
-import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Service.BoardService;
 import com.fitness.gymsup.Service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -217,6 +216,7 @@ public class DiaryBoardController {
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+
         log.info("id: "+ id + ", boardUserId:"+boardUserId);
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
@@ -224,8 +224,12 @@ public class DiaryBoardController {
         }
 
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
-        model.addAttribute("boardDTO", boardDTO);
         log.info(boardDTO);
+
+        model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         return "board/diary/modify";
     }
