@@ -180,10 +180,18 @@ public class TipBoardController {
 
     @GetMapping("/board_tip_modify")
     public String modifyForm(Integer id,
+                             Integer boardUserId,
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
+
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/tip/modify";
@@ -204,8 +212,18 @@ public class TipBoardController {
 
     @GetMapping("/board_tip_remove")
     public String removeProc(Integer id,
-                             Model model) throws Exception {
+                             Integer boardUserId,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         boardService.remove(id);
+
         return "redirect:/board_tip_list";
     }
 }

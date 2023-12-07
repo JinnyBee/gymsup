@@ -175,10 +175,18 @@ public class QnaBoardController {
     }
     @GetMapping("/board_qna_modify")
     public String modifyForm(Integer id,
+                             Integer boardUserId,
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
+
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/qna/modify";
@@ -197,8 +205,19 @@ public class QnaBoardController {
         return "redirect:/board_qna_list";
     }
     @GetMapping("/board_qna_remove")
-    public String removeProc(Integer id, Model model) throws Exception {
+    public String removeProc(Integer id,
+                             Integer boardUserId,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         boardService.remove(id);
+
         return "redirect:/board_qna_list";
     }
 }

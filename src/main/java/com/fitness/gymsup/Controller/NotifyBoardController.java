@@ -175,10 +175,18 @@ public class NotifyBoardController {
     }
     @GetMapping("/board_notify_modify")
     public String modifyForm(Integer id,
+                             Integer boardUserId,
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
+
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/notify/modify";
@@ -198,8 +206,19 @@ public class NotifyBoardController {
         return "redirect:/board_notify_list";
     }
     @GetMapping("/board_notify_remove")
-    public String removeProc(Integer id, Model model) throws Exception {
+    public String removeProc(Integer id,
+                             Integer boardUserId,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         boardService.remove(id);
+
         return "redirect:/board_notify_list";
     }
 }
