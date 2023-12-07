@@ -15,7 +15,7 @@
                             <div class="row" style="border-bottom: 2px solid black"> <!-- 게시판 타이틀 -->
                                 <div class="col-lg-12"><h2 th:text="${categoryType}">운동 팁</h2></div>
                             </div>
-                            <div class="row mt-3 mb-2"> <!-- 제목 시작 -->
+                            <div class="row mt-3 mb-2"> <!-- 제목 -->
                                 <div class="col-lg-12">
                                     <p style="font-size: 26px; margin-bottom: 0px;" th:text="${boardDTO.title}">제목</p>
                                 </div>
@@ -31,7 +31,7 @@
                                     <div style="display: inline-block"
                                          th:text="'날짜 : ' + ${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div>
                                 </div>
-                                <div class="col-lg-2 mt-2 text-end">
+                                <div class="col-lg-2 mt-2 text-end"> <!-- 조회수 -->
                                     <div style="display: inline-block" th:text="'조회수 : ' + ${boardDTO.viewCnt}"></div>
                                 </div>
                             </div>
@@ -67,6 +67,7 @@
                                         </button>
                                     </div>
                                 </div> <!-- 북마크 끝 -->
+
                                 <div class="col-lg-2 text-end"> <!-- 추천 버튼 -->
                                     <div>
                                         <input type="hidden" th:value="${boardDTO.id}" name="boardId">
@@ -86,6 +87,7 @@
                                 </div>
                                 <!-- 추천 끝 -->
                             </div>
+
                             <!-- 게시글 수정 삭제 목록 -->
                             <div class="row" style="border-top: 1px solid black; height: 100px;">
                                 <div class="col-lg-4 mt-2"></div>
