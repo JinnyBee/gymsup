@@ -48,16 +48,27 @@ public class UserController {
 
     //회원가입 form
     @GetMapping("/user_join")
-    public String joinForm(Model model , String message, String emessage, HttpServletRequest request) throws Exception {
-            Map<String, ?>flashMap = RequestContextUtils.getInputFlashMap(request);
-            UserDTO userDTO = new UserDTO();
-            if (flashMap != null){
-                userDTO = (UserDTO) flashMap.get("userDTO");
-            }
+    public String joinForm(Model model , String message, String emessage,
+                           HttpServletRequest request, Principal principal,
+                           RedirectAttributes redirectAttributes) throws Exception {
 
-            model.addAttribute("userDTO", userDTO);
-            model.addAttribute("emessage",emessage);
-            model.addAttribute("message",message);
+        //로그인 확인
+        boolean check = basicUserService.loginCheck(request, principal);
+        //로그인시 false
+        if (check == false){
+            redirectAttributes.addAttribute("errorMessage", "로그인 중에는 사용불가능합니다.");
+            return "redirect:/";
+        }
+
+        Map<String, ?>flashMap = RequestContextUtils.getInputFlashMap(request);
+        UserDTO userDTO = new UserDTO();
+        if (flashMap != null){
+            userDTO = (UserDTO) flashMap.get("userDTO");
+        }
+
+        model.addAttribute("userDTO", userDTO);
+        model.addAttribute("emessage",emessage);
+        model.addAttribute("message",message);
 
 
         return "user/join";
@@ -93,7 +104,15 @@ public class UserController {
 
     //로그인 form
     @GetMapping("/user_login")
-    public String loginForm(String errorMessage, Model model) throws Exception {
+    public String loginForm(String errorMessage, Model model, Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+
+        //로그인 확인
+        boolean check = basicUserService.loginCheck(request, principal);
+        //로그인시 false
+        if (check == false){
+            redirectAttributes.addAttribute("errorMessage", "로그인 중에는 사용불가능합니다.");
+            return "redirect:/";
+        }
         model.addAttribute("errorMessage",errorMessage);
         return "user/login";
     }
@@ -335,7 +354,15 @@ public class UserController {
 
     //비밀번호 찾기 form
     @GetMapping("/password_change")
-    public String passwordChange()throws Exception{
+    public String passwordChange(HttpServletRequest request, Principal principal,
+                                 RedirectAttributes redirectAttributes)throws Exception{
+        //로그인 확인
+        boolean check = basicUserService.loginCheck(request, principal);
+        //로그인시 false
+        if (check == false){
+            redirectAttributes.addAttribute("errorMessage", "로그인 중에는 사용불가능합니다.");
+            return "redirect:/";
+        }
         return "user/passwordchange";
     }
 

@@ -274,4 +274,21 @@ public class BasicUserService implements UserDetailsService {
         }
     }
 
+    //로그인 여부
+    public boolean loginCheck(HttpServletRequest request, Principal principal) throws Exception{
+
+        boolean check;
+
+        HttpSession session = request.getSession();
+
+        //유저 비로그인시 true, 로그인시 false
+        if (session== null || principal ==null){
+            check= true;
+        }else {
+            check= false;
+        }
+
+        return check;
+    }
+
 }
