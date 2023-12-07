@@ -213,9 +213,16 @@ public class DiaryBoardController {
     }
     @GetMapping("/board_diary_modify")
     public String modifyForm(Integer id,
+                             Integer boardUserId,
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+        log.info("id: "+ id + ", boardUserId:"+boardUserId);
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
         model.addAttribute("boardDTO", boardDTO);
         log.info(boardDTO);
@@ -237,8 +244,19 @@ public class DiaryBoardController {
         return "redirect:/board_diary_list";
     }
     @GetMapping("/board_diary_remove")
-    public String removeProc(Integer id, Model model) throws Exception {
+    public String removeProc(Integer id,
+                             Integer boardUserId,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+
+        if( boardUserId == null ||
+                !boardService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
+
         boardService.remove(id);
+
         return "redirect:/board_diary_list";
     }
 }
