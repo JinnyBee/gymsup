@@ -27,7 +27,7 @@
                             </div>
                             <div class="mb-3">
                                 <div th:each="data:${boardDTO.imgFileList}">
-                                    <img th:src="|/images/@{${data}}|" alt="상품 이미지" style="...">
+                                    <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data}|" alt="상품 이미지" style="...">
                                 </div>
                                 <label for="img1" class="form-label">사진1:</label>
                                 <input type="file" class="form-control" id="img1" name="imgFiles">

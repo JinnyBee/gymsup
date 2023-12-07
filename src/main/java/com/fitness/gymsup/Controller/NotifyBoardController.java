@@ -188,6 +188,9 @@ public class NotifyBoardController {
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
 
         model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         return "board/notify/modify";
     }

@@ -193,6 +193,9 @@ public class TipBoardController {
         BoardDTO boardDTO = boardService.detail(id, false, request, principal);
 
         model.addAttribute("boardDTO", boardDTO);
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
         return "board/tip/modify";
     }
