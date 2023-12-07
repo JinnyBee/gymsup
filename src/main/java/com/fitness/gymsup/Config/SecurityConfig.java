@@ -52,11 +52,11 @@ public class SecurityConfig {
             //유저권한
             auth.antMatchers("/user_logout", "/board_detail*", "/bookmark_*", "/good_on*", "/mybmi_calc*",
                                         "/food_calorie_*", "/myfood_calorie_*", "/exercise_calorie_*",
-                                        "/comment_*", "/reply_*", "/board_diary_*", "/board_notify_*",
+                                        "/comment_*", "/reply_*", "/board_diary_*", "/board_notify_detail*",
                                         "/board_qna_*", "/board_tip_*" ,"/user_*", "/contact_*", "/machine_about", "/machine_select_list*",
                                         "/machine_detail*").hasAnyRole("USER", "ADMIN");
             //관리자 권한
-            auth.antMatchers("/machine_detect", "/machine_*", "/admin_*").hasRole("ADMIN");
+            auth.antMatchers("/machine_detect", "/machine_*", "/admin_*", "/board_notify_*").hasRole("ADMIN");
         });
 
 
