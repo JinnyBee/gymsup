@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 @Log4j2
 public class Time {
     private static class TIME_MAXIMUM {
-        public static final int SEC = 60;
-        public static final int MIN = 60;
-        public static final int HOUR = 24;
-        public static final int DAY = 30;
-        public static final int MONTH = 12;
+        public static final int SEC = 60;                           // 초
+        public static final int MIN = 60;                           // 분
+        public static final int HOUR = 24;                          // 시간
+        public static final int DAY = 30;                           // 일
+        public static final int MONTH = 12;                         // 월
     }
-    public static String calculateTime(LocalDateTime date) {
-        LocalDateTime curTime = LocalDateTime.now();
-        Duration duration = Duration.between(date, curTime);
+    public static String calculateTime(LocalDateTime date) {        // LocalDateTime 이용
+        LocalDateTime curTime = LocalDateTime.now();                // LocalDateTime.now() 현재시간 가져오기
+        Duration duration = Duration.between(date, curTime);        //
         long diffTime = duration.getSeconds();
         String msg = null;
 
