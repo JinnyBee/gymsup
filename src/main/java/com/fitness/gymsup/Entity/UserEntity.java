@@ -39,4 +39,6 @@ public class UserEntity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private UserRole role;          //유저 역할
+
+    private boolean ban;            //유저 정지 여부
 }

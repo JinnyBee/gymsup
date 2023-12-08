@@ -59,7 +59,10 @@
                                         <tbody>
                                         <tr th:each="data:${boardDTOS}">
                                             <td th:text="${data.categoryType.getDescription()}">John</td>
-                                            <td th:text="${data.title}">John</td>
+                                            <td>
+                                                <a th:href="@{/board_detail(id=${data.id}, categoryType=${data.getCategoryType().name()})}"
+                                                   th:text="${data.title}"></a>
+                                            </td>
                                             <td th:text="${data.viewCnt}">John</td>
                                             <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd')}">John</td>
                                         </tr>

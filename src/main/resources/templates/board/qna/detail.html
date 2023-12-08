@@ -30,7 +30,7 @@
                                 <div class="col-lg-2 mt-2"></div>
                                 <div class="col-lg-3 mt-2 text-end"> <!-- 게시물 작성 날짜 -->
                                     <div style="display: inline-block"
-                                         th:text="'날짜 : ' + ${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd')}"></div>
+                                         th:text="'날짜 : ' + ${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd HH:mm')}"></div>
                                 </div>
                                 <div class="col-lg-2 mt-2 text-end">
                                     <div style="display: inline-block" th:text="'조회수 : ' + ${boardDTO.viewCnt}"></div>
