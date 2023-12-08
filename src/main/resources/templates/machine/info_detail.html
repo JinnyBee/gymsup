@@ -63,7 +63,7 @@
                                             <td th:text="${data.viewCnt}">john@example.com</td>
                                             <td sec:authorize="hasRole('ADMIN')">
                                                 <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>
-                                                <button class="btn btn-danger" type="button" th:onclick="|location.href='@{/machine_usage_delete(uid=${data.id}, id=${machineInfoDTO.id})}'|">삭제</button>
+                                                <button class="btn btn-danger" type="button" th:onclick="|location.href='@{/machine_usage_remove(uid=${data.id}, id=${machineInfoDTO.id})}'|">삭제</button>
                                             </td>
                                         </tr>
                                         </tbody>
