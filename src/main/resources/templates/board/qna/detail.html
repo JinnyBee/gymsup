@@ -93,13 +93,13 @@
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2" style="text-align: right">
                                     <button class="btn btn-outline-dark" type="button"
-                                            th:onclick="|location.href='@{/board_qna_modify(id=${boardDTO.id})}'|"
+                                            th:onclick="|location.href='@{/board_qna_modify(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
                                             th:if="${userConfirm}==true">
                                         수정
                                     </button>
 
                                     <button class="btn btn-outline-danger" type="button"
-                                            th:onclick="|location.href='@{/board_qna_remove(id=${boardDTO.id})}'|"
+                                            th:onclick="|location.href='@{/board_qna_remove(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
                                             th:if="${userConfirm}==true">
                                         삭제
                                     </button>
