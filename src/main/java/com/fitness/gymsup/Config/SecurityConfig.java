@@ -17,6 +17,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    //유저 정지 관련 헨들러
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     //간편로그인 성공 헨들러
     private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
 
@@ -68,7 +73,8 @@ public class SecurityConfig {
                 .loginPage("/user_login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("email")
-                .failureUrl("/user_login_error");
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler);
         http.csrf().disable();
 
         //유저 로그아웃 설정

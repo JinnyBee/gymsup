@@ -50,6 +50,7 @@ public class BasicUserService implements UserDetailsService {
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setNickname(userDTO.getNickname());
         userEntity.setPassword(password);
+        userEntity.setBan(false);
         userEntity.setRole(UserRole.USER);
 
         validateDuplicateUser(userEntity);

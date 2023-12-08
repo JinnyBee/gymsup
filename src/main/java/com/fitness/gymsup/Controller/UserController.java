@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -118,9 +119,14 @@ public class UserController {
     }
 
     //로그인 오류 form
-    @GetMapping("/user_login_error")
-    public String loginError(Model model)throws Exception {
-        model.addAttribute("errorMessage", "아이디 또는 비밀번호를 확인해 주세요.");
+    @RequestMapping("/user_login_error")
+    public String loginError(HttpServletRequest request, Model model)throws Exception {
+        if(request.getAttribute("errorMessage") !=null){
+            String errorMessage = request.getAttribute("errorMessage").toString();
+            model.addAttribute("errorMessage", errorMessage);
+        }else{
+            model.addAttribute("errorMessage","계정이 정지되었습니다.");
+        }
         return "user/login";
     }
 

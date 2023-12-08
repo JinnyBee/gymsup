@@ -4,6 +4,7 @@ import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Service.OAuthUserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -54,6 +55,10 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         }
 
         UserEntity user = oAuthUserService.getUserByEmailAndOAuthType(mailType, oauthType);
+
+        if (user.isBan()){
+            throw new LockedException("계정이 정지되었습니다.");
+        }
 
         log.info("USER SAVED IN SESSION");
         HttpSession session = request.getSession();
