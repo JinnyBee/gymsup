@@ -140,20 +140,30 @@ public class CalorieController {
     }
 
     //나의 음식칼로리 상세보기
-    @PostMapping("/myfood_calorie_register")
-    public String myfoodCalorieDetail(String foodtype,
-                                      String foodname,
-                                      String calorie,
-                                      Model model) throws Exception {
+    //@PostMapping("/myfood_calorie_register")
+    @GetMapping("/myfood_calorie_register")
+    public String myfoodCalorieRegister(String foodType,
+                                        String makerName,
+                                        String foodName,
+                                        String calorie,
+                                        Model model) throws Exception {
 
-        log.info(foodtype);
-        log.info(foodname);
+        log.info(foodType);
+        log.info(makerName);
+        log.info(foodName);
         log.info(calorie);
+        /*FoodDiaryDTO foodDiaryDTO = new FoodDiaryDTO();
+        foodDiaryDTO.setFoodType(foodType);
+        foodDiaryDTO.setMakerName(makerName);
+        foodDiaryDTO.setFoodName(foodName);
+        foodDiaryDTO.setCalorie(calorie);*/
+
+        //model.addAttribute("foodDiaryDTO", foodDiaryDTO);
         //log.info(foodCalorieDTO);
 
         //model.addAttribute("keyword", keyword);
         //model.addAttribute("foodCalorieDTO", foodCalorieDTO);
-        return "calorie/myfood_main";
+        return "/board_diary_register";
     }
 
     //운동칼로리 검색 폼
@@ -166,19 +176,5 @@ public class CalorieController {
         model.addAttribute("keyword", keyword);                 // 검색 키워드
         model.addAttribute("exerciseDTOS", exerciseDTOS);       // 데이터
         return "calorie/exercise_calc";
-    }
-
-    //운동칼로리 검색 처리
-    @GetMapping("/exercise_calorie_search")
-    public String exerciseCalorieSearch(String keyword,
-                                        Model model) throws Exception {
-        return "calorie/exercise_list";
-    }
-
-    //운동칼로리 상세보기
-    @GetMapping("/exercise_calorie_detail")
-    public String exerciseCalorieDetail(FoodCalorieDTO foodCalorieDTO,
-                                        Model model) throws Exception {
-        return "calorie/exercise_detail";
     }
 }
