@@ -13,10 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
+import java.net.ConnectException;
 import java.util.Base64;
 
 @Component
@@ -48,25 +50,39 @@ public class Flask {
         String originalFileName = file.getOriginalFilename(); //파일명 추출
         String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); //확장자 추출
 
-        // 메세지 헤더부분 설정
+        //메세지 헤더부분 설정
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED); //(MediaType.APPLICATION_JSON);
 
-        // 메세지 본문부분 설정
+        //메세지 본문부분 설정
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         String imageFileString = getBase64String(file);
+
         //body.add("filename", fileName);  파일명으로 전송시
         body.add("extension", extension); //확장자만 전송시
         body.add("image", imageFileString);
 
-        // 전송할 메세지 만들기
+        //전송할 메세지 만들기
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-
-        // 서버에 요청하기
-        //ResponseEntity<String> response = restTemplate.postForEntity(url, requestMessage, String.class);
+        String response = "";
         log.info("REQ : " + requestMessage.toString());
-        String response = restTemplate.postForObject(url, requestMessage, String.class);
-        log.info("RES : " + response);
+
+
+        try {
+            //서버에 요청하기
+            //ResponseEntity<String> response = restTemplate.postForEntity(url, requestMessage, String.class);
+            response = restTemplate.postForObject(url, requestMessage, String.class);
+
+            log.info("RES : " + response);
+        } catch (HttpStatusCodeException e) {
+            String errorload = e.getResponseBodyAsString();
+            log.error(e.getStatusCode() + " : " + errorload);
+
+            return null;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
 
         //플라스크로 부터 받은 JSON값을 분리
         JSONParser parser = new JSONParser();
@@ -114,5 +130,4 @@ public class Flask {
         //    deleteFile.delete();
         //}
     }
-
 }
