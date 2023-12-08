@@ -18,10 +18,10 @@
                             <div class="row"> <!--공간 시작-->
                                 <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTO.id})}'|" style="width:300px">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTO.img}|">
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${foamRoller.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${foamRoller.img}|">
                                             <div class="card-body">
-                                                <h4 class="card-title" th:text="${machineInfoDTO.name}">John Doe</h4>
+                                                <h4 class="card-title" th:text="${foamRoller.name}">John Doe</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -29,10 +29,10 @@
 
                                 <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid2.id})}'|" style="width:300px">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid2.img}|">
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${dumbBell.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${dumbBell.img}|">
                                             <div class="card-body">
-                                                <h4 class="card-title" th:text="${machineInfoDTOid2.name}">John Doe</h4>
+                                                <h4 class="card-title" th:text="${dumbBell.name}">John Doe</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -40,10 +40,10 @@
 
                                 <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid3.id})}'|" style="width:300px">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid3.img}|">
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${kettleBell.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${kettleBell.img}|">
                                             <div class="card-body">
-                                                <h4 class="card-title" th:text="${machineInfoDTOid3.name}">John Doe</h4>
+                                                <h4 class="card-title" th:text="${kettleBell.name}">John Doe</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -53,20 +53,20 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid4.id})}'|" style="width:300px">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid4.img}|">
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${babel.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${babel.img}|">
                                             <div class="card-body">
-                                                <h4 class="card-title" th:text="${machineInfoDTOid4.name}">John Doe</h4>
+                                                <h4 class="card-title" th:text="${babel.name}">John Doe</h4>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${machineInfoDTOid5.id})}'|" style="width:300px">
-                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${machineInfoDTOid5.img}|">
+                                        <div class="card text-center" th:onclick="|location.href='@{/machine_select_list(id=${shoulderPress.id})}'|" style="width:300px">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${shoulderPress.img}|">
                                             <div class="card-body">
-                                                <h4 class="card-title" th:text="${machineInfoDTOid5.name}">John Doe</h4>
+                                                <h4 class="card-title" th:text="${shoulderPress.name}">John Doe</h4>
                                             </div>
                                         </div>
                                     </div>

@@ -5,9 +5,8 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -35,6 +34,7 @@ public class BoardDTO {
     private Boolean bookmarkOn;                 //게시글 조회하고 있는 사용자가 북마크 눌렀는지
     private Boolean goodOn;                     //게시글 조회하고 있는 사용자가 좋아요 눌렀는지
     
+    private String displayRegDate;              //생성일 표시
     private LocalDateTime regDate;              //생성일
     private LocalDateTime modDate;              //수정일
 }
