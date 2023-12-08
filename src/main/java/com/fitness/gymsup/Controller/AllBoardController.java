@@ -27,7 +27,7 @@ public class AllBoardController {
 
     //모든게시판 전체목록 조회
     @GetMapping("/board_list")
-    public String listAllForm(@PageableDefault(page = 1) Pageable pageable,
+    public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
         List<BoardDTO> notiBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
         Page<BoardDTO> boardDTOS = boardService.listAllWithoutCategory(pageable, BoardCategoryType.BTYPE_NOTIFY);
@@ -90,12 +90,18 @@ public class AllBoardController {
         log.info(categoryType);
         if(categoryType.equals(BoardCategoryType.BTYPE_TIP.name())) {
             redirectAttributes.addAttribute("id", id);
+
             return "redirect:/board_tip_detail";
         } else if(categoryType.equals(BoardCategoryType.BTYPE_DIARY.name())) {
             redirectAttributes.addAttribute("id", id);
+
             return "redirect:/board_diary_detail";
+        } else if(categoryType.equals(BoardCategoryType.BTYPE_QNA.name())) {
+            redirectAttributes.addAttribute("id", id);
+
+            return "redirect:/board_qna_detail";
         }
 
-        return "board/list";
+        return "redirect:/board_list";
     }
 }
