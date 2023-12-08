@@ -64,10 +64,12 @@ public class MachineController {
 
         //플라스크 서버에 분석할 이미지를 전달하여 처리
         FlaskResponseDTO flaskResponseDTO = flask.requestToFlask(detectImg);
-        log.info("Flask Response DTO (resultFilename) : " + flaskResponseDTO.getResultFilename());
-        if(flaskResponseDTO.getName().isEmpty()) {
+
+        if(flaskResponseDTO == null || flaskResponseDTO.getName().isEmpty()) {
             return "machine/detect_error";
         }
+        log.info("Flask Response DTO (result filename) : " + flaskResponseDTO.getResultFilename());
+        log.info("Flask Response DTO (class name) : " + flaskResponseDTO.getName());
 
         //flaskResponseDTO name 리스트 중 첫번째 값만 사용 (첫번째 class 이름)
         MachineInfoDTO machineInfoDTO = machineInfoService.find(flaskResponseDTO.getName().get(0));
