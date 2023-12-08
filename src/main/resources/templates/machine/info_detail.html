@@ -59,7 +59,7 @@
                                             </td>
                                             <td><img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
                                                     alt="" height="125px" width="210px"></td>
-                                            <td><a th:href="@{/machine_detail(id=${data.id})}"  th:text="${data.title}"></a></td>
+                                            <td><a th:href="@{/machine_usage_detail(id=${data.id})}"  th:text="${data.title}"></a></td>
                                             <td th:text="${data.viewCnt}">john@example.com</td>
                                             <td sec:authorize="hasRole('ADMIN')">
                                                 <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>

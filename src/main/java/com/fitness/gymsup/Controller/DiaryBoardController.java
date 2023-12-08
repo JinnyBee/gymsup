@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,7 +86,7 @@ public class DiaryBoardController {
         log.info("nextPage : "+nextPage);
         log.info("lastPage : "+lastPage);
 
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_DIARY.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
         model.addAttribute("boardDTOS", boardDTOS);
@@ -98,8 +97,10 @@ public class DiaryBoardController {
         return "board/diary/list";
     }
 
+    //운동+식단 일기 게시판 등록 폼
     @GetMapping("/board_diary_register")
     public String registerForm(Model model) throws Exception {
+
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setCategoryType(BoardCategoryType.BTYPE_DIARY);
         log.info(boardDTO.getCategoryType().name());
@@ -108,6 +109,8 @@ public class DiaryBoardController {
 
         return "board/diary/register";
     }
+
+    //운동+식단 일기 게시판 등록 처리
     @PostMapping("/board_diary_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
@@ -115,6 +118,7 @@ public class DiaryBoardController {
                                Model model,
                                HttpServletRequest request,
                                Principal principal) throws Exception {
+
         log.info(boardDTO.getCategoryType().name());
         for(MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
@@ -126,11 +130,14 @@ public class DiaryBoardController {
 
         return "redirect:/board_diary_list";
     }
+
+    //운동+식단 일기 게시판 상세보기
     @GetMapping("/board_diary_detail")
     public String detailForm(Integer id,
                              Model model,
                              HttpServletRequest request,
                              Principal principal) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
@@ -143,7 +150,7 @@ public class DiaryBoardController {
         log.info(commentDTOS);
 
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_DIARY.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_DIARY.getDescription());
 
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
@@ -154,11 +161,14 @@ public class DiaryBoardController {
 
         return "board/diary/detail";
     }
-    @GetMapping("/board_diary_detailreload")
-    public String detailReloadForm(Integer id,
-                                   Model model,
-                                   HttpServletRequest request,
-                                   Principal principal) throws Exception {
+
+    //운동+식단 일기 게시판 상세보기 Reload
+    @GetMapping("/board_diary_reload")
+    public String reloadForm(Integer id,
+                             Model model,
+                             HttpServletRequest request,
+                             Principal principal) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회 Reload
@@ -182,6 +192,7 @@ public class DiaryBoardController {
 
         return "board/diary/detail";
     }
+    /*
     @GetMapping("/board_diary_reload/{id}")
     public String reloadForm(@PathVariable Integer id,
                              Model model,
@@ -209,7 +220,9 @@ public class DiaryBoardController {
         model.addAttribute("folder", folder);
 
         return "board/diary/detail";
-    }
+    }*/
+
+    //운동+식단 일기 게시판 수정 폼
     @GetMapping("/board_diary_modify")
     public String modifyForm(Integer id,
                              Integer boardUserId,
@@ -233,11 +246,14 @@ public class DiaryBoardController {
 
         return "board/diary/modify";
     }
+
+    //운동+식단 일기 게시판 수정 처리
     @PostMapping("/board_diary_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
                              List<MultipartFile> imgFiles,
                              Model model) throws Exception {
+
         log.info(boardDTO);
         log.info(imgFiles);
 
@@ -247,6 +263,8 @@ public class DiaryBoardController {
         boardService.modify(boardDTO, imgFiles);
         return "redirect:/board_diary_list";
     }
+
+    //운동+식단 일기 게시판 삭제 처리
     @GetMapping("/board_diary_remove")
     public String removeProc(Integer id,
                              Integer boardUserId,

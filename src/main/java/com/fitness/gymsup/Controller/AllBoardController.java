@@ -80,6 +80,8 @@ public class AllBoardController {
 
         return "board/list";
     }
+
+    //전체게시판에서 상세조회 이동
     @GetMapping("/board_detail")
     public String detailForm(Integer id,
                              String categoryType,

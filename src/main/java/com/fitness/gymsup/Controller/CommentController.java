@@ -32,17 +32,18 @@ public class CommentController extends BaseController {
     private final CommentService commentService;
     private final ReplyService replyService;
 
+    //댓글 등록 처리
     @PostMapping("/comment_register")
     public String registerCommentProc(CommentDTO commentDTO,
                                       String categoryType,
                                       HttpServletRequest request,
                                       Principal principal,
                                       RedirectAttributes redirectAttributes) throws Exception {
+
         log.info("boardId : " + commentDTO.getBoardId() + ", userId : " + commentDTO.getUserId() + ", categoryType : " + categoryType);
 
         commentService.register(commentDTO, request, principal);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
-        log.info("#### " + commentDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
@@ -73,6 +74,7 @@ public class CommentController extends BaseController {
         return entity; //요청한 페이지로 되돌아간다.
     }*/
 
+    //댓글 수정 처리
     @PostMapping("/comment_modify")
     public String modifyCommentProc(CommentDTO commentDTO,
                                     String categoryType,
@@ -88,24 +90,28 @@ public class CommentController extends BaseController {
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
+    //댓글 삭제 처리 (bid: 부모 게시글 id, id: 댓글 id)
     @GetMapping("/comment_remove")
     public String removeCommentProc(int bid,
                                     int id,
                                     String categoryType,
                                     RedirectAttributes redirectAttributes) throws Exception {
+
         commentService.remove(id);
         redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
+    //로그인 유저의 모든 댓글 삭제
     @GetMapping("/comment_user_all")
-    public String commentUserAll(HttpServletRequest request, Principal principal)throws Exception{
+    public String commentUserAll(HttpServletRequest request, Principal principal) throws Exception {
+
         commentService.userCommentRemove(request, principal);
         return "redirect:/";
     }
 
-
+    //답글 등록 처리
     @PostMapping("/reply_register")
     public String registerReplyProc(@Valid ReplyDTO replyDTO,
                                     BindingResult bindingResult,
@@ -113,6 +119,7 @@ public class CommentController extends BaseController {
                                     HttpServletRequest request,
                                     Principal principal,
                                     RedirectAttributes redirectAttributes) throws Exception {
+
         log.info("commentId : " + replyDTO.getCommentId() + ", userId : " + replyDTO.getUserId() + "categoryType : " + categoryType);
         if (bindingResult.hasErrors()) {
             log.info(getRedirectUrl(categoryType));
@@ -124,23 +131,28 @@ public class CommentController extends BaseController {
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
+
+    //답글 수정 처리
     @PostMapping("/reply_modify")
     public String modifyReplyProc(ReplyDTO replyDTO,
-                                    HttpServletRequest request,
-                                    Principal principal,
-                                    RedirectAttributes redirectAttributes,
-                                    String categoryType) throws Exception{
+                                  String categoryType,
+                                  HttpServletRequest request,
+                                  Principal principal,
+                                  RedirectAttributes redirectAttributes) throws Exception {
+
         replyService.modify(replyDTO, request, principal);
         redirectAttributes.addAttribute("id", replyDTO.getBoardId());
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
+    //답글 삭제 처리
     @GetMapping("/reply_remove")
     public String removeReplyProc(int bid,
                                   int id,
                                   String categoryType,
                                   RedirectAttributes redirectAttributes) throws Exception {
+
         replyService.remove(id);
         redirectAttributes.addAttribute("id", bid);
 

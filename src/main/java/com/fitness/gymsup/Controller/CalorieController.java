@@ -166,7 +166,7 @@ public class CalorieController {
         return "/board_diary_register";
     }
 
-    //운동칼로리 검색 폼
+    //운동칼로리 검색 폼 및 결과
     @GetMapping("/exercise_calorie_calc")
     public String exerciseCalorieCalcForm(@RequestParam(value = "page", defaultValue = "1") int page,
                                           @RequestParam(value = "keyword", defaultValue = "")String keyword,

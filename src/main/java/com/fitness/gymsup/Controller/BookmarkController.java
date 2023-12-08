@@ -24,6 +24,7 @@ import java.security.Principal;
 public class BookmarkController extends BaseController {
     private final BookmarkService bookmarkService;
 
+    //마이페이지 - 내 북마크 게시글 전체 목록
     @GetMapping("/bookmark_list")
     private String listForm(@PageableDefault(page = 1) Pageable pageable,
                             Model model,
@@ -63,44 +64,47 @@ public class BookmarkController extends BaseController {
         return "user/bookmark";
     }
 
+    //북마크 설정 처리
     @GetMapping("/bookmark_on")
-    private String bookmarkOnProc(@RequestParam("id") Integer boardId,
+    private String bookmarkOnProc(@RequestParam("id") Integer bid,
                                   @RequestParam("categoryType") String categoryType,
                                   HttpServletRequest request,
                                   Principal principal,
                                   RedirectAttributes redirectAttributes) throws Exception {
 
-        log.info(boardId + ", " + categoryType);
-        bookmarkService.register(boardId, BookmarkType.BOOKMARK, request, principal);
-        redirectAttributes.addAttribute("id", boardId);
+        log.info(bid + ", " + categoryType);
+        bookmarkService.register(bid, BookmarkType.BOOKMARK, request, principal);
+        redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
+    //북마크 해제 처리
     @GetMapping("/bookmark_off")
-    private String bookmarkOffProc(@RequestParam("id") Integer boardId,
+    private String bookmarkOffProc(@RequestParam("id") Integer bid,
                                    @RequestParam("categoryType") String categoryType,
                                    HttpServletRequest request,
                                    Principal principal,
                                    RedirectAttributes redirectAttributes) throws Exception {
 
-        log.info(boardId + ", " + categoryType);
-        bookmarkService.remove(boardId, BookmarkType.BOOKMARK, request, principal);
-        redirectAttributes.addAttribute("id", boardId);
+        log.info(bid + ", " + categoryType);
+        bookmarkService.remove(bid, BookmarkType.BOOKMARK, request, principal);
+        redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);
     }
 
+    //좋아요 설정 처리
     @GetMapping("/good_on")
-    private String goodOnProc(@RequestParam("id") Integer boardId,
+    private String goodOnProc(@RequestParam("id") Integer bid,
                               @RequestParam("categoryType") String categoryType,
                               HttpServletRequest request,
                               Principal principal,
                               RedirectAttributes redirectAttributes) throws Exception {
 
-        log.info(boardId + ", " + categoryType);
-        bookmarkService.register(boardId, BookmarkType.GOOD, request, principal);
-        redirectAttributes.addAttribute("id", boardId);
+        log.info(bid + ", " + categoryType);
+        bookmarkService.register(bid, BookmarkType.GOOD, request, principal);
+        redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);
     }

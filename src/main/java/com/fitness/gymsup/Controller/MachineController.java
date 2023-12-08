@@ -49,6 +49,7 @@ public class MachineController {
     //운동기구 인식 Form
     @GetMapping("/machine_detect")
     public String detectForm(Model model) throws Exception {
+
         return "machine/detect";
     }
 
@@ -81,9 +82,10 @@ public class MachineController {
         return "machine/howto";
     }
 
-    //운동기구 전체 페이지
+    //운동기구 전체 목록
     @GetMapping("/machine_about")
     public String aboutForm(Model model) throws Exception {
+
         int id1 = 1; // html 디자인을 위해 별도로 아이디 값을 불러옴
         int id2 = 2;
         int id3 = 3;
@@ -104,52 +106,20 @@ public class MachineController {
         model.addAttribute("kettleBell", machineInfoDTOid3);
         model.addAttribute("babel", machineInfoDTOid4);
         model.addAttribute("shoulderPress", machineInfoDTOid5);
+
         return "machine/about";
     }
 
-    //운동 기구 등록 form
-    @GetMapping("/machine_info_register")
-    public String machineInfoRegisterForm()throws Exception{
-        return "machine/register";
-    }
+    //운동기구 상세보기 (운동기구 기본 정보, 운동기구 사용법 영상 리스트)
+    @GetMapping("/machine_info_detail")
+    public String machineInfoDetailForm(@PageableDefault(page =1) Pageable pageable,
+                                 int id,
+                                 String errorMessage,
+                                 Model model) throws Exception {
 
-    //운동 기구 등록 proc
-    @PostMapping("/machine_info_register")
-    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO, MultipartFile imgFile, Model model)throws Exception{
-
-        machineInfoService.register(machineInfoDTO, imgFile);
-
-        model.addAttribute("machineInfoDTO", machineInfoDTO);
-        return "machine/register";
-    }
-
-    //운동 기구 수정 form
-    @GetMapping("/machine_info_modify")
-    public String infoModifyForm(Integer id, Model model) throws Exception {
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+        Page<MachineUsageDTO> machineUsageDTOS =  machineUsageService.partList(id, pageable);
 
-        model.addAttribute("machineInfoDTO", machineInfoDTO);
-        return "machine/modify";
-    }
-
-    //운동 기구 수정 proc
-    @PostMapping("/machine_info_modify")
-    public String infoModifyProc(MachineInfoDTO machineInfoDTO,
-                                 RedirectAttributes redirectAttributes,
-                                 MultipartFile imgFile) throws Exception {
-
-        int id = machineInfoDTO.getId();
-
-        redirectAttributes.addAttribute("id",id);
-        machineInfoService.modify(machineInfoDTO, imgFile);
-        return "redirect:/machine_select_list";
-    }
-
-    //운동 기구, 영상 리스트
-    @GetMapping("/machine_select_list")
-    public String selectList(@PageableDefault(page =1) Pageable pageable,
-                             Model model, int id, String errorMessage)throws Exception{
-        Page<MachineUsageDTO> machineUsageDTOS =  machineUsageService.partList(id,pageable);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -176,8 +146,6 @@ public class MachineController {
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
 
-        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
-
         model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -186,13 +154,111 @@ public class MachineController {
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("lastPage", lastPage);
 
-        model.addAttribute("machineUsageDTOS",machineUsageDTOS);
+        model.addAttribute("machineUsageDTOS", machineUsageDTOS);
         model.addAttribute("machineInfoDTO", machineInfoDTO);
 
-        return "machine/list";
+        return "machine/info_detail";
     }
 
-    //관리자페이지 운동 기구 수정
+    //운동기구 사용법 영상 상세보기
+    @GetMapping("/machine_usage_detail")
+    public String machineUsageDetailForm(int id,
+                                  Model model) throws Exception {
+
+        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
+        model.addAttribute("machineUsageDTO", machineUsageDTO);
+
+        return "machine/usage_detail";
+    }
+
+    //(관리자) 운동기구 정보 수정 form
+    @GetMapping("/machine_info_modify")
+    public String machineInfoModifyForm(Integer id,
+                                        Model model) throws Exception {
+
+        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+
+        return "machine/info_modify";
+    }
+
+    //(관리자) 운동기구 정보 수정 proc
+    @PostMapping("/machine_info_modify")
+    public String machineInfoModifyProc(MachineInfoDTO machineInfoDTO,
+                                        MultipartFile imgFile,
+                                        RedirectAttributes redirectAttributes) throws Exception {
+
+        int id = machineInfoDTO.getId();
+
+        redirectAttributes.addAttribute("id",id);
+        machineInfoService.modify(machineInfoDTO, imgFile);
+
+        return "redirect:/machine_info_detail";
+    }
+
+    //(관리자) 운동기구 사용법 영상 등록 form
+    @GetMapping("/machine_usage_register")
+    public String machineUsageRegisterForm(Model model) throws Exception {
+
+        return "machine/usage_register";
+    }
+
+    //운동 기구 영상 등록 proc
+    @PostMapping("/machine_usage_register")
+    public String machineUsageRegisterProc(MachineUsageDTO machineUsageDTO,
+                                           MultipartFile imgFile,
+                                           RedirectAttributes redirectAttributes) throws Exception {
+
+        Integer id = machineUsageDTO.getMachineInfoId();
+        machineUsageService.register(machineUsageDTO, imgFile);
+
+        redirectAttributes.addAttribute("id",id);
+        redirectAttributes.addAttribute("errorMessage","등록되었습니다.");
+
+        return "redirect:/machine_info_detail";
+    }
+
+    //운동 기구 영상 수정 form
+    @GetMapping("/machine_usage_modify")
+    public String machineUsageModifyForm(Integer id,
+                                         Model model) throws Exception {
+
+        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id, false);
+        model.addAttribute("machineUsageDTO", machineUsageDTO);
+
+        return "machine/usage_modify";
+    }
+
+    //운동 기구 영상 수정 proc
+    @PostMapping("/machine_usage_modify")
+    public String machineUsageModifyProc(MachineUsageDTO machineUsageDTO,
+                                         MultipartFile imgFile,
+                                         RedirectAttributes redirectAttributes) throws Exception {
+
+        int id = machineUsageDTO.getMachineInfoId();
+        machineUsageService.modify(machineUsageDTO, imgFile);
+
+        redirectAttributes.addAttribute("id",id);
+        redirectAttributes.addAttribute("errorMessage","수정되었습니다.");
+
+        return "redirect:/machine_info_detail";
+    }
+
+    //운동 기구 영상 삭제
+    @GetMapping("/machine_usage_remove")
+    public String machineUsageRemove(Integer uid,
+                                     Integer id,
+                                     RedirectAttributes redirectAttributes) throws Exception {
+
+        machineUsageService.delete(uid);
+
+        redirectAttributes.addAttribute("id",id);
+        redirectAttributes.addAttribute("errorMessage","삭제되었습니다.");
+
+        return "redirect:/machine_info_detail";
+    }
+
+    //(관리자페이지 - 운동기구 관리) 운동기구 전체목록
     @GetMapping("/admin_machine_list")
     public String listForm(Model model) throws Exception {
         /*Page<MachineUsageDTO> machineUsageDTOS = machineUsageService.listAll(pageable);
@@ -241,64 +307,26 @@ public class MachineController {
         model.addAttribute("machineInfoDTO", machineInfoDTO);
         model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
         model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
+
         return "machine/alllist";
     }
 
-    //운동 기구 영상 등록 form
-    @GetMapping("/machine_usage_register")
-    public String registerForm(Model model) throws Exception {
-        return "machine/usageregister";
+    //(관리자) 운동기구 정보 등록 form
+    @GetMapping("/machine_info_register")
+    public String machineInfoRegisterForm() throws Exception {
+
+        return "machine/info_register";
     }
 
-    //운동 기구 영상 등록 proc
-    @PostMapping("/machine_usage_register")
-    public String registerProc(MachineUsageDTO machineUsageDTO, MultipartFile imgFile,
-                               RedirectAttributes redirectAttributes) throws Exception {
-        Integer id = machineUsageDTO.getMachineInfoId();
-        machineUsageService.register(machineUsageDTO, imgFile);
-        redirectAttributes.addAttribute("id",id);
-        redirectAttributes.addAttribute("errorMessage","등록되었습니다.");
-        return "redirect:/machine_select_list";
+    //(관리자) 운동기구 정보 등록 proc
+    @PostMapping("/machine_info_register")
+    public String machineInfoRegisterProc(MachineInfoDTO machineInfoDTO,
+                                          MultipartFile imgFile,
+                                          Model model) throws Exception {
+
+        machineInfoService.register(machineInfoDTO, imgFile);
+        model.addAttribute("machineInfoDTO", machineInfoDTO);
+
+        return "redirect:/admin_machine_list";
     }
-
-    //운동 기구 영상 수정 form
-    @GetMapping("/machine_usage_modify")
-    public String usageModifyForm(Integer id, Model model)throws Exception{
-        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id, false);
-
-        model.addAttribute("machineUsageDTO", machineUsageDTO);
-        return "machine/usagemodify";
-    }
-
-    //운동 기구 영상 수정 proc
-    @PostMapping("/machine_usage_modify")
-    public String usageModifyProc(MachineUsageDTO machineUsageDTO,
-                                  RedirectAttributes redirectAttributes,
-                                  MultipartFile imgFile)throws Exception{
-        int id = machineUsageDTO.getMachineInfoId();
-        redirectAttributes.addAttribute("id",id);
-        redirectAttributes.addAttribute("errorMessage","수정되었습니다.");
-        machineUsageService.modify(machineUsageDTO, imgFile);
-        return "redirect:/machine_select_list";
-    }
-
-    //운동 기구 영상 삭제
-    @GetMapping("/machine_usage_delete")
-    public String usageDelete(Integer uid, Integer id, RedirectAttributes redirectAttributes)throws Exception{
-        machineUsageService.delete(uid);
-        redirectAttributes.addAttribute("id",id);
-        redirectAttributes.addAttribute("errorMessage","삭제되었습니다.");
-        return "redirect:/machine_select_list";
-    }
-
-    //운동 기구 영상 상세보기
-    @GetMapping("/machine_detail")
-    public String detailForm(int id,Model model) throws Exception {
-        MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
-
-        model.addAttribute("machineUsageDTO",machineUsageDTO);
-        return "machine/detail";
-    }
-
-
 }
