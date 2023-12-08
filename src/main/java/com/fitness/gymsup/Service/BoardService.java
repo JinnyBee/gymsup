@@ -10,6 +10,7 @@ import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.Constant.BookmarkType;
 import com.fitness.gymsup.DTO.BoardDTO;
 import com.fitness.gymsup.DTO.BoardImageDTO;
+import com.fitness.gymsup.DTO.Time;
 import com.fitness.gymsup.Entity.*;
 import com.fitness.gymsup.Repository.*;
 import com.fitness.gymsup.Util.FileUploader;
@@ -156,6 +157,7 @@ public class BoardService {
                 .viewCnt(data.getViewCnt())
                 .goodCnt(data.getGoodCnt())
                 .regDate(data.getRegDate())
+                .displayRegDate(Time.calculateTime(data.getRegDate()))
                 .modDate(data.getModDate())
                 .build()
         );
