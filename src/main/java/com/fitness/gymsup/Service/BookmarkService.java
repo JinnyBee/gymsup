@@ -1,3 +1,9 @@
+/*
+    파일명 : BookmarkService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.BookmarkType;
@@ -38,13 +44,14 @@ public class BookmarkService {
     public Page<BookmarkDTO> list(BookmarkType bookmarkType,
                                   Pageable page,
                                   HttpServletRequest request,
-                                  Principal principal) throws Exception{
+                                  Principal principal) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
 
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user ==null){
+        if(user ==null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
@@ -52,7 +59,6 @@ public class BookmarkService {
         Pageable pageable = PageRequest.of
                 (curPage, pageLimit, Sort.by(Sort.Direction.DESC,"id"));
 
-        //Page<BookmarkEntity> bookmarkEntities = bookmarkRepository.findAllByUserEntity(pageable,user);
         Page<BookmarkEntity> bookmarkEntities = bookmarkRepository
                 .findAllByUserEntityAndBookmarkType(pageable, user, bookmarkType);
         Page<BookmarkDTO> bookmarkDTOS = bookmarkEntities.map(data->BookmarkDTO.builder()
@@ -68,6 +74,7 @@ public class BookmarkService {
                 .modDate(data.getModDate())
                 .build()
         );
+
         return bookmarkDTOS;
     }
 
@@ -76,6 +83,7 @@ public class BookmarkService {
                          BookmarkType bookmarkType,
                          HttpServletRequest request,
                          Principal principal) throws Exception {
+
         log.info(boardId);
         //북마크 게시글 Entity
         BoardEntity board = boardRepository.findById(boardId).orElseThrow();
@@ -95,7 +103,6 @@ public class BookmarkService {
         //기존에 등록되어 있지 않을 경우
         if(bookmarkRepository.countAllByUserEntityAndBoardEntityAndBookmarkType(
                 user, board, bookmarkType) == 0) {
-
             BookmarkEntity bookmarkEntity = new BookmarkEntity();
             bookmarkEntity.setBoardEntity(board);
             bookmarkEntity.setUserEntity(user);
@@ -110,11 +117,13 @@ public class BookmarkService {
             }
         }
     }
+
     //북마크(북마크) 삭제
-    public void remove(Integer boardId,
+    public void delete(Integer boardId,
                        BookmarkType bookmarkType,
                        HttpServletRequest request,
                        Principal principal) throws Exception {
+
         //북마크 게시글 Entity
         BoardEntity board = boardRepository.findById(boardId).orElseThrow();
 
@@ -141,7 +150,8 @@ public class BookmarkService {
         }
     }
 
-    public void  userBookmarkRemove(HttpServletRequest request, Principal principal)throws Exception{
+    public void  userBookmarkDelete(HttpServletRequest request,
+                                    Principal principal) throws Exception {
 
         HttpSession session = request.getSession();
         UserEntity writer = (UserEntity) session.getAttribute("user");
@@ -149,6 +159,7 @@ public class BookmarkService {
             String email = principal.getName();
             writer = userRepository.findByEmail(email);
         }
+
         bookmarkRepository.deleteAllByUserEntity(writer);
     }
 }

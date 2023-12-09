@@ -1,34 +1,31 @@
+/*
+    파일명 : CommentController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.ReplyDTO;
-import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Service.CommentService;
 import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.annotations.Parameter;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class CommentController extends BaseController {
+public class CommentController extends BoardBaseController {
     private final CommentService commentService;
     private final ReplyService replyService;
 
@@ -91,13 +88,13 @@ public class CommentController extends BaseController {
     }
 
     //댓글 삭제 처리 (bid: 부모 게시글 id, id: 댓글 id)
-    @GetMapping("/comment_remove")
-    public String removeCommentProc(int bid,
+    @GetMapping("/comment_delete")
+    public String deleteCommentProc(int bid,
                                     int id,
                                     String categoryType,
                                     RedirectAttributes redirectAttributes) throws Exception {
 
-        commentService.remove(id);
+        commentService.delete(id);
         redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);
@@ -107,7 +104,7 @@ public class CommentController extends BaseController {
     @GetMapping("/comment_user_all")
     public String commentUserAll(HttpServletRequest request, Principal principal) throws Exception {
 
-        commentService.userCommentRemove(request, principal);
+        commentService.userCommentDelete(request, principal);
         return "redirect:/";
     }
 
@@ -147,13 +144,13 @@ public class CommentController extends BaseController {
     }
 
     //답글 삭제 처리
-    @GetMapping("/reply_remove")
-    public String removeReplyProc(int bid,
+    @GetMapping("/reply_delete")
+    public String deleteReplyProc(int bid,
                                   int id,
                                   String categoryType,
                                   RedirectAttributes redirectAttributes) throws Exception {
 
-        replyService.remove(id);
+        replyService.delete(id);
         redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);

@@ -1,21 +1,22 @@
+/*
+    파일명 : ReplyService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.DTO.ReplyDTO;
-import com.fitness.gymsup.Entity.BoardEntity;
 import com.fitness.gymsup.Entity.CommentEntity;
 import com.fitness.gymsup.Entity.ReplyEntity;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.*;
-import com.fitness.gymsup.Util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.relation.RoleInfo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -35,9 +36,10 @@ public class ReplyService {
 
     //답글 전체목록
     public List<ReplyDTO> list(int commentId) throws Exception {
-        log.info("commentId : " + commentId);
+
         List<ReplyEntity> replyEntities = replyRepository.findByCommentId(commentId);
         List<ReplyDTO> replyDTOS = new ArrayList<>();
+        log.info("commentId : " + commentId);
 
         for(ReplyEntity replyEntity : replyEntities) {
             ReplyDTO replyDTO = ReplyDTO.builder()
@@ -50,18 +52,21 @@ public class ReplyService {
                     .regDate(replyEntity.getRegDate())
                     .modDate(replyEntity.getModDate())
                     .build();
+
             replyDTOS.add(replyDTO);
         }
 
         return replyDTOS;
     }
+
     //답글 등록
     public void register(ReplyDTO replyDTO,
                          HttpServletRequest request,
                          Principal principal) throws Exception {
-        log.info("commentId : " + replyDTO.getCommentId());
+
         //부모 댓글 Entity 조회
         CommentEntity parentComment = commentRepository.findById(replyDTO.getCommentId()).orElseThrow();
+        log.info("commentId : " + replyDTO.getCommentId());
 
         //댓글 작성자 Entity
         HttpSession session = request.getSession();
@@ -80,10 +85,12 @@ public class ReplyService {
 
         replyRepository.save(replyEntity);
     }
+
     //답글 수정
     public void modify(ReplyDTO replyDTO,
                        HttpServletRequest request,
                        Principal principal) throws Exception {
+
         //답글 조회
         ReplyEntity replyEntity = replyRepository.findById(replyDTO.getId()).orElseThrow();
 
@@ -105,19 +112,25 @@ public class ReplyService {
 
         replyRepository.save(updateEntity);
     }
+
     //답글 삭제
-    public void remove(Integer id) throws Exception {
+    public void delete(Integer id) throws Exception {
+
         replyRepository.deleteById(id);
     }
 
     //유저 답글 모두 삭제
-    public void userReplyRemove(HttpServletRequest request, Principal principal)throws Exception{
+    public void userReplyDelete(HttpServletRequest request,
+                                Principal principal) throws Exception {
+
         HttpSession session = request.getSession();
         UserEntity writer = (UserEntity) session.getAttribute("user");
+
         if(writer == null) {
             String email = principal.getName();
             writer = userRepository.findByEmail(email);
         }
+
         replyRepository.deleteAllByUserEntity(writer);
     }
 }

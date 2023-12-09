@@ -1,3 +1,9 @@
+/*
+    파일명 : AllBoardController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
@@ -74,7 +80,7 @@ public class AllBoardController {
             log.info("Without Notify board" + dto);
         }
 
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_ALL.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_ALL.getDescription());
         model.addAttribute("notiBoardLatestDTOS", notiBoardLatestDTOS);
         model.addAttribute("boardDTOS", boardDTOS);
 

@@ -1,3 +1,9 @@
+/*
+    파일명 : MainController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;

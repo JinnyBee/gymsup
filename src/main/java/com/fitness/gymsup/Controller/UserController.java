@@ -1,3 +1,9 @@
+/*
+    파일명 : UserController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.BoardDTO;
@@ -49,8 +55,11 @@ public class UserController {
 
     //회원가입 form
     @GetMapping("/user_join")
-    public String joinForm(Model model , String message, String emessage,
-                           HttpServletRequest request, Principal principal,
+    public String joinForm(Model model,
+                           String message,
+                           String emessage,
+                           HttpServletRequest request,
+                           Principal principal,
                            RedirectAttributes redirectAttributes) throws Exception {
 
         //로그인 확인
@@ -71,14 +80,16 @@ public class UserController {
         model.addAttribute("emessage",emessage);
         model.addAttribute("message",message);
 
-
         return "user/join";
     }
 
     //회원가입 proc
     @PostMapping("/user_join")
-    public String joinProc(@Valid UserDTO userDTO, BindingResult bindingResult,
-                           Model model,RedirectAttributes redirectAttributes) throws Exception {
+    public String joinProc(@Valid UserDTO userDTO,
+                           BindingResult bindingResult,
+                           Model model,
+                           RedirectAttributes redirectAttributes) throws Exception {
+
         if (bindingResult.hasErrors()){
             return "user/join";
         }
@@ -86,41 +97,47 @@ public class UserController {
         String email = basicUserService.dupEmail(userDTO);
         String nickname = basicUserService.dupNickname(userDTO);
 
-        if(email.equals("이메일 사용이 가능합니다.")&& nickname.equals("닉네임 사용이 가능합니다.")){
+        if(email.equals("이메일 사용이 가능합니다.") && nickname.equals("닉네임 사용이 가능합니다.")){
             try {
                 basicUserService.saveMember(userDTO);
                 redirectAttributes.addAttribute("errorMessage", "가입에 성공하였습니다");
-            }catch (IllegalStateException e){
+            } catch (IllegalStateException e) {
                 redirectAttributes.addAttribute("errorMessage",e.getMessage());
                 return "member/register";
             }
             return "redirect:/user_login";
-        }else {
+        } else {
             model.addAttribute("errorMessage","아이디나 닉네임이 중복입니다.");
             return "user/join";
         }
-
-
     }
 
     //로그인 form
     @GetMapping("/user_login")
-    public String loginForm(String errorMessage, Model model, Principal principal, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+    public String loginForm(String errorMessage,
+                            Model model,
+                            Principal principal,
+                            HttpServletRequest request,
+                            RedirectAttributes redirectAttributes) throws Exception {
 
         //로그인 확인
         boolean check = basicUserService.loginCheck(request, principal);
+
         //로그인시 false
         if (check == false){
             redirectAttributes.addAttribute("errorMessage", "로그인 중에는 사용불가능합니다.");
             return "redirect:/";
         }
-        model.addAttribute("errorMessage",errorMessage);
+        model.addAttribute("errorMessage", errorMessage);
+
         return "user/login";
     }
 
     //로그인 오류 form
     @RequestMapping("/user_login_error")
-    public String loginError(HttpServletRequest request, Model model)throws Exception {
+    public String loginError(HttpServletRequest request,
+                             Model model)throws Exception {
+
         if(request.getAttribute("errorMessage") !=null){
             String errorMessage = request.getAttribute("errorMessage").toString();
             model.addAttribute("errorMessage", errorMessage);
@@ -132,28 +149,40 @@ public class UserController {
 
     //마이페이지
     @GetMapping("/user_detail")
-    public String detailForm(HttpServletRequest request, Model model, Principal principal,
-                             String errorMessage, UserDTO userDTO, String message) throws Exception {
+    public String detailForm(HttpServletRequest request,
+                             Model model,
+                             Principal principal,
+                             String errorMessage,
+                             UserDTO userDTO,
+                             String message) throws Exception {
+
         UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
 
         model.addAttribute("message",message);
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("userEntity",userEntity);
+
         return "user/detail";
     }
 
     //닉네임 수정
     @PostMapping("/user_nickname_update")
-    public String nicknameUpdate(UserDTO userDTO, Principal principal, HttpServletRequest request)throws Exception{
+    public String nicknameUpdate(UserDTO userDTO,
+                                 Principal principal,
+                                 HttpServletRequest request) throws Exception {
+
         basicUserService.updateNickname(userDTO, principal, request);
         return "redirect:/user_detail";
     }
 
     //마이페이지 닉네임 중복체크
     @PostMapping("/user_nickname_dup")
-    public String nicknameDupt(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{
+    public String nicknameDupt(UserDTO userDTO,
+                               RedirectAttributes redirectAttributes) throws Exception {
+
         String message = basicUserService.dupNickname(userDTO);
+
         redirectAttributes.addAttribute("message", message);
         redirectAttributes.addFlashAttribute("userDTO", userDTO);
 
@@ -162,14 +191,19 @@ public class UserController {
 
     //회원탈퇴 비밀번호 확인
     @GetMapping("/user_cancel_confirm")
-    public String cancelPasswordConfirmForm(String errorMessage, Model model)throws Exception{
+    public String cancelPasswordConfirmForm(String errorMessage,
+                                            Model model) throws Exception {
+
         model.addAttribute("errorMessage",errorMessage);
         return "user/cancelconfirm";
     }
 
     //회원탈퇴 비밀번호 확인 proc
     @PostMapping("/user_cancel_confirm")
-    public String cancelPasswordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
+    public String cancelPasswordConfirmProc(Principal principal,
+                                            String apassword,
+                                            Model model,
+                                            RedirectAttributes redirectAttributes) throws Exception{
 
         String errorMessage = "";
         String bpassword = basicUserService.bringPassword(principal);
@@ -178,37 +212,43 @@ public class UserController {
         if(result){
             errorMessage="현재 비밀번호와 일치합니다.";
             model.addAttribute("errorMessage",errorMessage);
+
             return "user/cancel";
         }else {
             errorMessage="현재 비밀번호와 다릅니다.";
             redirectAttributes.addAttribute("errorMessage",errorMessage);
+
             return "redirect:/user_password_confirm";
         }
-
     }
 
     //회원탈퇴
     @GetMapping ("/user_cancel_proc")
-    public String cancelProc(RedirectAttributes redirectAttributes,Principal principal,
+    public String cancelProc(RedirectAttributes redirectAttributes,
+                             Principal principal,
                              HttpServletRequest request) throws Exception {
 
-        boardService.userBoardRemove(request, principal);
-        commentService.userCommentRemove(request,principal);
-        replyService.userReplyRemove(request, principal);
-        bookmarkService.userBookmarkRemove(request, principal);
-        contactService.userContactRemove(request,principal);
+        boardService.userBoardDelete(request, principal);
+        commentService.userCommentDelete(request,principal);
+        replyService.userReplyDelete(request, principal);
+        bookmarkService.userBookmarkDelete(request, principal);
+        contactService.userContactDelete(request,principal);
+        basicUserService.cancelUser(principal, request);
 
         redirectAttributes.addAttribute("errorMessage", "회원 탈퇴되었습니다,");
 
-        basicUserService.cancelUser(principal, request);
         return "redirect:/user_logout";
     }
 
     //내가 쓴 글
     @GetMapping("/user_mywrite")
-    public String myWrite(@PageableDefault(page = 1) Pageable pageable
-            , Model model, HttpServletRequest request, Principal principal) throws Exception {
+    public String myWrite(@PageableDefault(page = 1) Pageable pageable,
+                          HttpServletRequest request,
+                          Principal principal,
+                          Model model) throws Exception {
+
         Page<BoardDTO> boardDTOS = basicUserService.myWrite(pageable, request, principal);
+
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -239,16 +279,17 @@ public class UserController {
 
         model.addAttribute("boardDTOS", boardDTOS);
 
-
         return "user/mywrite";
     }
 
     //내가 쓴 댓글
     @GetMapping("/user_mycomment")
-    public String myComment(@PageableDefault(page = 1) Pageable pageable
-            , Model model, HttpServletRequest request, Principal principal) throws Exception {
-        Page<CommentDTO> commentDTOS = basicUserService.myComment(pageable, request, principal);
+    public String myComment(@PageableDefault(page = 1) Pageable pageable,
+                            HttpServletRequest request,
+                            Principal principal,
+                            Model model) throws Exception {
 
+        Page<CommentDTO> commentDTOS = basicUserService.myComment(pageable, request, principal);
 
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
@@ -285,8 +326,11 @@ public class UserController {
 
     //회원가입 닉네임 중복체크
     @PostMapping("/user_regDupNickname")
-    public String regDupNickname(UserDTO userDTO, RedirectAttributes redirectAttributes)throws Exception{
+    public String regDupNickname(UserDTO userDTO,
+                                 RedirectAttributes redirectAttributes) throws Exception {
+
         String message = basicUserService.dupNickname(userDTO);
+
         redirectAttributes.addAttribute("message", message);
         redirectAttributes.addFlashAttribute("userDTO", userDTO);
 
@@ -295,45 +339,58 @@ public class UserController {
 
     //회원가입 이메일 중복체크
     @PostMapping("/user_regDupEmail")
-    public String regDupEmail(UserDTO userDTO,RedirectAttributes redirectAttributes)throws Exception{
+    public String regDupEmail(UserDTO userDTO,
+                              RedirectAttributes redirectAttributes) throws Exception {
+
         String eMessage = basicUserService.dupEmail(userDTO);
+
         redirectAttributes.addAttribute("emessage", eMessage);
         redirectAttributes.addFlashAttribute("userDTO",userDTO);
+
         return "redirect:/user_join";
     }
 
     //비밀번호 확인 form
     @GetMapping("/user_password_confirm")
-    public String passwordConfirmForm(String errorMessage, Model model)throws Exception{
-        model.addAttribute("errorMessage",errorMessage);
+    public String passwordConfirmForm(String errorMessage,
+                                      Model model) throws Exception {
+
+        model.addAttribute("errorMessage", errorMessage);
         return "user/passwordform";
     }
 
     //비밀번호 확인 proc
     @PostMapping("/user_password_confirm")
-    public String passwordConfirmProc(Principal principal, String apassword, Model model,RedirectAttributes redirectAttributes)throws Exception{
+    public String passwordConfirmProc(Principal principal,
+                                      String apassword,
+                                      Model model,
+                                      RedirectAttributes redirectAttributes) throws Exception {
 
         String errorMessage = "";
         String bpassword = basicUserService.bringPassword(principal);
 
         boolean result = passwordEncoder.matches(apassword, bpassword);
-        if(result){
+        if(result) {
             errorMessage="현재 비밀번호와 일치합니다.";
             model.addAttribute("errorMessage",errorMessage);
+
             return "user/passwordproc";
-        }else {
+        } else {
             errorMessage="현재 비밀번호와 다릅니다.";
             redirectAttributes.addAttribute("errorMessage",errorMessage);
+
             return "redirect:/user_password_confirm";
         }
-
     }
 
     //비밀번호 수정
     @PostMapping("/user_password_update")
-    public String passwordUpdateProc(@Valid UserDTO userDTO,BindingResult bindingResult,
-                                     Principal principal, Model model,
-                                     RedirectAttributes redirectAttributes)throws Exception{
+    public String passwordUpdateProc(@Valid UserDTO userDTO,
+                                     BindingResult bindingResult,
+                                     Principal principal,
+                                     Model model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
+
         if (bindingResult.hasErrors()){
             return "user/passwordproc";
         }
@@ -341,55 +398,66 @@ public class UserController {
         model.addAttribute("userDTO", userDTO);
         redirectAttributes.addAttribute("errorMessage","비밀번호 변경에 성공했습니다.");
         basicUserService.updatePassword(userDTO, principal);
+
         return "redirect:/user_detail";
     }
 
     //권한 오류
     @GetMapping("/user_access_error")
-    public String accessDenied(RedirectAttributes redirectAttributes){
+    public String accessDenied(RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addAttribute("errorMessage","권한이 없습니다.");
         return "redirect:/";
     }
 
     //비로그인 오류
     @GetMapping("/user_entry_error")
-    public String entryDenied(RedirectAttributes redirectAttributes){
+    public String entryDenied(RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addAttribute("errorMessage","로그인 후 이용해주세요.");
         return "redirect:/user_login";
     }
 
     //비밀번호 찾기 form
     @GetMapping("/password_change")
-    public String passwordChange(HttpServletRequest request, Principal principal,
-                                 RedirectAttributes redirectAttributes)throws Exception{
+    public String passwordChange(HttpServletRequest request,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) throws Exception {
+
         //로그인 확인
         boolean check = basicUserService.loginCheck(request, principal);
+
         //로그인시 false
-        if (check == false){
+        if (check == false) {
             redirectAttributes.addAttribute("errorMessage", "로그인 중에는 사용불가능합니다.");
             return "redirect:/";
         }
+
         return "user/passwordchange";
     }
 
     //이메일 일치여부 확인
     @PostMapping("/password_change")
-    public String pw_find(String email, RedirectAttributes redirectAttributes, Model model){
+    public String pw_find(String email,
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
+
         boolean emailCheck = basicUserService.userEmailCheck(email);
         String errorMessage= "";
 
-        if (emailCheck){
+        if (emailCheck) {
             MailDTO mailDTO = emailService.createMailAndChangePassword(email);
             emailService.mailSend(mailDTO);
+
             errorMessage = "메일을 전송했습니다.";
             redirectAttributes.addAttribute("errorMessage", errorMessage);
+
             return "redirect:/user_login";
-        }else {
+        } else {
             errorMessage = "가입하지 않은 이메일입니다.";
             model.addAttribute("errorMessage", errorMessage);
+
             return "user/passwordchange";
         }
-
     }
-
 }

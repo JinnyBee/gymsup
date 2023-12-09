@@ -14,7 +14,7 @@
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
                             <div class="row" style="border-bottom: 2px solid black"> <!-- 게시판 타이틀 -->
-                                <div class="col-lg-12"><h2 th:text="${categoryType}">고민나눔 게시판</h2></div>
+                                <div class="col-lg-12"><h2 th:text="${categoryTypeDesc}">고민나눔 게시판</h2></div>
                             </div>
                             <div class="row mt-3 mb-2"> <!-- 제목 시작 -->
                                 <div class="col-lg-12">
@@ -99,7 +99,7 @@
                                     </button>
 
                                     <button class="btn btn-outline-danger" type="button"
-                                            th:onclick="|location.href='@{/board_qna_remove(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
+                                            th:onclick="|location.href='@{/board_qna_delete(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
                                             th:if="${userConfirm}==true">
                                         삭제
                                     </button>
@@ -156,7 +156,7 @@
                                                 th:if="${data.userId}==${loginUserId}">수정
                                         </button>
                                         <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                th:onclick="|location.href='@{/comment_remove(bid=${boardDTO.id}, id=${data.id}, categoryType='BTYPE_QNA')}'|"
+                                                th:onclick="|location.href='@{/comment_delete(bid=${boardDTO.id}, id=${data.id}, categoryType='BTYPE_QNA')}'|"
                                                 th:if="${data.userId}==${loginUserId}">삭제
                                         </button>
                                         <div class="mt-3" th:text="${data.comment}"></div>
@@ -237,7 +237,7 @@
                                                     </button>
                                                     <!-- 답글 삭제 버튼 -->
                                                     <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                            th:onclick="|location.href='@{/reply_remove(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_QNA')}'|"
+                                                            th:onclick="|location.href='@{/reply_delete(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_QNA')}'|"
                                                             th:if="${replyDTO.userId}==${loginUserId}">삭제
                                                     </button>
                                                     <div class="mt-3" th:text="${replyDTO.reply}"></div>

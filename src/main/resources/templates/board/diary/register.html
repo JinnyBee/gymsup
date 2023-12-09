@@ -106,24 +106,6 @@
                                     음식 칼로리 등록하기
                                 </button>
                             </div>-->
-                            <div class="row mb-3 mt-3">
-                                <div class="col-lg-3" style="float: left">
-                                    <button type="button" class="btn btn-dark"
-                                            style="float: left; height: 62px"
-                                            th:onclick="|location.href='@{/myfood_calorie_calc(foodtype='breakfast')}'|">
-                                        아침 음식칼로리 등록
-                                    </button>
-                                </div>
-                                <div class="col-lg-9" style="float: right">
-                                <textarea class="form-control" name="comment" id="comment" rows="2"
-                                          style="resize:none"></textarea>
-                                </div>
-                                <!-- 댓글 등록 시 필요한 값들을 hidden으로 설정 -->
-                                <input type="hidden" name="boardId" th:value="${boardDTO.id}">
-                                <input type="hidden" name="goodCnt" value="0">
-                                <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
-                            </div> <!-- End 댓글 작성 -->
-
                             <div class="mb-3 mt-3">
                                 <label for="img1" class="form-label">사진1:</label>
                                 <input type="file" class="form-control" id="img1" name="imgFiles">

@@ -81,6 +81,7 @@ public class BoardService {
 
         return boardDTOS;
     }
+
     //특정 카테고리 제외한 게시글 전체목록
     public Page<BoardDTO> listAllWithoutCategory(Pageable page,
                                                  BoardCategoryType categoryType) throws Exception {
@@ -109,6 +110,7 @@ public class BoardService {
 
         return boardDTOS;
     }
+
     //특정카테고리 게시글 전체목록
     public Page<BoardDTO> list(Pageable page,
                                BoardCategoryType categoryType) throws Exception {
@@ -164,6 +166,7 @@ public class BoardService {
 
         return boardDTOS;
     }
+
     //특정카테고리 게시글 인기글(TOP2)
     public List<BoardDTO> best(BoardCategoryType categoryType) throws Exception {
 
@@ -199,6 +202,7 @@ public class BoardService {
 
         return boardDTOS;
     }
+
     //특정카테고리 게시글 최신글(5개)
     public List<BoardDTO> latest(BoardCategoryType categoryType) throws Exception {
 
@@ -225,6 +229,7 @@ public class BoardService {
 
         return boardDTOS;
     }
+
     //게시글 등록
     public void register(BoardDTO boardDTO,
                          List<MultipartFile> imgFiles,
@@ -274,6 +279,7 @@ public class BoardService {
             }
         }
     }
+
     //게시글 상세보기
     public BoardDTO detail(Integer id,
                            Boolean isFirst,
@@ -326,6 +332,7 @@ public class BoardService {
 
         return boardDTO;
     }
+
     //게시글 수정
     public void modify(BoardDTO boardDTO,
                        List<MultipartFile> imgFiles) throws Exception {
@@ -384,8 +391,9 @@ public class BoardService {
 
         boardRepository.save(update);
     }
+
     //게시글 삭제
-    public void remove(Integer id) throws Exception {
+    public void delete(Integer id) throws Exception {
 
         //해당 게시글에 등록된 이미지파일 조회
         List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(id);
@@ -419,28 +427,35 @@ public class BoardService {
     }
 
     //게시판유저아이디와 로그인한 유저 아이디 비교
-    public boolean userConfirm(Integer id, HttpServletRequest request, Principal principal)throws Exception{
+    public boolean userConfirm(Integer id,
+                               HttpServletRequest request,
+                               Principal principal) throws Exception {
 
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow();
+
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
         if(user == null) {
             String email = principal.getName();
             user = userRepository.findByEmail(email);
         }
+
         boolean userLoginConfirm;
         int boardUserId = boardEntity.getUserEntity().getId();
         int sessionUserId = user.getId();
 
-        if(boardUserId == sessionUserId){
+        if(boardUserId == sessionUserId) {
             userLoginConfirm = true;
-        }else {
+        } else {
             userLoginConfirm= false;
         }
+
         return userLoginConfirm;
     }
 
-    public Integer userId(HttpServletRequest request, Principal principal) throws Exception {
+    public Integer userId(HttpServletRequest request,
+                          Principal principal) throws Exception {
+
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
         if(user == null) {
@@ -451,7 +466,8 @@ public class BoardService {
         return user.getId();
     }
 
-    public void userBoardRemove(HttpServletRequest request, Principal principal)throws Exception{
+    public void userBoardDelete(HttpServletRequest request,
+                                Principal principal) throws Exception {
 
         HttpSession session = request.getSession();
         UserEntity writer = (UserEntity) session.getAttribute("user");

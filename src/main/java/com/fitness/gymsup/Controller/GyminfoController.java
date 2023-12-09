@@ -1,3 +1,9 @@
+/*
+    파일명 : GyminfoController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import org.springframework.beans.factory.annotation.Value;

@@ -1,3 +1,9 @@
+/*
+    파일명 : QnaBoardController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
@@ -44,6 +50,7 @@ public class QnaBoardController {
                            @RequestParam(value = "type", defaultValue = "") String type,
                            @RequestParam(value = "keyword", defaultValue = "") String keyword,
                            Model model) throws Exception {
+
         Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_QNA, type, keyword);
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
@@ -81,7 +88,7 @@ public class QnaBoardController {
         log.info("nextPage : " + nextPage);
         log.info("lastPage : " + lastPage);
 
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_QNA.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_QNA.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
         model.addAttribute("boardDTOS", boardDTOS);
@@ -92,22 +99,29 @@ public class QnaBoardController {
 
         return "board/qna/list";
     }
+
     @GetMapping("/board_qna_register")
     public String registerForm(Model model) throws Exception {
+
         BoardDTO boardDTO = new BoardDTO();
+
         boardDTO.setCategoryType(BoardCategoryType.BTYPE_QNA);
         log.info(boardDTO.getCategoryType().name());
         log.info(boardDTO.getCategoryType().getDescription());
+
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/qna/register";
     }
+
     @PostMapping("/board_qna_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model, Principal principal,
-                               HttpServletRequest request) throws Exception {
+                               Principal principal,
+                               HttpServletRequest request,
+                               Model model) throws Exception {
+
         for (MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
         }
@@ -118,11 +132,13 @@ public class QnaBoardController {
 
         return "redirect:/board_qna_list";
     }
+
     @GetMapping("/board_qna_detail")
     public String detailForm(Integer id,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
@@ -141,7 +157,7 @@ public class QnaBoardController {
         model.addAttribute("userId", userId);
         model.addAttribute("userConfirm", boardUserConfirm);
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_QNA.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_QNA.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
         model.addAttribute("bucket", bucket);
@@ -151,11 +167,12 @@ public class QnaBoardController {
         return "board/qna/detail";
     }
 
-    @GetMapping("/board_qna_detailreload")
-    public String detailReloadForm(Integer id,
-                                   Model model,
-                                   HttpServletRequest request,
-                                   Principal principal) throws Exception {
+    @GetMapping("/board_qna_reload")
+    public String reloadForm(Integer id,
+                             HttpServletRequest request,
+                             Principal principal,
+                             Model model) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회 Reload
@@ -167,18 +184,19 @@ public class QnaBoardController {
         log.info(commentDTOS);
 
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_QNA.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_QNA.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
 
         return "board/qna/detail";
     }
+
     @GetMapping("/board_qna_modify")
     public String modifyForm(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
@@ -194,6 +212,7 @@ public class QnaBoardController {
 
         return "board/qna/modify";
     }
+
     @PostMapping("/board_qna_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
@@ -207,19 +226,19 @@ public class QnaBoardController {
 
         return "redirect:/board_qna_list";
     }
-    @GetMapping("/board_qna_remove")
-    public String removeProc(Integer id,
+
+    @GetMapping("/board_qna_delete")
+    public String deleteProc(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
             return "redirect:/";
         }
-
-        boardService.remove(id);
+        boardService.delete(id);
 
         return "redirect:/board_qna_list";
     }

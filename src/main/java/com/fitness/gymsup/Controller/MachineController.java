@@ -1,3 +1,9 @@
+/*
+    파일명 : MachineController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.DTO.FlaskResponseDTO;
@@ -113,9 +119,9 @@ public class MachineController {
     //운동기구 상세보기 (운동기구 기본 정보, 운동기구 사용법 영상 리스트)
     @GetMapping("/machine_info_detail")
     public String machineInfoDetailForm(@PageableDefault(page =1) Pageable pageable,
-                                 int id,
-                                 String errorMessage,
-                                 Model model) throws Exception {
+                                        int id,
+                                        String errorMessage,
+                                        Model model) throws Exception {
 
         MachineInfoDTO machineInfoDTO = machineInfoService.detail(id);
         Page<MachineUsageDTO> machineUsageDTOS =  machineUsageService.partList(id, pageable);
@@ -163,7 +169,7 @@ public class MachineController {
     //운동기구 사용법 영상 상세보기
     @GetMapping("/machine_usage_detail")
     public String machineUsageDetailForm(int id,
-                                  Model model) throws Exception {
+                                         Model model) throws Exception {
 
         MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
         model.addAttribute("machineUsageDTO", machineUsageDTO);
@@ -245,8 +251,8 @@ public class MachineController {
     }
 
     //운동 기구 영상 삭제
-    @GetMapping("/machine_usage_remove")
-    public String machineUsageRemove(Integer uid,
+    @GetMapping("/machine_usage_delete")
+    public String machineUsageDelete(Integer uid,
                                      Integer id,
                                      RedirectAttributes redirectAttributes) throws Exception {
 

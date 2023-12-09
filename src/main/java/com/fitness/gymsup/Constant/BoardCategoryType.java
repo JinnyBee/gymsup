@@ -1,7 +1,7 @@
 package com.fitness.gymsup.Constant;
 
 public enum BoardCategoryType {
-    BTYPE_ALL("전체"),
+    BTYPE_ALL("전체 게시판"),
     BTYPE_NOTIFY("공지사항"),
     BTYPE_TIP("운동 팁"),
     BTYPE_DIARY("운동+식단 일기"),

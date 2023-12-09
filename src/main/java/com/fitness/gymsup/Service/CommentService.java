@@ -1,3 +1,9 @@
+/*
+    파일명 : CommentService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.DTO.CommentDTO;
@@ -30,10 +36,11 @@ public class CommentService {
 
     //댓글 전체목록
     public List<CommentDTO> list(int boardId) throws Exception {
-        log.info("boardId : " + boardId);
+
         //댓글목록 조회
         List<CommentEntity> commentEntities = commentRepository.findByBoardId(boardId);
         List<CommentDTO> commentDTOS = new ArrayList<>();
+        log.info("boardId : " + boardId);
 
         //각 댓글의 답글목록 조회
         for(CommentEntity commentEntity : commentEntities) {
@@ -65,18 +72,21 @@ public class CommentService {
                     .regDate(commentEntity.getRegDate())
                     .modDate(commentEntity.getModDate())
                     .build();
+
             commentDTOS.add(commentDTO);
         }
 
         return commentDTOS;
     }
+
     //댓글 등록
     public void register(CommentDTO commentDTO,
                          HttpServletRequest request,
                          Principal principal) throws Exception {
-        log.info("boardId : " + commentDTO.getBoardId());
+
         //부모 게시글 Entity
         BoardEntity parentBoard = boardRepository.findById(commentDTO.getBoardId()).orElseThrow();
+        log.info("boardId : " + commentDTO.getBoardId());
 
         //댓글 작성자 Entity
         HttpSession session = request.getSession();
@@ -94,10 +104,12 @@ public class CommentService {
 
         commentRepository.save(commentEntity);
     }
+
     //댓글 수정
     public void modify(CommentDTO commentDTO,
                        HttpServletRequest request,
                        Principal principal) throws Exception {
+
         //댓글 조회
         CommentEntity commentEntity = commentRepository.findById(commentDTO.getId()).orElseThrow();
 
@@ -120,12 +132,15 @@ public class CommentService {
 
         commentRepository.save(updateEntity);
     }
+
     //댓글 삭제
-    public void remove(Integer id) throws Exception {
+    public void delete(Integer id) throws Exception {
+
         //해당 댓글에 등록된 답글 조회
         List<ReplyEntity> replyEntities = replyRepository.findByCommentId(id);
+
+        //reply 테이블에서 답글 삭제
         for(ReplyEntity replyEntity : replyEntities) {
-            //reply 테이블에서 답글 삭제
             replyRepository.deleteAllByCommentId(id);
         }
 
@@ -133,7 +148,8 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    public void userCommentRemove(HttpServletRequest request, Principal principal) throws Exception{
+    public void userCommentDelete(HttpServletRequest request,
+                                  Principal principal) throws Exception {
 
         HttpSession session = request.getSession();
         UserEntity writer = (UserEntity) session.getAttribute("user");

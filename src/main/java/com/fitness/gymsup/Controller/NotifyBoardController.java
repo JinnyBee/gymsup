@@ -1,3 +1,9 @@
+/*
+    파일명 : NotifyBoardController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
@@ -44,7 +50,9 @@ public class NotifyBoardController {
                            @RequestParam(value = "type", defaultValue = "") String type,
                            @RequestParam(value = "keyword", defaultValue = "") String keyword,
                            Model model) throws Exception {
+
         Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_NOTIFY, type, keyword);
+
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -81,7 +89,7 @@ public class NotifyBoardController {
         log.info("nextPage : " + nextPage);
         log.info("lastPage : " + lastPage);
 
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_NOTIFY.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_NOTIFY.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
         model.addAttribute("boardDTOS", boardDTOS);
@@ -92,22 +100,29 @@ public class NotifyBoardController {
 
         return "board/notify/list";
     }
+
     @GetMapping("/board_notify_register")
     public String registerForm(Model model) throws Exception {
+
         BoardDTO boardDTO = new BoardDTO();
+
         boardDTO.setCategoryType(BoardCategoryType.BTYPE_NOTIFY);
         log.info(boardDTO.getCategoryType().name());
         log.info(boardDTO.getCategoryType().getDescription());
+
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/notify/register";
     }
+
     @PostMapping("/board_notify_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model, Principal principal,
-                               HttpServletRequest request) throws Exception {
+                               Principal principal,
+                               HttpServletRequest request,
+                               Model model) throws Exception {
+
         log.info(boardDTO.getCategoryType().name());
         for (MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
@@ -119,11 +134,13 @@ public class NotifyBoardController {
 
         return "redirect:/board_notify_list";
     }
+
     @GetMapping("/board_notify_detail")
     public String detailForm(Integer id,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
@@ -139,7 +156,7 @@ public class NotifyBoardController {
 
         model.addAttribute("userId", userId);*/
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_NOTIFY.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_NOTIFY.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
         model.addAttribute("bucket", bucket);
@@ -148,11 +165,13 @@ public class NotifyBoardController {
 
         return "board/notify/detail";
     }
-    @GetMapping("/board_notify_detailreload")
-    public String detailReloadForm(Integer id,
-                                   Model model,
-                                   HttpServletRequest request,
-                                   Principal principal) throws Exception {
+
+    @GetMapping("/board_notify_reload")
+    public String reloadForm(Integer id,
+                             HttpServletRequest request,
+                             Principal principal,
+                             Model model) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회 Reload
@@ -164,7 +183,7 @@ public class NotifyBoardController {
         log.info(commentDTOS);
 
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_NOTIFY.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_NOTIFY.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
         model.addAttribute("bucket", bucket);
@@ -173,12 +192,13 @@ public class NotifyBoardController {
 
         return "board/notify/detail";
     }
+
     @GetMapping("/board_notify_modify")
     public String modifyForm(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
@@ -194,6 +214,7 @@ public class NotifyBoardController {
 
         return "board/notify/modify";
     }
+
     @PostMapping("/board_notify_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
@@ -208,19 +229,19 @@ public class NotifyBoardController {
 
         return "redirect:/board_notify_list";
     }
-    @GetMapping("/board_notify_remove")
-    public String removeProc(Integer id,
+
+    @GetMapping("/board_notify_delete")
+    public String deleteProc(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
             return "redirect:/";
         }
-
-        boardService.remove(id);
+        boardService.delete(id);
 
         return "redirect:/board_notify_list";
     }

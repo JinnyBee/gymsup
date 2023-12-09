@@ -1,8 +1,14 @@
+/*
+    파일명 : BoardBaseController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 : 전현진
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
 
-public abstract class BaseController {
+public abstract class BoardBaseController {
 
     public String getRedirectUrl(String categoryType) {
 

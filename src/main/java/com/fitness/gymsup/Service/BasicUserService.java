@@ -1,3 +1,9 @@
+/*
+    파일명 : BasicUserService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.Constant.UserRole;

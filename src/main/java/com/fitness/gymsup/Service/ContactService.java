@@ -1,3 +1,9 @@
+/*
+    파일명 : ContactService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.DTO.ContactDTO;
@@ -35,7 +41,10 @@ public class ContactService {
     private final ModelMapper modelMapper = new ModelMapper();
 
     //문의 등록
-    public void contactRegister(ContactDTO contactDTO, HttpServletRequest request, Principal principal){
+    public void contactRegister(ContactDTO contactDTO,
+                                HttpServletRequest request,
+                                Principal principal) throws Exception {
+
         ContactEntity contactEntity = modelMapper.map(contactDTO, ContactEntity.class);
 
         HttpSession session = request.getSession();
@@ -53,7 +62,8 @@ public class ContactService {
     }
 
     //내 문의 보기
-    public List<ContactDTO> userContact(HttpServletRequest request, Principal principal)throws Exception{
+    public List<ContactDTO> userContact(HttpServletRequest request,
+                                        Principal principal) throws Exception {
 
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
@@ -69,7 +79,8 @@ public class ContactService {
     }
 
     //전체 문의 보기
-    public Page<ContactDTO> contactList(Pageable page) throws Exception{
+    public Page<ContactDTO> contactList(Pageable page) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
 
@@ -94,42 +105,55 @@ public class ContactService {
     }
 
     //문의 상세보기
-    public ContactDTO contactDetail(int id)throws Exception{
-        Optional<ContactEntity> contactEntity = contactRepository.findById(id);
+    public ContactDTO contactDetail(int id) throws Exception {
 
+        Optional<ContactEntity> contactEntity = contactRepository.findById(id);
         ContactDTO contactDTO = modelMapper.map(contactEntity, ContactDTO.class);
 
         return contactDTO;
     }
 
     //답변 등록
-    public void adminContactRegister(String answer, boolean is_answer,int id)throws Exception{
+    public void adminContactRegister(String answer,
+                                     boolean is_answer,
+                                     int id) throws Exception {
+
         ContactEntity contactEntity = contactRepository.findById(id).orElseThrow();
+
         contactEntity.setAnswer(answer);
         contactEntity.set_answer(is_answer);
+
         contactRepository.save(contactEntity);
     }
 
     //문의 삭제
-    public void contactDelete(int id)throws Exception{
+    public void contactDelete(int id) throws Exception {
+
         contactRepository.deleteById(id);
     }
 
     //유저 문의 수정
-    public void userContactModify(ContactDTO contactDTO, int id)throws Exception{
+    public void userContactModify(ContactDTO contactDTO,
+                                  int id) throws Exception {
+
         ContactEntity contactEntity = contactRepository.findById(id).orElseThrow();
+
         contactEntity.setTitle(contactDTO.getTitle());
         contactEntity.setContent(contactDTO.getContent());
+
         contactRepository.save(contactEntity);
     }
 
-    public void userContactRemove(HttpServletRequest request, Principal principal)throws Exception{
+    public void userContactDelete(HttpServletRequest request,
+                                  Principal principal) throws Exception {
+
         HttpSession session = request.getSession();
         UserEntity writer = (UserEntity) session.getAttribute("user");
         if(writer == null) {
             String email = principal.getName();
             writer = userRepository.findByEmail(email);
         }
+
         contactRepository.deleteAllByUserEntity(writer);
     }
 }

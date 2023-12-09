@@ -1,3 +1,9 @@
+/*
+    파일명 : TipBoardController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
@@ -44,7 +50,9 @@ public class TipBoardController {
                            @RequestParam(value = "type", defaultValue = "") String type,
                            @RequestParam(value = "keyword", defaultValue = "") String keyword,
                            Model model) throws Exception {
+
         Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_TIP, type, keyword);
+
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -81,7 +89,7 @@ public class TipBoardController {
         log.info("nextPage : " + nextPage);
         log.info("lastPage : " + lastPage);
 
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
         model.addAttribute("boardDTOS", boardDTOS);
@@ -95,10 +103,13 @@ public class TipBoardController {
 
     @GetMapping("/board_tip_register")
     public String registerForm(Model model) throws Exception {
+
         BoardDTO boardDTO = new BoardDTO();
+
         boardDTO.setCategoryType(BoardCategoryType.BTYPE_TIP);
         log.info(boardDTO.getCategoryType().name());
         log.info(boardDTO.getCategoryType().getDescription());
+
         model.addAttribute("boardDTO", boardDTO);
 
         return "board/tip/register";
@@ -108,8 +119,10 @@ public class TipBoardController {
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model, Principal principal,
-                               HttpServletRequest request) throws Exception {
+                               Principal principal,
+                               HttpServletRequest request,
+                               Model model) throws Exception {
+
         log.info(boardDTO.getCategoryType().name());
         for (MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
@@ -124,9 +137,10 @@ public class TipBoardController {
 
     @GetMapping("/board_tip_detail")
     public String detailForm(Integer id,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
@@ -142,7 +156,7 @@ public class TipBoardController {
 
         model.addAttribute("userId", userId);*/
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
         model.addAttribute("bucket", bucket);
@@ -152,11 +166,12 @@ public class TipBoardController {
         return "board/tip/detail";
     }
 
-    @GetMapping("/board_tip_detailreload")
-    public String detailReloadForm(Integer id,
-                                   Model model,
-                                   HttpServletRequest request,
-                                   Principal principal) throws Exception {
+    @GetMapping("/board_tip_reload")
+    public String reloadForm(Integer id,
+                             HttpServletRequest request,
+                             Principal principal,
+                             Model model) throws Exception {
+
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회 Reload
@@ -168,7 +183,7 @@ public class TipBoardController {
         log.info(commentDTOS);
 
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryType", BoardCategoryType.BTYPE_TIP.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
         model.addAttribute("bucket", bucket);
@@ -181,9 +196,9 @@ public class TipBoardController {
     @GetMapping("/board_tip_modify")
     public String modifyForm(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
@@ -210,22 +225,22 @@ public class TipBoardController {
             return "board/tip/modify";
         }
         boardService.modify(boardDTO, imgFiles);
+
         return "redirect:/board_tip_list";
     }
 
-    @GetMapping("/board_tip_remove")
-    public String removeProc(Integer id,
+    @GetMapping("/board_tip_delete")
+    public String deleteProc(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
             return "redirect:/";
         }
-
-        boardService.remove(id);
+        boardService.delete(id);
 
         return "redirect:/board_tip_list";
     }

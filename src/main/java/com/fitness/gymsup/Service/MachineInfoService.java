@@ -1,3 +1,9 @@
+/*
+    파일명 : MachineInfoService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
 import com.fitness.gymsup.DTO.MachineInfoDTO;
@@ -37,8 +43,6 @@ public class MachineInfoService {
     private final FileUploader fileUploader;
 
     public List<MachineInfoDTO> list() throws Exception {
-        //List<MachineInfoEntity> machineInfoEntities = machineInfoRepository.findAll();
-        //List<MachineInfoDTO> machineInfoDTOS = Arrays.asList(modelMapper.map(machineInfoEntities, MachineInfoDTO[].class));
 
         List<MachineInfoEntity> machineInfoEntities = machineInfoRepository.findAll();
         List<MachineInfoDTO> machineInfoDTOS = new ArrayList<>();
@@ -76,12 +80,15 @@ public class MachineInfoService {
         }
         return machineInfoDTOS;
     }
-    public MachineInfoDTO detail(Integer id) throws Exception {
-        MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(id).orElseThrow();
 
+    public MachineInfoDTO detail(Integer id) throws Exception {
+
+        MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(id).orElseThrow();
         MachineInfoDTO machineInfoDTO = modelMapper.map(machineInfoEntity, MachineInfoDTO.class);
+
         return machineInfoDTO;
     }
+
     //운동 기구 정보 상세조회 (machine_info 테이블의 result 값 중 플라스크 AI 서버로부터 응답받은 class 값이 있는지 조회)
     public MachineInfoDTO find(String className) throws Exception {
 
@@ -97,23 +104,28 @@ public class MachineInfoService {
         return machineInfoDTO;
     }
 
-    public void register(MachineInfoDTO machineInfoDTO, MultipartFile imgFile)throws Exception{
+    public void register(MachineInfoDTO machineInfoDTO,
+                         MultipartFile imgFile) throws Exception {
+
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
 
         if (originalFileName !=null){
             newFileName = fileUploader.uploadFile(imgUploadLocation, originalFileName, imgFile.getBytes());
         }
+
         machineInfoDTO.setImg(newFileName);
         MachineInfoEntity machineInfoEntity = modelMapper.map(machineInfoDTO, MachineInfoEntity.class);
+
         machineInfoRepository.save(machineInfoEntity);
     }
 
-    public void modify(MachineInfoDTO machineInfoDTO, MultipartFile imgFile) throws Exception {
+    public void modify(MachineInfoDTO machineInfoDTO,
+                       MultipartFile imgFile) throws Exception {
+
         //기존파일 삭제
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(machineInfoDTO.getId()).orElseThrow();
         String deleteFile = machineInfoEntity.getImg();
-
 
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
@@ -125,7 +137,6 @@ public class MachineInfoService {
             newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
 
             machineInfoDTO.setImg((newFileName));
-
         }
         machineInfoDTO.setId(machineInfoEntity.getId());
 
@@ -134,6 +145,6 @@ public class MachineInfoService {
         machineInfoRepository.save(data);
     }
 
-    public void remove() throws Exception {}
+    public void delete() throws Exception {}
 
 }

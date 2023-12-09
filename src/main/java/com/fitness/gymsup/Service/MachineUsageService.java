@@ -1,6 +1,11 @@
+/*
+    파일명 : MachineUsageService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.DTO.MachineInfoDTO;
 import com.fitness.gymsup.DTO.MachineUsageDTO;
 import com.fitness.gymsup.Entity.MachineInfoEntity;
 import com.fitness.gymsup.Entity.MachineUsageEntity;
@@ -20,13 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-
 public class MachineUsageService {
 
     @Value("${imgUploadLocation}")
@@ -39,11 +41,13 @@ public class MachineUsageService {
     private ModelMapper modelMapper = new ModelMapper();
 
     //운동 기구 영상 등록
-    public void register(MachineUsageDTO machineUsageDTO, MultipartFile imgFile)throws Exception{
+    public void register(MachineUsageDTO machineUsageDTO,
+                         MultipartFile imgFile) throws Exception {
+
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName = "";
 
-        if(originalFileName !=null){
+        if(originalFileName !=null) {
             newFileName = s3Uploader.upload(imgFile,imgUploadLocation);
         }
         machineUsageDTO.setThumbnail(newFileName);
@@ -53,7 +57,6 @@ public class MachineUsageService {
         machineUsageEntity.setMachineInfoEntity(machineInfo);
 
         machineUsageRepository.save(machineUsageEntity);
-
     }
 
     //운동 기구 영상 전체목록
@@ -82,7 +85,9 @@ public class MachineUsageService {
     }
 
     //운동 기구 영상 부분 목록
-    public Page<MachineUsageDTO> partList(int id, Pageable page)throws Exception{
+    public Page<MachineUsageDTO> partList(int id,
+                                          Pageable page) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
 
@@ -108,46 +113,48 @@ public class MachineUsageService {
     }
 
     //운동 기구 영상 상세보기
-    public MachineUsageDTO detail(int id, boolean isFirst)throws Exception{
+    public MachineUsageDTO detail(int id,
+                                  boolean isFirst) throws Exception {
 
-        if(isFirst){
+        if(isFirst) {
             machineUsageRepository.viewCntUp(id);
         }
         MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
         MachineUsageDTO machineUsageDTO = modelMapper.map(machineUsageEntity, MachineUsageDTO.class);
 
         return machineUsageDTO;
-
     }
 
     //운동 기구 영상 수정
-    public void modify(MachineUsageDTO machineUsageDTO, MultipartFile imgFile)throws Exception{
+    public void modify(MachineUsageDTO machineUsageDTO,
+                       MultipartFile imgFile) throws Exception {
+
         MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(machineUsageDTO.getId()).orElseThrow();
-        String deleteFile = machineUsageEntity.getThumbnail();
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(machineUsageDTO.getMachineInfoId()).orElseThrow();
 
+        String deleteFile = machineUsageEntity.getThumbnail();
         String originalFileName = imgFile.getOriginalFilename();
         String newFileName= "";
-        if (originalFileName.length()!= 0){
-            if(deleteFile.length() != 0){
+
+        if (originalFileName.length()!= 0) {
+            if(deleteFile.length() != 0) {
                 s3Uploader.deleteFile(deleteFile, imgUploadLocation);
             }
 
             newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
-
             machineUsageDTO.setThumbnail(newFileName);
         }
         machineUsageDTO.setId(machineUsageEntity.getId());
-
         MachineUsageEntity data = modelMapper.map(machineUsageDTO, MachineUsageEntity.class);
         data.setMachineInfoEntity(machineInfoEntity);
+
         machineUsageRepository.save(data);
     }
 
     //운동 기구 영상 삭제
-    public void delete(Integer id)throws Exception{
-        MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
+    public void delete(Integer id) throws Exception {
 
+        MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
         s3Uploader.deleteFile(machineUsageEntity.getThumbnail(), imgUploadLocation);
 
         machineUsageRepository.deleteById(id);

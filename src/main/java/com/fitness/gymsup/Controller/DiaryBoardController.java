@@ -1,3 +1,9 @@
+/*
+    파일명 : DiaryBoardController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
@@ -115,9 +121,9 @@ public class DiaryBoardController {
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
-                               Model model,
                                HttpServletRequest request,
-                               Principal principal) throws Exception {
+                               Principal principal,
+                               Model model) throws Exception {
 
         log.info(boardDTO.getCategoryType().name());
         for(MultipartFile imgFile : imgFiles) {
@@ -134,9 +140,9 @@ public class DiaryBoardController {
     //운동+식단 일기 게시판 상세보기
     @GetMapping("/board_diary_detail")
     public String detailForm(Integer id,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
@@ -165,9 +171,9 @@ public class DiaryBoardController {
     //운동+식단 일기 게시판 상세보기 Reload
     @GetMapping("/board_diary_reload")
     public String reloadForm(Integer id,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
@@ -226,9 +232,9 @@ public class DiaryBoardController {
     @GetMapping("/board_diary_modify")
     public String modifyForm(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         log.info("id: "+ id + ", boardUserId:"+boardUserId);
         if( boardUserId == null ||
@@ -265,19 +271,19 @@ public class DiaryBoardController {
     }
 
     //운동+식단 일기 게시판 삭제 처리
-    @GetMapping("/board_diary_remove")
-    public String removeProc(Integer id,
+    @GetMapping("/board_diary_delete")
+    public String deleteProc(Integer id,
                              Integer boardUserId,
-                             Model model,
                              HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Principal principal,
+                             Model model) throws Exception {
 
         if( boardUserId == null ||
                 !boardService.userConfirm(id, request, principal) ) {
             return "redirect:/";
         }
 
-        boardService.remove(id);
+        boardService.delete(id);
 
         return "redirect:/board_diary_list";
     }

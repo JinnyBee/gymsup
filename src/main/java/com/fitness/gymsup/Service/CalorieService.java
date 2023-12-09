@@ -1,14 +1,14 @@
+/*
+    파일명 : CalorieService.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Service;
 
-import com.fitness.gymsup.Constant.BookmarkType;
-import com.fitness.gymsup.DTO.BoardDTO;
-import com.fitness.gymsup.DTO.BookmarkDTO;
 import com.fitness.gymsup.DTO.ExerciseDTO;
 import com.fitness.gymsup.DTO.FoodCalorieDTO;
-import com.fitness.gymsup.Entity.BoardEntity;
-import com.fitness.gymsup.Entity.BookmarkEntity;
 import com.fitness.gymsup.Entity.ExerciseEntity;
-import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Repository.BoardRepository;
 import com.fitness.gymsup.Repository.BookmarkRepository;
 import com.fitness.gymsup.Repository.ExerciseRepository;

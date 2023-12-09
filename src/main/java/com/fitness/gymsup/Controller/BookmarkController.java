@@ -1,3 +1,9 @@
+/*
+    파일명 : BookmarkController.java
+    기 능 :
+    작성일 : 2023.12.08
+    작성자 :
+*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BookmarkType;
@@ -11,7 +17,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,7 +26,7 @@ import java.security.Principal;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class BookmarkController extends BaseController {
+public class BookmarkController extends BoardBaseController {
     private final BookmarkService bookmarkService;
 
     //마이페이지 - 내 북마크 게시글 전체 목록
@@ -88,7 +93,7 @@ public class BookmarkController extends BaseController {
                                    RedirectAttributes redirectAttributes) throws Exception {
 
         log.info(bid + ", " + categoryType);
-        bookmarkService.remove(bid, BookmarkType.BOOKMARK, request, principal);
+        bookmarkService.delete(bid, BookmarkType.BOOKMARK, request, principal);
         redirectAttributes.addAttribute("id", bid);
 
         return "redirect:" + getRedirectUrl(categoryType);
