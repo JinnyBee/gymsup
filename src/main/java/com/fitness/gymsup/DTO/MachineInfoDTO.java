@@ -17,7 +17,7 @@ public class MachineInfoDTO {
     private String content;                             //운동 기구 설명
     private String img;                                 //운동 기구 이미지
     private String result;                              //운동 기구 감지한 결과
-    private List<MachineUsageDTO> machineUsageDTOList;
+    private List<MachineUsageDTO> machineUsageDTOList;  //운동 기구 영상 목록
     private LocalDateTime regDate;                      //생성일
     private LocalDateTime modDate;                      //수정일
 }

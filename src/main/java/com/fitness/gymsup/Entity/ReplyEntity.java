@@ -34,5 +34,5 @@ public class ReplyEntity extends BaseEntity {
     private UserEntity userEntity;          //참조 테이블 Entity명 (user 테이블 - 답글 작성자)
 
     @Column(name = "reply", length = 200, nullable = false)
-    private String  reply;                //답글 내용
+    private String  reply;                  //답글 내용
 }

@@ -23,7 +23,7 @@ public class BoardImageEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
                     generator = "board_image_SEQ")
-    private Integer id;                 //게시판 id
+    private Integer id;                 //게시판이미지 id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")

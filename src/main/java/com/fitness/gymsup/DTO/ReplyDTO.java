@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @Builder
 public class ReplyDTO {
     private Integer id;                 //답글 id
-    private Integer commentId;          //원 댓글 id
-    private Integer boardId;            //원 게시글 id
     private Integer userId;             //답글 작성자 id
     private String userNickname;        //답글 작성자 닉네임
-    private BoardCategoryType boardCategoryType;
+
+    private Integer commentId;          //부모 댓글 id
+    private Integer boardId;            //부모 게시글 id
 
     @NotEmpty(message = "답글을 적어주세요.")
     private String  reply;              //답글 내용

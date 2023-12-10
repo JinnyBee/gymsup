@@ -35,5 +35,5 @@ public class MachineInfoEntity extends BaseEntity{
     private String img;     //운동기구 이미지
 
     @Column(name ="result", length = 50, nullable = false)
-    private String result;  //운동기구 감지한 결과
+    private String result;  //운동기구 감지한 결과 (플라스크에서 인식한 class name)
 }

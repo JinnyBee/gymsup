@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class BmiDTO {
-    private double height;         //신장 (cm)
-    private double weight;         //체중 (kg)
+    private double height;          //신장 (cm)
+    private double weight;          //체중 (kg)
     private double myBMI;           //체질량 지수 (BMI)
     private String weightStatus;    //비만도 결과 (저체중, 정상, 과체중, 비만)
 }

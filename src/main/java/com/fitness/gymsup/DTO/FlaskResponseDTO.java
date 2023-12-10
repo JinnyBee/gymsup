@@ -12,6 +12,6 @@ import java.util.List;
 @Getter
 @Data
 public class FlaskResponseDTO {
-    private String resultFilename;
-    private List<String> name;
+    private String resultFilename;  //결과 이미지 파일
+    private List<String> name;      //식별된 클래스 이름
 }
