@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Optional;
 
 
 @Service
@@ -298,4 +299,45 @@ public class BasicUserService implements UserDetailsService {
         return check;
     }
 
+    //관리자 회원 정보 상세보기
+   public UserDTO findById(int id)throws Exception{
+
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
+
+        return userDTO;
+    }
+
+    //관리자 회원 닉네임 수정
+    public void adminUpdateNickname(UserDTO userDTO)throws Exception{
+        int id = userDTO.getId();
+
+        UserEntity userEntity = userRepository.findById(id).orElseThrow();
+
+        userEntity.setNickname(userDTO.getNickname());
+
+        userRepository.save(userEntity);
+    }
+
+    //관리자 회원 등급 수정
+    public void adminUpdateRole(UserDTO userDTO)throws Exception{
+        int id = userDTO.getId();
+
+        UserEntity userEntity = userRepository.findById(id).orElseThrow();
+
+        userEntity.setRole(userDTO.getRole());
+
+        userRepository.save(userEntity);
+    }
+
+    //관리자 회원 정지 수정
+    public void adminUpdateBan(UserDTO userDTO)throws Exception{
+        int id = userDTO.getId();
+
+        UserEntity userEntity = userRepository.findById(id).orElseThrow();
+
+        userEntity.setBan(userDTO.isBan());
+
+        userRepository.save(userEntity);
+    }
 }

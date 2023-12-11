@@ -60,7 +60,7 @@ public class SecurityConfig {
                     "/food_calorie_*", "/myfood_calorie_*", "/exercise_calorie_*",
                     "/comment_*", "/reply_*", "/board_diary_*", "/board_notify_*",
                     "/board_qna_*", "/board_tip_*" ,"/user_*", "/contact_*", "/machine_about", "/machine_select_list*",
-                    "/machine_detail*").hasAnyRole("USER", "ADMIN");
+                    "/machine_info_detail*","/machine_usage_detail*").hasAnyRole("USER", "ADMIN");
             //관리자 권한
             auth.antMatchers("/machine_detect", "/machine_*", "/admin_*").hasRole("ADMIN");
 

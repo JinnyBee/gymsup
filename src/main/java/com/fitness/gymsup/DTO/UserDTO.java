@@ -1,5 +1,6 @@
 package com.fitness.gymsup.DTO;
 
+import com.fitness.gymsup.Constant.UserRole;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -27,6 +28,8 @@ public class UserDTO {
     @NotEmpty(message = "비밀번호를 입력해 주세요.")
     @Length(min=8, max=16, message = "비밀번호는 8자 이상, 16자 이하로 입력해주세요.")
     private String password;        //유저 비밀번호
+
+    private UserRole role;
 
     private boolean ban;            //유저 정지 여부
     private LocalDateTime regDate;  //생성일
