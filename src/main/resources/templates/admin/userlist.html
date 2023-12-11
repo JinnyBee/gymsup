@@ -51,7 +51,7 @@
                                         <th>유저이메일</th>
                                         <th>닉네임</th>
                                         <th>등록일</th>
-                                        <th>수정 & 삭제</th>
+                                        <th>수정</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -61,8 +61,7 @@
                                         <td th:text="${data.nickname}">test</td>
                                         <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd HH:mm:ss')}">2023-09-05</td>
                                         <td>
-                                            <button type="button" class="btn btn-dark">수정</button>
-                                            <button type="button" class="btn btn-danger">삭제</button>
+                                            <button type="button" class="btn btn-dark" th:onclick="|location.href='@{/admin_user_modify(id=${data.id})}'|">수정</button>
                                         </td>
                                     </tr>
                                     </tbody>

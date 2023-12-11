@@ -314,13 +314,11 @@ public class MachineController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
-        model.addAttribute("machineInfoDTO", machineInfoDTO);
-        model.addAttribute("machineInfoDTOid2", machineInfoDTOid2);
-        model.addAttribute("machineInfoDTOid3", machineInfoDTOid3);
-
-        model.addAttribute("machineInfoDTOid4", machineInfoDTOid4);
-        model.addAttribute("machineInfoDTOid5", machineInfoDTOid5);
-
+        model.addAttribute("foamRoller", machineInfoDTO);
+        model.addAttribute("dumbBell", machineInfoDTOid2);
+        model.addAttribute("kettleBell", machineInfoDTOid3);
+        model.addAttribute("babel", machineInfoDTOid4);
+        model.addAttribute("shoulderPress", machineInfoDTOid5);
         return "machine/alllist";
     }
 

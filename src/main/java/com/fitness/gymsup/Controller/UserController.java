@@ -234,7 +234,7 @@ public class UserController {
 
     //마이페이지 - 닉네임 중복체크
     @PostMapping("/user_nickname_dup")
-    public String nicknameDupt(UserDTO userDTO,
+    public String nicknameDup(UserDTO userDTO,
                                RedirectAttributes redirectAttributes) throws Exception {
 
         String message = basicUserService.dupNickname(userDTO);

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<body>
+<div layout:fragment="content">
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"> <!-- 작업공간 -->
+
+                        <div class="row mb-5" style="border-bottom: 3px solid black;">
+                            <h2>관리자페이지</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/admin_detail'">
+                                <p class="mt-1" style="text-align: center;">내 정보수정</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
+                                 onclick="location.href='/admin_user_list'">
+                                <p class="mt-1" style="text-align: center;">회원관리</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 onclick="location.href='/admin_contact'">
+                                <p class="mt-1" style="text-align: center;">문의내역</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 th:onclick="|location.href='@{/admin_machine_list}'|">
+                                <p class="mt-1" style="text-align: center;">운동 기구 관리</p>
+                            </div>
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+                            <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
+                                <p class="mt-1" style="text-align: center;"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
+                                <div class="row mt-4 mb-2">
+                                    <div>
+                                        <h4>유저 정보</h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p>유저 아이디 : <span th:text="${userDATA.email}">아이디</span></p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <p>유저 닉네임 : <span th:text="${userDATA.nickname}">닉네임</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p>등록일 : <span th:text="${#temporals.format(userDATA.regDate, 'yyyy-MM-dd  HH:mm:ss')}">등록일</span></p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <p>수정일 : <span th:text="${#temporals.format(userDATA.modDate, 'yyyy-MM-dd  HH:mm:ss')}">수정일</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p>유저등급 :
+                                            <span th:text="${userRole}"></span>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <p>정지여부 :
+                                            <span th:if="${userDATA.ban}==true">정지</span>
+                                            <span th:if="${userDATA.ban}==false">비정지</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4 mb-2">
+                                    <div>
+                                        <h4>유저 정보 수정</h4>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div>
+                                        <p>닉네임: </p>
+                                    </div>
+                                </div>
+
+                                <form th:action="@{/admin_nickname_dup}" method="post">
+
+                                    <div class="row gap-0">
+                                        <div class="col-lg-9">
+                                            <input type="hidden" name="id" th:value="${userDATA.id}">
+                                            <input type="text" class="form-control" name="nickname" th:if="${userDTO.nickname}==null" th:value="${userDATA.nickname}">
+                                            <input type="text" class="form-control" name="nickname" th:if="${userDTO.nickname}!=null" th:value="${userDTO.nickname}">
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <div>
+                                                    <button type="submit" class="btn btn-dark">중복체크</button>
+                                                    <button type="submit" th:if="${message}=='닉네임 사용이 가능합니다.'" class="btn btn-dark" formaction="/admin_nickname_modify">수정</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" style="height: auto;min-height: 20px">
+                                        <div class="col-lg-12">
+                                            <div th:if="${message} =='닉네임이 중복입니다.' or ${message} =='닉네임을 입력해 주세요.'">
+                                                <span th:text="${message}" style="color: red"></span>
+                                            </div>
+                                            <div th:if="${message} =='닉네임 사용이 가능합니다.'">
+                                                <span th:text="${message}" style="color: #008000"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+
+                                <div class="row mt-3">
+
+                                        <div class="col-lg-6">
+                                            <form th:action="@{/admin_role_modify}" method="post">
+                                                <div class="row">
+                                                    <div><label class="form-label" for="role">유저 등급</label></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div>
+                                                        <input type="hidden" name="id" th:value="${userDATA.id}">
+                                                        <select class="form-control" name="role" id="role">
+                                                            <option th:selected="${userRole}=='유저'" value="USER">유저</option>
+                                                            <option th:selected="${userRole}=='관리자'" value="ADMIN">관리자</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div>
+                                                        <button class="btn btn-dark" type="submit">수정</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
+
+                                    <div class="col-lg-6">
+                                        <form th:action="@{/admin_ban_modify}" method="post">
+                                            <div class="row">
+                                                <div><label class="form-label" for='ban'>정지 여부</label></div>
+                                            </div>
+                                            <div class="row">
+                                                <div>
+                                                    <input type="hidden" name="id" th:value="${userDATA.id}">
+                                                    <select class="form-control" name="ban" id="ban">
+                                                        <option th:selected="${userDATA.ban}==false" value="false">비정지</option>
+                                                        <option th:selected="${userDATA.ban}==true" value="true">정지</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div>
+                                                    <button class="btn btn-dark" type="submit">수정</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mt-5">
+                                    <div>
+                                        <button type="button" class="btn btn-dark" th:onclick="|location.href='@{/admin_user_list}'|">
+                                            돌아가기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- End 작업공간 -->
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main><!-- End #main -->
+</div>
+</body>
+</html>

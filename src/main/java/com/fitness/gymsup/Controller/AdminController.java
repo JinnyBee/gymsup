@@ -6,6 +6,7 @@
 */
 package com.fitness.gymsup.Controller;
 
+import com.fitness.gymsup.Constant.UserRole;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Service.BasicUserService;
@@ -17,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -86,5 +89,79 @@ public class AdminController {
         model.addAttribute("userDTOS",userDTOS);
 
         return "admin/userlist";
+    }
+
+    @GetMapping("/admin_user_modify")
+    public String adminUserModify(int id, Model model, UserDTO userDTO,
+                                  String message, String errorMessage)throws Exception{
+        UserDTO userDATA = basicUserService.findById(id);
+        String userRole="";
+        if (userDATA.getRole().equals(UserRole.USER)){
+            userRole="유저";
+        }else {
+            userRole="관리자";
+        }
+        model.addAttribute("errorMessage",errorMessage);
+        model.addAttribute("message",message);
+        model.addAttribute("userRole",userRole);
+        model.addAttribute("userDATA",userDATA);
+        model.addAttribute("userDTO",userDTO);
+        return "admin/usermodify";
+    }
+
+    @PostMapping("/admin_nickname_dup")
+    public String adminNicknameDup(UserDTO userDTO,
+                                   RedirectAttributes redirectAttributes)throws Exception{
+        String message= basicUserService.dupNickname(userDTO);
+        int id = userDTO.getId();
+        redirectAttributes.addFlashAttribute("userDTO",userDTO);
+        redirectAttributes.addAttribute("message", message);
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/admin_user_modify";
+    }
+
+    @PostMapping("/admin_nickname_modify")
+    public String adminNicknameModify(UserDTO userDTO,
+                                      RedirectAttributes redirectAttributes)throws Exception{
+
+        String errorMessage="유저닉네임이 변경되었습니다";
+        int id = userDTO.getId();
+        basicUserService.adminUpdateNickname(userDTO);
+        redirectAttributes.addAttribute("errorMessage",errorMessage);
+        redirectAttributes.addAttribute("id",id);
+        return "redirect:/admin_user_modify";
+    }
+
+    @PostMapping("/admin_role_modify")
+    public String adminRoleModify(UserDTO userDTO,
+                                  RedirectAttributes redirectAttributes)throws Exception{
+        String errorMessage="";
+        int id = userDTO.getId();
+        if(userDTO.getRole().equals(UserRole.USER)){
+            errorMessage="유저등급이 유저로 변경되었습니다.";
+        }else{
+            errorMessage="유저등급이 관리자로 변경되었습니다.";
+        }
+        basicUserService.adminUpdateRole(userDTO);
+        redirectAttributes.addAttribute("errorMessage",errorMessage);
+        redirectAttributes.addAttribute("id",id);
+        return "redirect:/admin_user_modify";
+    }
+
+    @PostMapping("/admin_ban_modify")
+    public String adminBanModify(UserDTO userDTO,
+                                 RedirectAttributes redirectAttributes)throws Exception{
+        String errorMessage="";
+        int id = userDTO.getId();
+        if(userDTO.isBan()==true){
+            errorMessage="유저가 정지 되었습니다.";
+        }else{
+            errorMessage="유저 정지가 해지 되었습니다";
+        }
+
+        basicUserService.adminUpdateBan(userDTO);
+        redirectAttributes.addAttribute("errorMessage",errorMessage);
+        redirectAttributes.addAttribute("id",id);
+        return "redirect:/admin_user_modify";
     }
 }
