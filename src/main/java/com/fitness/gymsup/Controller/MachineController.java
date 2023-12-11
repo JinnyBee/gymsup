@@ -82,10 +82,15 @@ public class MachineController {
         MachineInfoDTO machineInfoDTO = machineInfoService.find(flaskResponseDTO.getName().get(0));
         log.info(machineInfoDTO);
 
+        //S3 관련 주소
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
+
         model.addAttribute("flaskResponseDTO", flaskResponseDTO);
         model.addAttribute("machineInfoDTO", machineInfoDTO);
 
-        return "machine/howto";
+        return "machine/detect_howto";
     }
 
     //운동기구 전체 페이지

@@ -39,7 +39,7 @@ import java.util.List;
 @Transactional
 @Log4j2
 public class BoardService {
-    //업로드 사진파일이 저장될 경로
+    //첨부 이미지 파일이 저장될 S3 업로드 경로
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
 

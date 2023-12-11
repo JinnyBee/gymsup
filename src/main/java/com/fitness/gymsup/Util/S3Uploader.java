@@ -44,7 +44,7 @@ public class S3Uploader {
     }
 
     // S3로 파일 업로드하기
-    private String upload(File uploadFile, String dirName) {
+    public String upload(File uploadFile, String dirName) {
         //난수명+파일명 => 새로운 파일명
         String newFileName = UUID.randomUUID() + uploadFile.getName();
         //String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
@@ -67,7 +67,7 @@ public class S3Uploader {
     // 로컬에 저장된 이미지 지우기
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
-            log.info("File delete success");
+            log.info("File delete success : " + targetFile);
             return;
         }
         log.info("File delete fail");
