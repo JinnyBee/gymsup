@@ -29,24 +29,32 @@ public class AdminController {
 
     private final BasicUserService basicUserService;
 
-    //관리자 정보
+    //관리자페이지 - 관리자 정보 상세보기
     @GetMapping("/admin_detail")
-    public String adminDetailForm(HttpServletRequest request, Model model, Principal principal,
-                                  String errorMessage, UserDTO userDTO, String message)throws Exception{
+    public String adminDetailForm(HttpServletRequest request,
+                                  Principal principal,
+                                  String errorMessage,
+                                  UserDTO userDTO,
+                                  String message,
+                                  Model model) throws Exception {
+
         UserEntity userEntity = basicUserService.bringUserInfo(request, principal);
 
         model.addAttribute("message",message);
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("userEntity",userEntity);
+
         return "admin/admindetail";
     }
 
-    //전체 유저 정보
+    //관리자페이지 - 전체 유저 정보
     @GetMapping("/admin_user_list")
     public String adminUserList(@PageableDefault(page = 1)Pageable pageable,
-                                Model model)throws Exception{
+                                Model model) throws Exception {
+
         Page<UserDTO> userDTOS = basicUserService.userList(pageable);
+
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
