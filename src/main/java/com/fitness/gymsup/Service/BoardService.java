@@ -75,6 +75,7 @@ public class BoardService {
                 .viewCnt(data.getViewCnt())
                 .goodCnt(data.getGoodCnt())
                 .regDate(data.getRegDate())
+                .displayRegDate(Time.calculateTime(data.getRegDate()))
                 .modDate(data.getModDate())
                 .build()
         );
@@ -104,6 +105,7 @@ public class BoardService {
                 .goodCnt(data.getGoodCnt())
                 .commentCount(commentRepository.countByBoardEntity_Id(data.getId()))
                 .regDate(data.getRegDate())
+                .displayRegDate(Time.calculateTime(data.getRegDate()))
                 .modDate(data.getModDate())
                 .build()
         );
@@ -195,6 +197,7 @@ public class BoardService {
                     .viewCnt(data.getViewCnt())
                     .goodCnt(data.getGoodCnt())
                     .regDate(data.getRegDate())
+                    .displayRegDate(Time.calculateTime(data.getRegDate()))
                     .modDate(data.getModDate())
                     .build();
             boardDTOS.add(boardDTO);
@@ -222,6 +225,7 @@ public class BoardService {
                     .goodCnt(data.getGoodCnt())
                     .commentCount(commentRepository.countByBoardEntity_Id(data.getId()))
                     .regDate(data.getRegDate())
+                    .displayRegDate(Time.calculateTime(data.getRegDate()))
                     .modDate(data.getModDate())
                     .build();
             boardDTOS.add(boardDTO);

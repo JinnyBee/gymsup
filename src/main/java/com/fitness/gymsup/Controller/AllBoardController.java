@@ -35,7 +35,7 @@ public class AllBoardController {
     @GetMapping("/board_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
-        List<BoardDTO> notiBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
+        List<BoardDTO> notifyBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
         Page<BoardDTO> boardDTOS = boardService.listAllWithoutCategory(pageable, BoardCategoryType.BTYPE_NOTIFY);
 
         int blockLimit = 10;
@@ -73,7 +73,7 @@ public class AllBoardController {
         log.info("currentPage : "+currentPage);
         log.info("nextPage : "+nextPage);
         log.info("lastPage : "+lastPage);
-        for(BoardDTO dto : notiBoardLatestDTOS) {
+        for(BoardDTO dto : notifyBoardLatestDTOS) {
             log.info("Notify board" + dto);
         }
         for(BoardDTO dto : boardDTOS) {
@@ -81,7 +81,7 @@ public class AllBoardController {
         }
 
         model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_ALL.getDescription());
-        model.addAttribute("notiBoardLatestDTOS", notiBoardLatestDTOS);
+        model.addAttribute("notifyBoardLatestDTOS", notifyBoardLatestDTOS);
         model.addAttribute("boardDTOS", boardDTOS);
 
         return "board/list";
