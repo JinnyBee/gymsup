@@ -62,6 +62,8 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     //이메일 전송
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // 톰캣 war파일 배포 관련 AWS 라이브러리
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.609'
 }
 
 tasks.named('bootBuildImage') {
