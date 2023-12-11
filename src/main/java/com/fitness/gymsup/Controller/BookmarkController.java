@@ -81,7 +81,7 @@ public class BookmarkController extends BoardBaseController {
         bookmarkService.register(bid, BookmarkType.BOOKMARK, request, principal);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //북마크 해제 처리
@@ -96,7 +96,7 @@ public class BookmarkController extends BoardBaseController {
         bookmarkService.delete(bid, BookmarkType.BOOKMARK, request, principal);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //좋아요 설정 처리
@@ -111,6 +111,6 @@ public class BookmarkController extends BoardBaseController {
         bookmarkService.register(bid, BookmarkType.GOOD, request, principal);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 }

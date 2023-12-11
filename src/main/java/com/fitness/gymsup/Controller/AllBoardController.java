@@ -8,11 +8,9 @@ package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
 import com.fitness.gymsup.DTO.BoardDTO;
-import com.fitness.gymsup.DTO.CommentDTO;
 import com.fitness.gymsup.Service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -28,13 +26,14 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class AllBoardController {
+public class AllBoardController extends BoardBaseController {
     private final BoardService boardService;
 
     //모든게시판 전체목록 조회
     @GetMapping("/board_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            Model model) throws Exception {
+
         List<BoardDTO> notifyBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
         Page<BoardDTO> boardDTOS = boardService.listAllWithoutCategory(pageable, BoardCategoryType.BTYPE_NOTIFY);
 
@@ -92,24 +91,11 @@ public class AllBoardController {
     public String detailForm(Integer id,
                              String categoryType,
                              RedirectAttributes redirectAttributes,
-                             Model model,
-                             HttpServletRequest request,
-                             Principal principal) throws Exception {
+                             Model model) throws Exception {
+
         log.info(categoryType);
-        if(categoryType.equals(BoardCategoryType.BTYPE_TIP.name())) {
-            redirectAttributes.addAttribute("id", id);
+        redirectAttributes.addAttribute("id", id);
 
-            return "redirect:/board_tip_detail";
-        } else if(categoryType.equals(BoardCategoryType.BTYPE_DIARY.name())) {
-            redirectAttributes.addAttribute("id", id);
-
-            return "redirect:/board_diary_detail";
-        } else if(categoryType.equals(BoardCategoryType.BTYPE_QNA.name())) {
-            redirectAttributes.addAttribute("id", id);
-
-            return "redirect:/board_qna_detail";
-        }
-
-        return "redirect:/board_list";
+        return "redirect:" + getDetailRedirectUrl(categoryType);
     }
 }

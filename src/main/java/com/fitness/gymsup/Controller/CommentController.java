@@ -42,7 +42,7 @@ public class CommentController extends BoardBaseController {
         commentService.register(commentDTO, request, principal);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //boardId: 조회할 게시글 id
@@ -84,7 +84,7 @@ public class CommentController extends BoardBaseController {
         commentService.modify(commentDTO, request, principal);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //댓글 삭제 처리 (bid: 부모 게시글 id, id: 댓글 id)
@@ -97,7 +97,7 @@ public class CommentController extends BoardBaseController {
         commentService.delete(id);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //로그인 유저의 모든 댓글 삭제
@@ -119,14 +119,14 @@ public class CommentController extends BoardBaseController {
 
         log.info("commentId : " + replyDTO.getCommentId() + ", userId : " + replyDTO.getUserId() + "categoryType : " + categoryType);
         if (bindingResult.hasErrors()) {
-            log.info(getRedirectUrl(categoryType));
-            return "redirect:" + getRedirectUrl(categoryType);
+            log.info(getReloadRedirectUrl(categoryType));
+            return "redirect:" + getReloadRedirectUrl(categoryType);
         }
 
         replyService.register(replyDTO, request, principal);
         redirectAttributes.addAttribute("id", replyDTO.getBoardId());
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //답글 수정 처리
@@ -140,7 +140,7 @@ public class CommentController extends BoardBaseController {
         replyService.modify(replyDTO, request, principal);
         redirectAttributes.addAttribute("id", replyDTO.getBoardId());
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 
     //답글 삭제 처리
@@ -153,6 +153,6 @@ public class CommentController extends BoardBaseController {
         replyService.delete(id);
         redirectAttributes.addAttribute("id", bid);
 
-        return "redirect:" + getRedirectUrl(categoryType);
+        return "redirect:" + getReloadRedirectUrl(categoryType);
     }
 }
