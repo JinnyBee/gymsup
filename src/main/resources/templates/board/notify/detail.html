@@ -55,13 +55,13 @@
                                     <div>
                                         <input type="hidden" th:value="${boardDTO.id}" name="boardId">
                                         <!-- 북마크가 OFF인 경우 (북마크ON 버튼) -->
-                                        <button th:unless="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                        <button th:unless="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-warning" style="width: 120px; height: 50px; display: inline-block"
                                                 th:onclick="|location.href='@{/bookmark_on(id=${boardDTO.id}, categoryType='BTYPE_NOTIFY')}'|">
                                             <img src="/assets/img/bookmark_off.png" alt="" width="25" height="20">
                                             북마크
                                         </button>
                                         <!-- 북마크가 ON인 경우 (북마크OFF 버튼) -->
-                                        <button th:if="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-dark" style="width: 120px; height: 50px; display: inline-block"
+                                        <button th:if="${boardDTO.bookmarkOn}" type="button" class="btn btn-outline-warning" style="width: 120px; height: 50px; display: inline-block"
                                                 th:onclick="|location.href='@{/bookmark_off(id=${boardDTO.id}, categoryType='BTYPE_NOTIFY')}'|">
                                             <img src="/assets/img/bookmark_on.png" alt="" width="25" height="20">
                                             북마크
@@ -92,7 +92,7 @@
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2" style="text-align: right">
-                                    <button class="btn btn-outline-dark" type="button"
+                                    <button class="btn btn-outline-primary" type="button"
                                             th:onclick="|location.href='@{/board_notify_modify(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
                                             th:if="${boardDTO.userId}==${loginUserId}">
                                         수정
@@ -103,7 +103,7 @@
                                             th:if="${boardDTO.userId}==${loginUserId}">
                                         삭제
                                     </button>
-                                    <button class="btn btn-outline-primary" type="button"
+                                    <button class="btn btn-outline-dark" type="button"
                                             th:onclick="|location.href='@{/board_notify_list}'|">
                                         목록으로
                                     </button>
