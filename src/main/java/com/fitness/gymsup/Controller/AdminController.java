@@ -91,68 +91,90 @@ public class AdminController {
         return "admin/userlist";
     }
 
+    //관리자페이지 - 유저 정보 수정 폼
     @GetMapping("/admin_user_modify")
-    public String adminUserModify(int id, Model model, UserDTO userDTO,
-                                  String message, String errorMessage)throws Exception{
+    public String adminUserModify(int id,
+                                  UserDTO userDTO,
+                                  String message,
+                                  String errorMessage,
+                                  Model model) throws Exception {
+
         UserDTO userDATA = basicUserService.findById(id);
         String userRole="";
+
         if (userDATA.getRole().equals(UserRole.USER)){
             userRole="유저";
         }else {
             userRole="관리자";
         }
+
         model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("message",message);
         model.addAttribute("userRole",userRole);
         model.addAttribute("userDATA",userDATA);
         model.addAttribute("userDTO",userDTO);
+
         return "admin/usermodify";
     }
 
+    //관리자페이지 - 유저 닉네임 중복체크
     @PostMapping("/admin_nickname_dup")
     public String adminNicknameDup(UserDTO userDTO,
-                                   RedirectAttributes redirectAttributes)throws Exception{
+                                   RedirectAttributes redirectAttributes) throws Exception{
+
         String message= basicUserService.dupNickname(userDTO);
         int id = userDTO.getId();
+
         redirectAttributes.addFlashAttribute("userDTO",userDTO);
         redirectAttributes.addAttribute("message", message);
         redirectAttributes.addAttribute("id", id);
+
         return "redirect:/admin_user_modify";
     }
 
+    //관리자페이지 - 유저 닉네임 수정 처리
     @PostMapping("/admin_nickname_modify")
     public String adminNicknameModify(UserDTO userDTO,
-                                      RedirectAttributes redirectAttributes)throws Exception{
+                                      RedirectAttributes redirectAttributes) throws Exception {
 
         String errorMessage="유저닉네임이 변경되었습니다";
         int id = userDTO.getId();
         basicUserService.adminUpdateNickname(userDTO);
+
         redirectAttributes.addAttribute("errorMessage",errorMessage);
         redirectAttributes.addAttribute("id",id);
         return "redirect:/admin_user_modify";
     }
 
+    //관리자페이지 - 유저 등급 수정 처리
     @PostMapping("/admin_role_modify")
     public String adminRoleModify(UserDTO userDTO,
-                                  RedirectAttributes redirectAttributes)throws Exception{
+                                  RedirectAttributes redirectAttributes) throws Exception {
+
         String errorMessage="";
         int id = userDTO.getId();
+
         if(userDTO.getRole().equals(UserRole.USER)){
             errorMessage="유저등급이 유저로 변경되었습니다.";
         }else{
             errorMessage="유저등급이 관리자로 변경되었습니다.";
         }
         basicUserService.adminUpdateRole(userDTO);
+
         redirectAttributes.addAttribute("errorMessage",errorMessage);
         redirectAttributes.addAttribute("id",id);
+
         return "redirect:/admin_user_modify";
     }
 
+    //관리자페이지 - 유저 정지여부 수정 처리
     @PostMapping("/admin_ban_modify")
     public String adminBanModify(UserDTO userDTO,
-                                 RedirectAttributes redirectAttributes)throws Exception{
+                                 RedirectAttributes redirectAttributes) throws Exception {
+
         String errorMessage="";
         int id = userDTO.getId();
+
         if(userDTO.isBan()==true){
             errorMessage="유저가 정지 되었습니다.";
         }else{
@@ -162,6 +184,7 @@ public class AdminController {
         basicUserService.adminUpdateBan(userDTO);
         redirectAttributes.addAttribute("errorMessage",errorMessage);
         redirectAttributes.addAttribute("id",id);
+
         return "redirect:/admin_user_modify";
     }
 }

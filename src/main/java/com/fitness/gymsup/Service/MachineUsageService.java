@@ -60,7 +60,8 @@ public class MachineUsageService {
     }
 
     //운동 기구 영상 전체목록
-    public Page<MachineUsageDTO> listAll(Pageable page)throws Exception{
+    public Page<MachineUsageDTO> listAll(Pageable page) throws Exception {
+
         int curPage = page.getPageNumber()-1;
         int pageLimit = 5;
 

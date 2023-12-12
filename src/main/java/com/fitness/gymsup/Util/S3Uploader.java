@@ -26,25 +26,32 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException{
+    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+
         log.info(multipartFile.getOriginalFilename());
         log.info(dirName);
         File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("파일 전환 실패"));
+
         return upload(uploadFile, dirName);
     }
 
     // S3 파일삭제
     public void deleteFile(String deleteFile, String dirName) throws IOException {
+
         String fileName = dirName+"/"+deleteFile;
+        log.info("bucket : " + bucket + ", deleteFile : " + fileName);
+
         try {
             amazonS3Client.deleteObject(bucket, fileName);
         } catch(SdkClientException e) {
+            e.printStackTrace();
             throw new IOException("Error deleting file from S3", e);
         }
     }
 
     // S3로 파일 업로드하기
     public String upload(File uploadFile, String dirName) {
+
         //난수명+파일명 => 새로운 파일명
         String newFileName = UUID.randomUUID() + uploadFile.getName();
         //String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
@@ -60,12 +67,14 @@ public class S3Uploader {
 
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {
+
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
     // 로컬에 저장된 이미지 지우기
     private void removeNewFile(File targetFile) {
+
         if (targetFile.delete()) {
             log.info("File delete success : " + targetFile);
             return;
@@ -73,7 +82,8 @@ public class S3Uploader {
         log.info("File delete fail");
     }
 
-    private Optional<File> convert(MultipartFile multipartFile) throws IOException{
+    private Optional<File> convert(MultipartFile multipartFile) throws IOException {
+
         //System.out.println(System.getProperty("user.dir"));
         log.info(System.getProperty("user.dir"));
         log.info(multipartFile.getOriginalFilename());
