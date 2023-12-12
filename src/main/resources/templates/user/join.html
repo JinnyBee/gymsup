@@ -19,7 +19,7 @@
                                 <h2>회원가입</h2>
                             </div>
 
-                            <form th:action="@{/user_join}" method="post" th:object="${userDTO}">
+                            <form th:action="@{/user_join}" method="post" th:object="${userDTO}" onkeydown="if(event.keyCode==13) return false;">
                                 <div class="mb-3 mt-2" style="height: auto;min-height: 90px">
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -31,7 +31,7 @@
                                             <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요." name="email" th:field="*{email}">
                                         </div>
                                         <div class="col-lg-3">
-                                            <button type="submit" class="btn btn-dark" formaction="/user_regDupEmail">중복체크</button>
+                                            <button type="submit" class="btn btn-dark" formaction="/user_regDupEmail" onkeyup="">중복체크</button>
                                         </div>
                                     </div>
                                     <div>
