@@ -12,7 +12,7 @@
             <div class="content">
 
                 <h2>로그인</h2>
-                <form action="/user_login" method="post">
+                <form th:action="@{/user_login}" method="post">
                     <div class="form">
 
                         <div class="inputBox">
@@ -27,7 +27,7 @@
 
                         </div>
 
-                        <div class="links"> <a th:href="@{/password_reset}">비밀번호 재설정</a> <a href="/user_join">회원가입</a>
+                        <div class="links"> <a th:href="@{/password_reset}">비밀번호 재설정</a> <a th:href="@{/user_join}">회원가입</a>
 
                         </div>
 

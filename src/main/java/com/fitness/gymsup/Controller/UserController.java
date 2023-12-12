@@ -420,7 +420,7 @@ public class UserController {
             errorMessage="현재 비밀번호와 다릅니다.";
             redirectAttributes.addAttribute("errorMessage",errorMessage);
 
-            return "redirect:/user_password_confirm";
+            return "redirect:/user_cancel_confirm";
         }
     }
 

@@ -4,6 +4,7 @@ import com.fitness.gymsup.Constant.BoardCategoryType;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,9 @@ public class BoardDTO {
 
     @NotEmpty(message = "제목을 적어주세요.")
     private String  title;                      //게시글 제목
+
     @NotEmpty(message = "내용을 적어주세요.")
+    @Size(min = 1, max = 1500)
     private String  content;                    //게시글 내용
 
     private List<String> imgFileList;           //게시글 첨부 이미지파일 리스트
