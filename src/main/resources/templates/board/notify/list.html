@@ -34,7 +34,7 @@
                                         <a class="d-inline-block text-truncate" th:href="@{/board_notify_detail(id=${data.id})}" th:text="${data.title}"  style="max-width: 180px;"></a>&nbsp;&nbsp;
                                         <span class="d-inline-block text-truncate" style=" color: #ff4930" th:text="${data.commentCount}">9</span>
                                     </td>
-                                    <td style="text-align: center" th:text="${data.userNickname}">홍길동</td>
+                                    <td class="align-text-top text-center"><span class="d-inline-block text-truncate" th:text="${data.userNickname}" style="max-width: 100px;">홍길동</span></td>
                                     <td style="text-align: center" th:text="${data.viewCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.displayRegDate}">2021-11-29</td>
