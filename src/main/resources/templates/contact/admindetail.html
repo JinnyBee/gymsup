@@ -52,7 +52,7 @@
                                         <div class="col"><p th:text="${contactDTO.content}"></p></div>
                                     </div>
 
-                                    <form action="/admin_contact_register" method="post">
+                                    <form th:action="@{/admin_contact_register}" method="post">
 
                                         <input type="hidden" name="id" th:value="${contactDTO.id}">
                                         <div class="row">
