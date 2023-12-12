@@ -152,3 +152,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+function boardDeleteConfirm(id, boardUserId, type){
+
+  if(type==='tip'){
+    if(confirm("삭제하시겠습니까?")){
+      location.href='/board_tip_delete?id=' + id + '&boardUserId='+ boardUserId;
+    }
+  }else if(type==='diary'){
+    if(confirm("삭제하시겠습니까?")){
+      location.href='/board_diary_delete?id=' + id + '&boardUserId='+ boardUserId;
+    }
+  }else if (type==='qna'){
+    if(confirm("삭제하시겠습니까?")){
+      location.href='/board_qna_delete?id=' + id + '&boardUserId='+ boardUserId;
+    }
+  }else if(type==='notify'){
+    if(confirm("삭제하시겠습니까?")){
+      location.href='/board_notify_delete?id=' + id + '&boardUserId='+ boardUserId;
+    }
+  }
+}
+
+function commentDeleteConfirm(bid, id, categoryType){
+  if(confirm("삭제하시겠습니까?")){
+    location.href='/comment_delete?bid='+ bid + '&id=' + id + '&categoryType=' + categoryType;
+  }
+}
+
+function replyDeleteConfirm(bid, id, categoryType){
+  if(confirm("삭제하시겠습니까?")){
+    location.href='/reply_delete?bid='+ bid + '&id=' + id + '&categoryType=' + categoryType;
+  }
+}
