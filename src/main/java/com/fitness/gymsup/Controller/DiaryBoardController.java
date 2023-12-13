@@ -55,6 +55,7 @@ public class DiaryBoardController {
         log.info(keyword);
 
         Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_DIARY, type, keyword);
+        List<BoardDTO> notifyBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
 
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
@@ -95,6 +96,7 @@ public class DiaryBoardController {
         model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_DIARY.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("notifyBoardLatestDTOS", notifyBoardLatestDTOS);
         model.addAttribute("boardDTOS", boardDTOS);
 
         for(BoardDTO dto : boardDTOS) {

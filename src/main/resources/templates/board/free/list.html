@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
     <main id="main">
         <!-- ======= Search Results ======= -->
-        <section id="search-result" class="search-result">
+        <section class="search-result" id="search-result">
             <div class="container">
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3"> <!--게시판 시작-->
-                            <h2 th:text="${categoryTypeDesc}">고민나눔 게시판</h2>
+                            <h2 th:text="${categoryTypeDesc}">자유 게시판</h2>
                             <hr>
-                            <table class="table table-hover">
+                            <table class="table table-hover"> <!-- 테이블 시작 -->
                                 <thead>
                                 <tr style="text-align: center">
                                     <th style="width: 15%">게시판</th>
@@ -41,7 +41,7 @@
                                 <tr th:each="data:${boardDTOS}"> <!--th:each="data:${DTO}"-->
                                     <td th:text="${data.getCategoryType().getDescription()}"></td>
                                     <td class="align-text-top">
-                                        <a class="d-inline-block text-truncate" th:href="@{/board_qna_detail(id=${data.id})}" th:text="${data.title}"  style="max-width: 180px;"></a>&nbsp;&nbsp;
+                                        <a class="d-inline-block text-truncate" th:href="@{/board_free_detail(id=${data.id})}" th:text="${data.title}"  style="max-width: 180px;"></a>&nbsp;&nbsp;
                                         <span class="d-inline-block text-truncate" style=" color: #ff4930" th:text="${data.commentCount}">9</span>
                                     </td>
                                     <td class="align-text-top text-center"><span class="d-inline-block text-truncate" th:text="${data.userNickname}" style="max-width: 100px;">홍길동</span></td>
@@ -50,27 +50,27 @@
                                     <td style="text-align: center" th:text="${data.displayRegDate}">2021-11-29</td>
                                 </tr>
                                 </tbody>
-                            </table>
+                            </table> <!-- 테이블 끝 -->
                             <div class="row">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6 text-center">
                                     <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
                                         <!--시작 페이지-->
                                         <div class="start" th:unless="${startPage==1}">
-                                            <a th:href="@{/board_qna_list(page=1)}">
+                                            <a th:href="@{/board_free_list(page=1)}">
                                                 <<
                                             </a>
                                         </div>
                                         <!--이전 페이지-->
                                         <div class="prev" th:unless="${currentPage==1}">
-                                            <a th:href="@{/board_qna_list(page=${prevPage})}">
+                                            <a th:href="@{/board_free_list(page=${prevPage})}">
                                                 <
                                             </a>
                                         </div>
                                         <span th:each="page:${#numbers.sequence(startPage, endPage)}">
                                             <!--현재페이지 아닐시-->
                                             <div th:unless="${page==currentPage}">
-                                                <a th:href="@{/board_qna_list(page=${page})}">
+                                                <a th:href="@{/board_free_list(page=${page})}">
                                                     [[${page}]]
                                                 </a>
                                             </div>
@@ -81,13 +81,13 @@
                                         </span>
                                         <!--다음페이지-->
                                         <div class="next" th:unless="${currentPage==lastPage}">
-                                            <a th:href="@{/board_qna_list(page=${nextPage})}">
+                                            <a th:href="@{/board_free_list(page=${nextPage})}">
                                                 >
                                             </a>
                                         </div>
                                         <!--마지막 페이지-->
                                         <div class="last" th:unless="${endPage==lastPage}">
-                                            <a th:href="@{/board_qna_list(page=${lastPage})}">
+                                            <a th:href="@{/board_free_list(page=${lastPage})}">
                                                 >>
                                             </a>
                                         </div>
@@ -95,13 +95,13 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div><!--게시글 작성 버튼-->
-                                        <button class="btn btn-primary float-end btn-sm" th:onclick="|location.href='@{/board_qna_register}'|"
+                                        <button class="btn btn-primary float-end btn-sm" th:onclick="|location.href='@{/board_free_register}'|"
                                                 type="button">글쓰기
                                         </button>
                                     </div><!--게시글 작성 버튼 끝-->
                                 </div>
                             </div>
-                            <form class="d-flex justify-content-center" th:action="@{/board_qna_list}" method="get"><!--검색-->
+                            <form class="d-flex justify-content-center" th:action="@{/board_free_list}" method="get"><!-- 검색 -->
                                 <input type="hidden" name="page" value="1">
                                 <select name="type" class="form-select form-select-sm" style="width: 100px; height: 31px;"> <!-- 검색 타입 -->
                                     <option value="t" th:selected="${type == 't'}">제목</option>
@@ -114,8 +114,8 @@
                                 <div class="ms-1">
                                     <button class="btn btn-dark btn-sm" type="submit">검색</button>
                                 </div>
-                            </form><!--검색 끝-->
-                        </div><!--게시판 끝-->
+                            </form><!-- 검색 끝 -->
+                        </div><!-- 게시판 끝 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

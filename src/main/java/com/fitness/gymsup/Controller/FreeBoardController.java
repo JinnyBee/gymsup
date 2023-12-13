@@ -1,9 +1,3 @@
-/*
-    파일명 : QnaBoardController.java
-    기 능 :
-    작성일 : 2023.12.08
-    작성자 :
-*/
 package com.fitness.gymsup.Controller;
 
 import com.fitness.gymsup.Constant.BoardCategoryType;
@@ -33,7 +27,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class QnaBoardController {
+public class FreeBoardController {
     //S3 이미지 정보
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
@@ -45,14 +39,15 @@ public class QnaBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
 
-    @GetMapping("/board_qna_list")
-    public String listForm(@PageableDefault(page = 1)Pageable pageable,
+    @GetMapping("/board_free_list")
+    public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            @RequestParam(value = "type", defaultValue = "") String type,
                            @RequestParam(value = "keyword", defaultValue = "") String keyword,
                            Model model) throws Exception {
 
-        Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_QNA, type, keyword);
+        Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_FREE, type, keyword);
         List<BoardDTO> notifyBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
+
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
@@ -89,7 +84,7 @@ public class QnaBoardController {
         log.info("nextPage : " + nextPage);
         log.info("lastPage : " + lastPage);
 
-        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_QNA.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_FREE.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
         model.addAttribute("notifyBoardLatestDTOS", notifyBoardLatestDTOS);
@@ -99,24 +94,24 @@ public class QnaBoardController {
             log.info(dto);
         }
 
-        return "board/qna/list";
+        return "board/free/list";
     }
 
-    @GetMapping("/board_qna_register")
+    @GetMapping("/board_free_register")
     public String registerForm(Model model) throws Exception {
 
         BoardDTO boardDTO = new BoardDTO();
 
-        boardDTO.setCategoryType(BoardCategoryType.BTYPE_QNA);
+        boardDTO.setCategoryType(BoardCategoryType.BTYPE_FREE);
         log.info(boardDTO.getCategoryType().name());
         log.info(boardDTO.getCategoryType().getDescription());
 
         model.addAttribute("boardDTO", boardDTO);
 
-        return "board/qna/register";
+        return "board/free/register";
     }
 
-    @PostMapping("/board_qna_register")
+    @PostMapping("/board_free_register")
     public String registerProc(@Valid BoardDTO boardDTO,
                                BindingResult bindingResult,
                                List<MultipartFile> imgFiles,
@@ -124,18 +119,19 @@ public class QnaBoardController {
                                HttpServletRequest request,
                                Model model) throws Exception {
 
+        log.info(boardDTO.getCategoryType().name());
         for (MultipartFile imgFile : imgFiles) {
             log.info(imgFile);
         }
         if (bindingResult.hasErrors()) {
-            return "board/qna/register";
+            return "board/free/register";
         }
         boardService.register(boardDTO, imgFiles, request, principal);
 
-        return "redirect:/board_qna_list";
+        return "redirect:/board_free_list";
     }
 
-    @GetMapping("/board_qna_detail")
+    @GetMapping("/board_free_detail")
     public String detailForm(Integer id,
                              HttpServletRequest request,
                              Principal principal,
@@ -149,27 +145,24 @@ public class QnaBoardController {
         List<CommentDTO> commentDTOS = commentService.list(id);
         boardDTO.setCommentCount(commentDTOS.size());
 
-        boolean boardUserConfirm = boardService.userConfirm(id, request, principal);
-
         log.info(boardDTO);
         log.info(commentDTOS);
 
-        Integer userId = boardService.userId(request, principal);
+        /*Integer userId = boardService.userId(request, principal);
 
-        model.addAttribute("userId", userId);
-        model.addAttribute("userConfirm", boardUserConfirm);
+        model.addAttribute("userId", userId);*/
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_QNA.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_FREE.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
 
-        return "board/qna/detail";
+        return "board/free/detail";
     }
 
-    @GetMapping("/board_qna_reload")
+    @GetMapping("/board_free_reload")
     public String reloadForm(Integer id,
                              HttpServletRequest request,
                              Principal principal,
@@ -186,14 +179,17 @@ public class QnaBoardController {
         log.info(commentDTOS);
 
         model.addAttribute("loginUserId", loginUserId);
-        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_QNA.getDescription());
+        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_FREE.getDescription());
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("commentDTOS", commentDTOS);
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
 
-        return "board/qna/detail";
+        return "board/free/detail";
     }
 
-    @GetMapping("/board_qna_modify")
+    @GetMapping("/board_free_modify")
     public String modifyForm(Integer id,
                              Integer boardUserId,
                              HttpServletRequest request,
@@ -212,24 +208,24 @@ public class QnaBoardController {
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
 
-        return "board/qna/modify";
+        return "board/free/modify";
     }
 
-    @PostMapping("/board_qna_modify")
+    @PostMapping("/board_free_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
                              List<MultipartFile> imgFiles,
                              Model model) throws Exception {
 
         if (bindingResult.hasErrors()) {
-            return "board/tip/modify";
+            return "board/free/modify";
         }
         boardService.modify(boardDTO, imgFiles);
 
-        return "redirect:/board_qna_list";
+        return "redirect:/board_free_list";
     }
 
-    @GetMapping("/board_qna_delete")
+    @GetMapping("/board_free_delete")
     public String deleteProc(Integer id,
                              Integer boardUserId,
                              HttpServletRequest request,
@@ -242,6 +238,6 @@ public class QnaBoardController {
         }
         boardService.delete(id);
 
-        return "redirect:/board_qna_list";
+        return "redirect:/board_free_list";
     }
 }

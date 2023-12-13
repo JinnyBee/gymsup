@@ -52,6 +52,7 @@ public class TipBoardController {
                            Model model) throws Exception {
 
         Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_TIP, type, keyword);
+        List<BoardDTO> notifyBoardLatestDTOS = boardService.latest(BoardCategoryType.BTYPE_NOTIFY);
 
         int blockLimit = 5;
         int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
@@ -92,6 +93,7 @@ public class TipBoardController {
         model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_TIP.getDescription());
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("notifyBoardLatestDTOS", notifyBoardLatestDTOS);
         model.addAttribute("boardDTOS", boardDTOS);
 
         for (BoardDTO dto : boardDTOS) {
