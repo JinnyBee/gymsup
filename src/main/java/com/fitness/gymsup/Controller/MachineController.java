@@ -173,10 +173,45 @@ public class MachineController {
 
     //운동기구 사용법 영상 상세보기
     @GetMapping("/machine_usage_detail")
-    public String machineUsageDetailForm(int id,
+    public String machineUsageDetailForm(@PageableDefault(page = 1) Pageable pageable,
+                                         int id, int infoId,
                                          Model model) throws Exception {
-
+        Page<MachineUsageDTO> machineUsageDTOS = machineUsageService.partList(infoId, pageable);
         MachineUsageDTO machineUsageDTO = machineUsageService.detail(id,true);
+
+        int blockLimit = 5;
+        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
+
+        if(machineUsageDTOS.isEmpty()) {
+            startPage = 0;
+            endPage = 0;
+            prevPage = 0;
+            currentPage = 0;
+            nextPage = 0;
+            lastPage = 0;
+        } else {
+            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
+            //endPage = Math.min(startPage+blockLimit-1, machineUsageDTOS.getTotalPages());
+            endPage = ((startPage+blockLimit-1)<machineUsageDTOS.getTotalPages()) ? startPage+blockLimit-1 : machineUsageDTOS.getTotalPages();
+
+            prevPage = machineUsageDTOS.getNumber();
+            currentPage = machineUsageDTOS.getNumber() + 1;
+            nextPage = machineUsageDTOS.getNumber() + 2;
+            lastPage = machineUsageDTOS.getTotalPages();
+        }
+
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("region", region);
+        model.addAttribute("folder", folder);
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("prevPage", prevPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("lastPage", lastPage);
+
+        model.addAttribute("machineUsageDTOS", machineUsageDTOS);
         model.addAttribute("machineUsageDTO", machineUsageDTO);
 
         return "machine/usage_detail";
