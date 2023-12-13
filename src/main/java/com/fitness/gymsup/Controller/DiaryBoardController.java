@@ -240,7 +240,7 @@ public class DiaryBoardController {
 
         log.info("id: "+ id + ", boardUserId:"+boardUserId);
         if( boardUserId == null ||
-                !boardService.userConfirm(id, request, principal) ) {
+                boardUserId != boardService.userId(request, principal) ) {
             return "redirect:/";
         }
 

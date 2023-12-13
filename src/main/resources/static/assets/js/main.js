@@ -174,14 +174,14 @@ function boardDeleteConfirm(id, boardUserId, type){
   }
 }
 
-function commentDeleteConfirm(bid, id, categoryType){
+function commentDeleteConfirm(bid, id, userId, categoryType){
   if(confirm("삭제하시겠습니까?")){
-    location.href='/comment_delete?bid='+ bid + '&id=' + id + '&categoryType=' + categoryType;
+    location.href='/comment_delete?bid='+ bid + '&id=' + id +'&commentUserId=' + userId+ '&categoryType=' + categoryType;
   }
 }
 
-function replyDeleteConfirm(bid, id, categoryType){
+function replyDeleteConfirm(bid, id, userId, categoryType){
   if(confirm("삭제하시겠습니까?")){
-    location.href='/reply_delete?bid='+ bid + '&id=' + id + '&categoryType=' + categoryType;
+    location.href='/reply_delete?bid='+ bid + '&id=' + id + '&replyUserId=' + userId+ '&categoryType=' + categoryType;
   }
 }

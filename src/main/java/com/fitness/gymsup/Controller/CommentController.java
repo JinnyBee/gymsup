@@ -75,11 +75,12 @@ public class CommentController extends BoardBaseController {
     @PostMapping("/comment_modify")
     public String modifyCommentProc(CommentDTO commentDTO,
                                     Integer id,
+                                    Integer commentUserId,
                                     String categoryType,
                                     HttpServletRequest request,
                                     Principal principal,
                                     RedirectAttributes redirectAttributes) throws Exception{
-        if( id == null ||
+        if( commentUserId == null ||
                 !commentService.userConfirm(id, request, principal) ) {
             return "redirect:/";
         }
@@ -143,9 +144,15 @@ public class CommentController extends BoardBaseController {
     @PostMapping("/reply_modify")
     public String modifyReplyProc(ReplyDTO replyDTO,
                                   String categoryType,
+                                  Integer id,
+                                  Integer replyUserId,
                                   HttpServletRequest request,
                                   Principal principal,
                                   RedirectAttributes redirectAttributes) throws Exception {
+        if( replyUserId == null ||
+                !replyService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
 
         replyService.modify(replyDTO, request, principal);
         redirectAttributes.addAttribute("id", replyDTO.getBoardId());
