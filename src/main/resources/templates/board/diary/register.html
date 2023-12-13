@@ -3,76 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-
 <body>
 <div layout:fragment="content">
-    <script>
-        $(document).ready(function () {
-            $('#searchFoodBtn').click(function () {
-                var keyId = "be61650aef44488a9029";
-                var serviceId = "I2790";
-                var dataType = "json";
-                var startIdx = "1"
-                var endIdx = "10"
-                var keyword = document.getElementById('keywordInput').value;
-
-                var requestURL = "http://openapi.foodsafetykorea.go.kr/api/"
-                                + keyId + "/"
-                                + serviceId + "/"
-                                + dataType + "/"
-                                + startIdx + "/"
-                                + endIdx + "/"
-                                + "DESC_KOR=" + keyword;
-                $.ajax({
-                    type:"GET",
-                    url: requestURL,
-                    data: {},
-                    success: function (data) {
-                        let dataStr = JSON.stringify(data);
-                        alert(requestURL + " ---> " + dataStr);
-
-                        let parseData = JSON.parse(dataStr);
-                        var foodTbl = document.getElementById('foodTbl');
-                        var printdata = "";
-
-                        printdata += "<thead class=\"text-center\">";
-                        printdata += "<tr><th>음식명<\/th><th>칼로리<\/th><th><\/th><\/tr><\/thead>"
-                        printdata += "<tbody>";
-                        for(var i=0; i<parseData.I2790.row.length; i++) {
-                            let makerName = parseData.I2790.row[i].MAKER_NAME;
-                            let descKor = parseData.I2790.row[i].DESC_KOR;
-                            let servingSize = parseData.I2790.row[i].SERVING_SIZE;
-                            let servingUnit = parseData.I2790.row[i].SERVING_UNIT;
-                            let nutrCont1 = parseData.I2790.row[i].NUTR_CONT1;
-
-                            printdata += "<tr class=\"foodRow\">";
-                            printdata += "<td>";
-                            if(makerName.length > 0) printdata += "["+makerName+"]";
-                            printdata += descKor+"<\/td>";
-                            printdata += "<td>"+nutrCont1+"kcal ("+servingSize+servingUnit+")<\/td>";
-                            printdata += "<td><input type=\"button\" class=\"selectBtn\" value=\"선택\"\/><\/td>"
-                            printdata += "<\/tr>" ;
-                        }
-                        printdata += "<\/tbody>";
-                        alert(printdata);
-                        foodTbl.innerHTML = printdata;
-                    }
-                });
-            });
-        });
-        $(".selectBtn").click(function() {
-            alert("!!!!!");
-            var selectBtn = $(this);
-
-            var tr = selectBtn.parent().parent();
-            var td = tr.children();
-
-            alert(tr.text());
-        });
-        $(document).on("click", "selectBtn", function (){
-            console.log();
-        });
-    </script>
     <main id="main">
         <!-- ======= Search Results ======= -->
         <section id="search-result" class="search-result">
@@ -82,7 +14,7 @@
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <form th:action="@{/board_diary_register}" method="post"
                               enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 가입폼 -->
-                            <h3 class="text-center">[[*{getCategoryType().getDescription()}]]</h3>
+                            <h3 class="text-center" th:text="*{getCategoryType().getDescription()}"></h3>
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
                                 <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
@@ -92,66 +24,21 @@
                                 <label for="content">내용:</label>
                                 <textarea class="form-control" rows="5" id="content" name="content"
                                           th:field="*{content}"></textarea>
-                                <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
                             </div>
-<!--                            <div class="mb-3">
-&lt;!&ndash;
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#food_calorieModal">
-                                    음식 칼로리 계산하기
-                                </button>
-&ndash;&gt;
-                                <button type="button" class="btn btn-primary"
-                                        th:onclick="|location.href='@{/food_calorie_calc}'|">
-                                    음식 칼로리 등록하기
-                                </button>
-                            </div>-->
-                            <div class="mb-3 mt-3">
+                            <div class="mb-3">
                                 <label for="img1" class="form-label">사진1:</label>
                                 <input type="file" class="form-control" id="img1" name="imgFiles">
                                 <label for="img2" class="form-label">사진2:</label>
                                 <input type="file" class="form-control" id="img2" name="imgFiles">
                             </div>
                             <input type="hidden" name="categoryType" th:field="*{categoryType}">
+                            <input type="hidden" name="userId" value="33">
                             <input type="hidden" name="viewCnt" value="0">
                             <input type="hidden" name="goodCnt" value="0">
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">확인</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">등록</button>
+                            <button type="button" class="btn btn-danger"
+                                    th:onclick="|location.href='@{/board_diary_list}'|">취소</button>
                         </form> <!-- End 가입폼 -->
-
-                        <!-- The Modal -->
-                        <div class="modal" id="food_calorieModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">음식 칼로리</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-
-                                    <!-- Modal body -->
-                                    <div class="modal-body"> <!-- 음식칼로리 검색 모달창 -->
-                                        <form>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="검색어 입력"
-                                                       id="keywordInput" name="keywordInput">
-                                                <div class="invalid-feedback">검색어를 입력해주세요.</div>
-                                                <button type="button" class="btn btn-dark"
-                                                        id="searchFoodBtn" name="searchFoodBtn">검색</button>
-                                            </div>
-                                        </form>
-                                        <p/><p/>
-                                        <div>
-                                            <table class="table table-bordered" id="foodTbl">
-                                            </table>
-                                        </div>
-                                    </div> <!-- End 음시칼로리 모달창 -->
-                                </div>
-                            </div>
-                        </div> <!-- End Modal -->
-
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
                         <div class="trending">

@@ -52,13 +52,13 @@ public class SecurityConfig {
 
             //모든권한
             auth.antMatchers("/","/user_login", "/user_login_error", "/user_join","/board_list", "/board_diary_list",
-                    "/machine_detect", "/board_notify_list", "/board_qna_list", "/board_tip_list",
+                    "/machine_detect", "/board_notify_list", "/board_qna_list", "/board_tip_list", "/board_free_list",
                     "/password_change", "/user_entry_error", "/user_regDupNickname" ,"/user_regDupEmail").permitAll();
 
             //유저,관리자 권한
             auth.antMatchers("/user_logout", "/board_detail*", "/bookmark_*", "/good_on*", "/mybmi_calc*",
                     "/food_calorie_*", "/myfood_calorie_*", "/exercise_calorie_*",
-                    "/comment_*", "/reply_*", "/board_diary_*", "/board_notify_*",
+                    "/comment_*", "/reply_*", "/board_diary_*", "/board_notify_*", "/board_free_*",
                     "/board_qna_*", "/board_tip_*" ,"/user_*", "/contact_*", "/machine_about", "/machine_select_list*",
                     "/machine_info_detail*","/machine_usage_detail*").hasAnyRole("USER", "ADMIN");
             //관리자 권한

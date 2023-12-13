@@ -15,6 +15,7 @@
                         <form th:action="@{/board_diary_modify}" method="post"
                               enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 수정폼 -->
                             <input type="hidden" name="id" th:field="*{id}">
+                            <h3 class="text-center">[운동+식단일기] 글 수정</h3>
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
                                 <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
@@ -35,17 +36,15 @@
                                 <input type="file" class="form-control" id="img2" name="imgFiles">
                             </div>
 
-                            <input type="hidden" name="categoryType" th:field="*{categoryType}">
+                            <input type="hidden" name="categoryId" th:field="*{categoryType}">
                             <input type="hidden" name="userId" th:field="*{userId}">
                             <input type="hidden" name="imgFileList" th:field="*{imgFileList}">
                             <input type="hidden" name="viewCnt" th:field="*{viewCnt}">
                             <input type="hidden" name="goodCnt" th:field="*{goodCnt}">
 
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">수정</button>
-                                <button type="button" class="btn btn-secondary"
-                                        th:onclick="|location.href='@{/board_diary_list}'|">취소</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">수정</button>
+                            <button type="button" class="btn btn-danger"
+                                    th:onclick="|location.href='@{/board_diary_list}'|">취소</button>
                         </form> <!-- End 수정폼 -->
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">
