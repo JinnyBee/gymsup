@@ -100,7 +100,7 @@
 
                                     <!--th:onclick="|location.href='@{/board_notify_delete(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"-->
                                     <button class="btn btn-outline-danger" type="button"
-                                            th:onclick="boardDeleteConfirm([[${boardDTO.id}]], [[${boardDTO.userId}]], 'notify')"
+                                            th:onclick="boardDeleteConfirm([[${boardDTO.id}]], [[${boardDTO.userId}]], [[${data.userId}]], 'notify')"
                                             th:if="${boardDTO.userId}==${loginUserId}">
                                         삭제
                                     </button>
@@ -240,7 +240,7 @@
                                                     <!-- 답글 삭제 버튼 -->
                                                     <!--th:onclick="|location.href='@{/reply_delete(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_NOTIFY')}'|"-->
                                                     <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                            th:onclick="replyDeleteConfirm( [[${boardDTO.id}]], [[${replyDTO.id}]], 'BTYPE_NOTIFY')"
+                                                            th:onclick="replyDeleteConfirm( [[${boardDTO.id}]], [[${replyDTO.id}]], [[${replyDTO.userId}]], 'BTYPE_NOTIFY')"
                                                             th:if="${replyDTO.userId}==${loginUserId}">삭제
                                                     </button>
                                                     <div class="mt-3" th:text="${replyDTO.reply}"></div>

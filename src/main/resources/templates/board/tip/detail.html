@@ -162,7 +162,7 @@
                                         </button>
                                         <!--th:onclick="|location.href='@{/comment_delete(bid=${boardDTO.id}, id=${data.id}, categoryType='BTYPE_TIP')}'|"-->
                                         <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                th:onclick="commentDeleteConfirm( [[${boardDTO.id}]], [[${data.id}]], 'BTYPE_TIP')"
+                                                th:onclick="commentDeleteConfirm( [[${boardDTO.id}]], [[${data.id}]], [[${data.userId}]], 'BTYPE_TIP')"
                                                 th:if="${data.userId}==${loginUserId}">삭제
                                         </button>
                                         <!--관리자 댓글 삭제-->
@@ -250,7 +250,7 @@
                                                     <!-- 답글 삭제 버튼 -->
                                                     <!--th:onclick="|location.href='@{/reply_delete(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_TIP')}'|"-->
                                                     <button class="btn btn-outline-danger btn-sm text-right" type="button"
-                                                            th:onclick="replyDeleteConfirm( [[${boardDTO.id}]], [[${replyDTO.id}]], 'BTYPE_TIP')"
+                                                            th:onclick="replyDeleteConfirm( [[${boardDTO.id}]], [[${replyDTO.id}]], [[${replyDTO.userId}]], 'BTYPE_TIP')"
                                                             th:if="${replyDTO.userId}==${loginUserId}">삭제
                                                     </button>
                                                     <!--관리자 답글 삭제-->

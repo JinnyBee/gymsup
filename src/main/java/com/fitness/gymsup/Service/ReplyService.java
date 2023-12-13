@@ -133,4 +133,31 @@ public class ReplyService {
 
         replyRepository.deleteAllByUserEntity(writer);
     }
+
+    //게시판유저아이디와 로그인한 유저 아이디 비교
+    public boolean userConfirm(Integer id,
+                               HttpServletRequest request,
+                               Principal principal) throws Exception {
+
+        ReplyEntity replyEntity = replyRepository.findById(id).orElseThrow();
+
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+
+        boolean userLoginConfirm;
+        int replyUserId = replyEntity.getUserEntity().getId();
+        int sessionUserId = user.getId();
+
+        if(replyUserId == sessionUserId) {
+            userLoginConfirm = true;
+        } else {
+            userLoginConfirm= false;
+        }
+
+        return userLoginConfirm;
+    }
 }
