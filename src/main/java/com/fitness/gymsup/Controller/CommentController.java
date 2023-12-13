@@ -74,12 +74,15 @@ public class CommentController extends BoardBaseController {
     //댓글 수정 처리
     @PostMapping("/comment_modify")
     public String modifyCommentProc(CommentDTO commentDTO,
+                                    Integer id,
                                     String categoryType,
                                     HttpServletRequest request,
                                     Principal principal,
                                     RedirectAttributes redirectAttributes) throws Exception{
-        log.info(commentDTO);
-        log.info(categoryType);
+        if( id == null ||
+                !commentService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
 
         commentService.modify(commentDTO, request, principal);
         redirectAttributes.addAttribute("id", commentDTO.getBoardId());
@@ -89,10 +92,17 @@ public class CommentController extends BoardBaseController {
 
     //댓글 삭제 처리 (bid: 부모 게시글 id, id: 댓글 id)
     @GetMapping("/comment_delete")
-    public String deleteCommentProc(int bid,
-                                    int id,
+    public String deleteCommentProc(Integer bid,
+                                    Integer id,
+                                    Integer commentUserId,
                                     String categoryType,
+                                    HttpServletRequest request,
+                                    Principal principal,
                                     RedirectAttributes redirectAttributes) throws Exception {
+        if( commentUserId == null ||
+                !commentService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
 
         commentService.delete(id);
         redirectAttributes.addAttribute("id", bid);
@@ -145,10 +155,17 @@ public class CommentController extends BoardBaseController {
 
     //답글 삭제 처리
     @GetMapping("/reply_delete")
-    public String deleteReplyProc(int bid,
-                                  int id,
+    public String deleteReplyProc(Integer bid,
+                                  Integer id,
+                                  Integer replyUserId,
                                   String categoryType,
+                                  HttpServletRequest request,
+                                  Principal principal,
                                   RedirectAttributes redirectAttributes) throws Exception {
+        if( replyUserId == null ||
+                !replyService.userConfirm(id, request, principal) ) {
+            return "redirect:/";
+        }
 
         replyService.delete(id);
         redirectAttributes.addAttribute("id", bid);
