@@ -20,9 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +31,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class NotifyBoardController {
+public class NotifyBoardController extends BoardBaseController {
     //S3 이미지 정보
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
@@ -46,6 +44,11 @@ public class NotifyBoardController {
     private final CommentService commentService;
 
     @GetMapping("/board_notify_list")
+    public String listForm(String Url) throws Exception {
+        return "redirect:" + Url;
+    }
+
+    /*@GetMapping("/board_notify_list")
     public String listForm(@PageableDefault(page = 1) Pageable pageable,
                            @RequestParam(value = "type", defaultValue = "") String type,
                            @RequestParam(value = "keyword", defaultValue = "") String keyword,
@@ -100,6 +103,7 @@ public class NotifyBoardController {
 
         return "board/notify/list";
     }
+     */
 
     @GetMapping("/board_notify_register")
     public String registerForm(Model model) throws Exception {
@@ -148,6 +152,8 @@ public class NotifyBoardController {
         //댓글목록 조회
         List<CommentDTO> commentDTOS = commentService.list(id);
         boardDTO.setCommentCount(commentDTOS.size());
+        //이전 페이지 Url 가져오는 코드
+        String referer = request.getHeader("Referer");
 
         log.info(boardDTO);
         log.info(commentDTOS);
@@ -162,8 +168,17 @@ public class NotifyBoardController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
+        model.addAttribute("Url", referer);
 
         return "board/notify/detail";
+    }
+    @RequestMapping(value = "/test_10", method = RequestMethod.GET)
+    public String rateHandler(HttpServletRequest request,
+                              Model model) {
+        //your controller code
+
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
     @GetMapping("/board_notify_reload")
