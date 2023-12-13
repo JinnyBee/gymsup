@@ -144,7 +144,12 @@ public class DiaryBoardController {
     public String detailForm(Integer id,
                              HttpServletRequest request,
                              Principal principal,
+                             Integer page,
                              Model model) throws Exception {
+
+        if(page == null){
+            page = 1;
+        }
 
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
@@ -166,6 +171,7 @@ public class DiaryBoardController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
+        model.addAttribute("page",page);
 
         return "board/diary/detail";
     }

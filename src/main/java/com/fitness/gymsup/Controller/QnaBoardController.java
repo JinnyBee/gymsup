@@ -139,8 +139,12 @@ public class QnaBoardController {
     public String detailForm(Integer id,
                              HttpServletRequest request,
                              Principal principal,
+                             Integer page,
                              Model model) throws Exception {
 
+        if(page == null){
+            page = 1;
+        }
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
@@ -165,6 +169,7 @@ public class QnaBoardController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
+        model.addAttribute("page",page);
 
         return "board/qna/detail";
     }

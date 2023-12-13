@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -141,8 +142,12 @@ public class TipBoardController {
     public String detailForm(Integer id,
                              HttpServletRequest request,
                              Principal principal,
+                             Integer page,
                              Model model) throws Exception {
 
+        if(page == null){
+            page = 1;
+        }
         //로그인 user id 조회
         Integer loginUserId = boardService.userId(request, principal);
         //해당게시글 상세조회
@@ -164,7 +169,8 @@ public class TipBoardController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
-
+        model.addAttribute("page",page);
+        //삭제 후 전 페이지로 이동
         return "board/tip/detail";
     }
 

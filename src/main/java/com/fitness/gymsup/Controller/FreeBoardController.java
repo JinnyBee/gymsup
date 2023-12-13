@@ -135,6 +135,7 @@ public class FreeBoardController {
     public String detailForm(Integer id,
                              HttpServletRequest request,
                              Principal principal,
+                             int page,
                              Model model) throws Exception {
 
         //로그인 user id 조회
@@ -158,6 +159,7 @@ public class FreeBoardController {
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
+        model.addAttribute("page",page);
 
         return "board/free/detail";
     }
