@@ -165,7 +165,7 @@ public class UserController {
             String errorMessage = request.getAttribute("errorMessage").toString();
             model.addAttribute("errorMessage", errorMessage);
         }else{
-            model.addAttribute("errorMessage","계정이 정지되었습니다.");
+            model.addAttribute("errorMessage","계정이 정지되었습니다.\\n자세한 사항은 관리자에게 문의하세요.\\nOOOOO@gmail.com");
         }
         return "user/login";
     }

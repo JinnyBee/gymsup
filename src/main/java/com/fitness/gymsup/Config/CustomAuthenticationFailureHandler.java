@@ -17,7 +17,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)throws IOException, ServletException {
 
         if (exception instanceof LockedException){
-            request.setAttribute("errorMessage","계정이 정지되었습니다.");
+            request.setAttribute("errorMessage","계정이 정지되었습니다.\\n자세한 사항은 관리자에게 문의하세요.\\nOOOOO@gmail.com");
         }else {
             request.setAttribute("errorMessage","아이디나 비밀번호가 다릅니다.");
         }
