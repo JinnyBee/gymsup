@@ -2,9 +2,10 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content" style="height: auto;min-height: 1100px">
     <main id="main">
         <!-- ======= Search Results ======= -->
         <section id="search-result" class="search-result">
@@ -14,25 +15,95 @@
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
                             <div class="row" style="border-bottom: 2px solid black">
-                                <h2>운동기구 사용방법</h2>
+                                <div class="col-lg-8">
+                                    <h2>운동기구 사용방법</h2>
+                                </div>
+                                <div class="col-lg-4" style="text-align: right">
+                                    <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_info_detail(id=${machineUsageDTO.machineInfoId})}'|">돌아가기</button>
+                                </div>
                             </div>
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col-lg-12">
-                                    <p style="font-size: 26px; margin-bottom: 0px;" th:text="${machineUsageDTO.title}">제목</p>
+                                    <p style="font-size: 26px;" th:text="${machineUsageDTO.title}">제목</p>
                                 </div>
                             </div>
 
                             <div class="row mb-3 text-start"
                                  style="border-bottom: 1px solid black; border-top: 1px solid black; height: 45px; background-color: #f2f2f2">
-
+                                <div class="col-lg-5 mt-2"> <!-- 글쓴이 닉네임 -->
+                                    <div style="display: inline-block"
+                                         th:text="'기구 이름 : ' + ${machineUsageDTO.machineInfoName}"></div>
+                                </div>
+                                <div class="col-lg-2 mt-2"></div>
+                                <div class="col-lg-3 mt-2 text-end"> <!-- 게시물 작성 날짜 -->
+                                    <div style="display: inline-block"
+                                         th:text="'날짜 : ' + ${#temporals.format(machineUsageDTO.regDate, 'yyyy-MM-dd HH:mm')}"></div>
+                                </div>
+                                <div class="col-lg-2 mt-2 text-end">
+                                    <div style="display: inline-block" th:text="'조회수 : ' + ${machineUsageDTO.viewCnt}"></div>
+                                </div>
                             </div>
 
                             <div class="row mt-3">
                                 <iframe width="800" height="500" th:src="${machineUsageDTO.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             </div>
-                            <div class="mt-3">
+                            <div class="mt-3" style="height: auto; min-height: 200px;border-bottom: 1px solid black">
                                 <span th:text="${machineUsageDTO.content}"></span>
                             </div>
+                            <div class="mt-1">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%">종류</th>
+                                        <th style="width: 30%;">썸네일</th>
+                                        <th style="width: 30%;">제목</th>
+                                        <th style="width: 10%;">조회수</th>
+                                        <th style="width: 20%;" sec:authorize="hasRole('ADMIN')">수정&삭제</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="table-warning" th:each="data:${machineUsageDTOS}">
+                                        <td th:if="${machineUsageDTO.id}==${data.id}">
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==1">폼롤러</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==2">덤벨</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==3">케틀벨</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==4">바벨</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==5">숄더프레스</span>
+                                        </td>
+                                        <td th:if="${machineUsageDTO.id}==${data.id}">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
+                                                 alt="" height="125px" width="210px"></td>
+                                        <td th:if="${machineUsageDTO.id}==${data.id}">
+                                            <a th:text="${data.title}"></a></td>
+                                        <td th:if="${machineUsageDTO.id}==${data.id}" th:text="${data.viewCnt}">john@example.com</td>
+                                        <td th:if="${machineUsageDTO.id}==${data.id}" sec:authorize="hasRole('ADMIN')">
+                                            <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>
+                                            <button class="btn btn-danger" type="button" th:onclick="|location.href='@{/machine_usage_delete(uid=${data.id}, id=${data.machineInfoId})}'|">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="data:${machineUsageDTOS}">
+                                        <td th:unless="${machineUsageDTO.id}==${data.id}">
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==1">폼롤러</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==2">덤벨</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==3">케틀벨</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==4">바벨</span>
+                                            <span class="badge bg-dark" th:if="${data.machineInfoId}==5">숄더프레스</span>
+                                        </td>
+                                        <td th:unless="${machineUsageDTO.id}==${data.id}">
+                                            <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
+                                                 alt="" height="125px" width="210px"></td>
+                                        <td th:unless="${machineUsageDTO.id}==${data.id}">
+                                            <a th:href="@{/machine_usage_detail(id=${data.id}, infoId=${data.machineInfoId})}"  th:text="${data.title}"></a></td>
+                                        <td th:unless="${machineUsageDTO.id}==${data.id}" th:text="${data.viewCnt}">john@example.com</td>
+                                        <td th:unless="${machineUsageDTO.id}==${data.id}" sec:authorize="hasRole('ADMIN')">
+                                            <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>
+                                            <button class="btn btn-danger" type="button" th:onclick="|location.href='@{/machine_usage_delete(uid=${data.id}, id=${data.machineInfoId})}'|">삭제</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div> <!-- End 작업공간 -->
                     <div class="col-md-2">

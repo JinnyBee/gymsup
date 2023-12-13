@@ -470,6 +470,7 @@ public class BoardService {
         return user.getId();
     }
 
+    //회원 탈퇴시 회원의 모든 게시글 삭제
     public void userBoardDelete(HttpServletRequest request,
                                 Principal principal) throws Exception {
 

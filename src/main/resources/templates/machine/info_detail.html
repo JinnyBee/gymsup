@@ -14,13 +14,21 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <div class="container mt-3">
-                            <h2>
-                                운동기구 사용방법
-                                <span sec:authorize="hasRole('ADMIN')">
-                                    <button class="btn btn-outline-dark" type="button"
-                                            th:onclick="|location.href='@{/machine_info_modify(id=${machineInfoDTO.id})}'|">수정</button>
-                                </span>
-                            </h2>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h2>
+                                        운동기구 사용방법
+                                        <span sec:authorize="hasRole('ADMIN')">
+                                        <button class="btn btn-outline-dark" type="button"
+                                                th:onclick="|location.href='@{/machine_info_modify(id=${machineInfoDTO.id})}'|">수정</button>
+                                        </span>
+                                    </h2>
+                                </div>
+                                <div class="col-lg-3" style="text-align: right">
+                                    <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_about}'|">돌아가기</button>
+                                </div>
+                            </div>
+
                             <hr>
                             <div class="container">
                                 <div class="row">
@@ -54,12 +62,14 @@
                                         <tr th:each="data:${machineUsageDTOS}">
                                             <td>
                                                 <span class="badge bg-dark" th:if="${data.machineInfoId}==1">폼롤러</span>
-                                                <span class="badge bg-success" th:if="${data.machineInfoId}==2">덤벨</span>
-                                                <span class="badge bg-info" th:if="${data.machineInfoId}==3">케틀벨</span>
+                                                <span class="badge bg-dark" th:if="${data.machineInfoId}==2">덤벨</span>
+                                                <span class="badge bg-dark" th:if="${data.machineInfoId}==3">케틀벨</span>
+                                                <span class="badge bg-dark" th:if="${data.machineInfoId}==4">바벨</span>
+                                                <span class="badge bg-dark" th:if="${data.machineInfoId}==5">숄더프레스</span>
                                             </td>
                                             <td><img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
                                                     alt="" height="125px" width="210px"></td>
-                                            <td><a th:href="@{/machine_usage_detail(id=${data.id})}"  th:text="${data.title}"></a></td>
+                                            <td><a th:href="@{/machine_usage_detail(id=${data.id}, infoId=${data.machineInfoId})}"  th:text="${data.title}"></a></td>
                                             <td th:text="${data.viewCnt}">john@example.com</td>
                                             <td sec:authorize="hasRole('ADMIN')">
                                                 <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/machine_usage_modify(id=${data.id})}'|">수정</button>
@@ -81,6 +91,46 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+                <div class="row" style="text-align: center">
+                    <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
+                        <!--시작 페이지-->
+                        <div class="start" th:unless="${startPage==1}">
+                            <a th:href="@{/machine_info_detail(page=1)}">
+                                <<
+                            </a>
+                        </div>
+                        <!--이전 페이지-->
+                        <div class="prev" th:unless="${currentPage==1}">
+                            <a th:href="@{/machine_info_detail(page=${prevPage})}">
+                                <
+                            </a>
+                        </div>
+                        <span th:each="page:${#numbers.sequence(startPage, endPage)}">
+                                            <!--현재페이지 아닐시-->
+                                            <div th:unless="${page==currentPage}">
+                                                <a th:href="@{/machine_info_detail(page=${page})}">
+                                                    [[${page}]]
+                                                </a>
+                                            </div>
+                            <!--현재 페이지-->
+                                            <div class="active" th:if="${page==currentPage}">
+                                                [[${page}]]
+                                            </div>
+                                        </span>
+                        <!--다음페이지-->
+                        <div class="next" th:unless="${currentPage==lastPage}">
+                            <a th:href="@{/machine_info_detail(page=${nextPage})}">
+                                >
+                            </a>
+                        </div>
+                        <!--마지막 페이지-->
+                        <div class="last" th:unless="${endPage==lastPage}">
+                            <a th:href="@{/machine_info_detail(page=${lastPage})}">
+                                >>
+                            </a>
+                        </div>
+                    </div><!-- End Paging -->
                 </div>
             </div>
         </section> <!-- End Search Result -->
