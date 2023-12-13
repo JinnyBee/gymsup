@@ -2,7 +2,8 @@
 <html lang="en"
       layout:decorate="~{layouts/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <div layout:fragment="content">
     <main id="main">
@@ -19,11 +20,12 @@
                                 <thead>
                                 <tr style="text-align: center">
                                     <th style="width: 15%">게시판</th>
-                                    <th style="width: 30%">제목</th>
-                                    <th style="width: 20%">작성자</th>
+                                    <th style="width: 25%">제목</th>
+                                    <th style="width: 15%">작성자</th>
                                     <th style="width: 10%">조회수</th>
                                     <th style="width: 10%">추천수</th>
                                     <th style="width: 15%">작성일</th>
+                                    <th style="width: 10%" sec:authorize="hasRole('ADMIN')">삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -37,17 +39,22 @@
                                     <td style="text-align: center" th:text="${data.viewCnt}">100</td>
                                     <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.displayRegDate}">2023.11.17</td>
+                                    <td sec:authorize="hasRole('ADMIN')"></td>
                                 </tr>
                                 <tr th:each="data:${boardDTOS}"> <!--th:each="data:${DTO}"-->
                                     <td th:text="${data.getCategoryType().getDescription()}"></td>
                                     <td class="align-text-top">
-                                        <a class="d-inline-block text-truncate" th:href="@{/board_free_detail(id=${data.id})}" th:text="${data.title}"  style="max-width: 180px;"></a>&nbsp;&nbsp;
+                                        <a class="d-inline-block text-truncate" th:href="@{/board_free_detail(id=${data.id}, page=${currentPage})}" th:text="${data.title}"  style="max-width: 180px;"></a>&nbsp;&nbsp;
                                         <span class="d-inline-block text-truncate" style=" color: #ff4930" th:text="${data.commentCount}">9</span>
                                     </td>
                                     <td class="align-text-top text-center"><span class="d-inline-block text-truncate" th:text="${data.userNickname}" style="max-width: 100px;">홍길동</span></td>
                                     <td style="text-align: center" th:text="${data.viewCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.displayRegDate}">2021-11-29</td>
+                                    <!--관리자 삭제-->
+                                    <td sec:authorize="hasRole('ADMIN')" style="text-align: center">
+                                        <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/admin_free_delete(id=${data.id}, page=${currentPage})}'|">삭제</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table> <!-- 테이블 끝 -->

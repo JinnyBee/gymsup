@@ -10,6 +10,9 @@ import com.fitness.gymsup.Constant.UserRole;
 import com.fitness.gymsup.DTO.UserDTO;
 import com.fitness.gymsup.Entity.UserEntity;
 import com.fitness.gymsup.Service.BasicUserService;
+import com.fitness.gymsup.Service.BoardService;
+import com.fitness.gymsup.Service.CommentService;
+import com.fitness.gymsup.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,9 +31,12 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Slf4j
 
-public class AdminController {
+public class AdminController extends BoardBaseController {
 
     private final BasicUserService basicUserService;
+    private final BoardService boardService;
+    private final CommentService commentService;
+    private final ReplyService replyService;
 
     //관리자페이지 - 관리자 정보 상세보기
     @GetMapping("/admin_detail")
@@ -186,5 +192,93 @@ public class AdminController {
         redirectAttributes.addAttribute("id",id);
 
         return "redirect:/admin_user_modify";
+    }
+
+    //전체 게시글 삭제
+    @GetMapping("/admin_board_delete")
+    public String boardDeleteProc(Integer id,
+                                Integer page,
+                                RedirectAttributes redirectAttributes)throws Exception{
+
+        boardService.delete(id);
+        redirectAttributes.addAttribute("page",page);
+
+        return "redirect:/board_list";
+    }
+
+    //팁 게시글 삭제
+    @GetMapping("/admin_tip_delete")
+    public String tipDeleteProc(Integer id,
+                                Integer page,
+                                RedirectAttributes redirectAttributes)throws Exception{
+
+        boardService.delete(id);
+        redirectAttributes.addAttribute("page",page);
+
+        return "redirect:/board_tip_list";
+    }
+
+    //자유게시판 삭제
+    @GetMapping("/admin_free_delete")
+    public String freeDeleteProc(Integer id,
+                                 Integer page,
+                                 RedirectAttributes redirectAttributes) throws Exception{
+
+        boardService.delete(id);
+        redirectAttributes.addAttribute("page",page);
+
+        return "redirect:/board_free_list";
+    }
+
+    //관리자 일기 삭제
+    @GetMapping("/admin_diary_delete")
+    public String diaryDeleteProc(Integer id,
+                                  Integer page,
+                                  RedirectAttributes redirectAttributes)throws Exception{
+        boardService.delete(id);
+        redirectAttributes.addAttribute("page",page);
+
+        return "redirect:/board_diary_list";
+    }
+
+    //관리자 고민나눔 삭제
+    @GetMapping("/admin_qna_delete")
+    public String qnaDeleteProc(Integer id,
+                                Integer page,
+                                RedirectAttributes redirectAttributes)throws Exception{
+
+        boardService.delete(id);
+        redirectAttributes.addAttribute("page",page);
+
+        return "redirect:/board_qna_list";
+    }
+
+    //공지사항 삭제
+    @GetMapping("/admin_notify_delete")
+    public String notifyDeleteProc(Integer id)throws Exception{
+        boardService.delete(id);
+
+        return "";
+    }
+
+    //댓글 삭제
+    @GetMapping("/admin_comment_delete")
+    public String commentDeleteProc(Integer bid, Integer id, String categoryType, RedirectAttributes redirectAttributes)throws Exception{
+        commentService.delete(id);
+        redirectAttributes.addAttribute("id",bid);
+
+        return "redirect:"+getReloadRedirectUrl(categoryType);
+    }
+
+    //답글 삭제
+    @GetMapping("/admin_reply_delete")
+    public String adminReplyDeleteProc(int bid,
+                                       int id,
+                                       String categoryType,
+                                       RedirectAttributes redirectAttributes)throws Exception{
+        replyService.delete(id);
+        redirectAttributes.addAttribute("id",bid);
+
+        return "redirect:" +getReloadRedirectUrl(categoryType);
     }
 }

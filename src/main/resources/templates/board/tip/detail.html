@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
@@ -93,6 +94,10 @@
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2" style="text-align: right">
+                                    <!--관리자 삭제-->
+                                    <button class="btn btn-outline-danger" type="button"
+                                            th:onclick="|location.href='@{/admin_tip_delete(id=${boardDTO.id},page=${page})}'|"
+                                            sec:authorize="hasRole('ADMIN')">삭제</button>
                                     <button class="btn btn-outline-primary" type="button"
                                             th:onclick="|location.href='@{/board_tip_modify(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
                                             th:if="${boardDTO.userId}==${loginUserId}">
@@ -159,6 +164,12 @@
                                         <button class="btn btn-outline-danger btn-sm text-right" type="button"
                                                 th:onclick="commentDeleteConfirm( [[${boardDTO.id}]], [[${data.id}]], [[${data.userId}]], 'BTYPE_TIP')"
                                                 th:if="${data.userId}==${loginUserId}">삭제
+                                        </button>
+                                        <!--관리자 댓글 삭제-->
+                                        <button class="btn btn-outline-danger btn-sm text-right" type="button"
+                                                th:onclick="|location.href='@{/admin_comment_delete(bid=${boardDTO.id}, id=${data.id}, categoryType='BTYPE_TIP')}'|"
+                                                sec:authorize="hasRole('ADMIN')">
+                                            삭제
                                         </button>
                                         <div class="mt-3" th:text="${data.comment}"></div>
                                         <form th:attr="id='collapseModify'+${data.id}" class="collapse"
@@ -241,6 +252,12 @@
                                                     <button class="btn btn-outline-danger btn-sm text-right" type="button"
                                                             th:onclick="replyDeleteConfirm( [[${boardDTO.id}]], [[${replyDTO.id}]], [[${replyDTO.userId}]], 'BTYPE_TIP')"
                                                             th:if="${replyDTO.userId}==${loginUserId}">삭제
+                                                    </button>
+                                                    <!--관리자 답글 삭제-->
+                                                    <button class="btn btn-outline-danger btn-sm text-right" type="button"
+                                                            th:onclick="|location.href='@{/admin_reply_delete(bid=${boardDTO.id}, id=${replyDTO.id}, categoryType='BTYPE_TIP')}'|"
+                                                            sec:authorize="hasRole('ADMIN')">
+                                                        삭제
                                                     </button>
                                                     <div class="mt-3" th:text="${replyDTO.reply}"></div>
                                                     <form th:attr="id='collapseReply'+${replyDTO.id}" class="collapse"

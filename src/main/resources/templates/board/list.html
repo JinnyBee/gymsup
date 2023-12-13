@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
 <body>
 <div layout:fragment="content">
@@ -19,11 +20,12 @@
                                 <thead>
                                 <tr style="text-align: center">
                                     <th style="width: 15%">게시판</th>
-                                    <th style="width: 30%">제목</th>
-                                    <th style="width: 20%">작성자</th>
+                                    <th style="width: 25%">제목</th>
+                                    <th style="width: 15%">작성자</th>
                                     <th style="width: 10%">조회수</th>
                                     <th style="width: 10%">추천수</th>
                                     <th style="width: 15%">작성일</th>
+                                    <th style="width: 10%" sec:authorize="hasRole('ADMIN')">삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -37,6 +39,7 @@
                                     <td style="text-align: center" th:text="${data.viewCnt}">100</td>
                                     <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.displayRegDate}">2023.11.17</td>
+                                    <td sec:authorize="hasRole('ADMIN')"></td>
                                 </tr>
                                 <tr th:each="data:${boardDTOS}">
                                     <td th:text="${data.getCategoryType().getDescription()}">[운동+식단 일기]</td>
@@ -50,6 +53,10 @@
                                     <td style="text-align: center" th:text="${data.viewCnt}">100</td>
                                     <td style="text-align: center" th:text="${data.goodCnt}">21</td>
                                     <td style="text-align: center" th:text="${data.displayRegDate}">2023.11.17</td>
+                                    <!--관리자 삭제-->
+                                    <td sec:authorize="hasRole('ADMIN')" style="text-align: center">
+                                        <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/admin_board_delete(id=${data.id}, page=${currentPage})}'|">삭제</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
