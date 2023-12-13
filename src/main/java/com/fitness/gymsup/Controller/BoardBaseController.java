@@ -21,6 +21,8 @@ public abstract class BoardBaseController {
             redirectUrl = "/board_diary_detail";
         } else if (categoryType.equals(BoardCategoryType.BTYPE_QNA.name())) {
             redirectUrl = "/board_qna_detail";
+        } else if (categoryType.equals(BoardCategoryType.BTYPE_FREE.name())) {
+            redirectUrl = "/board_free_detail";
         } else {
             redirectUrl = "/";
         }
