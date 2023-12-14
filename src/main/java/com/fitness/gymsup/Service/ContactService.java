@@ -82,7 +82,7 @@ public class ContactService {
     public Page<ContactDTO> contactList(Pageable page) throws Exception {
 
         int curPage = page.getPageNumber()-1;
-        int pageLimit = 5;
+        int pageLimit = 10;
 
         Pageable pageable = PageRequest.of(curPage, pageLimit,
                 Sort.by(Sort.Direction.DESC, "id"));

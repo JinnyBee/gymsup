@@ -48,96 +48,6 @@ public class NotifyBoardController extends BoardBaseController {
         return "redirect:" + Url;
     }
 
-    /*@GetMapping("/board_notify_list")
-    public String listForm(@PageableDefault(page = 1) Pageable pageable,
-                           @RequestParam(value = "type", defaultValue = "") String type,
-                           @RequestParam(value = "keyword", defaultValue = "") String keyword,
-                           Model model) throws Exception {
-
-        Page<BoardDTO> boardDTOS = boardService.list(pageable, BoardCategoryType.BTYPE_NOTIFY, type, keyword);
-
-        int blockLimit = 5;
-        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
-
-        if (boardDTOS.isEmpty()) {
-            startPage = 0;
-            endPage = 0;
-            prevPage = 0;
-            currentPage = 0;
-            nextPage = 0;
-            lastPage = 0;
-        } else {
-            startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
-            //endPage = Math.min(startPage+blockLimit-1, boardDTOS.getTotalPages());
-            endPage = ((startPage + blockLimit - 1) < boardDTOS.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOS.getTotalPages();
-
-            prevPage = boardDTOS.getNumber();
-            currentPage = boardDTOS.getNumber() + 1;
-            nextPage = boardDTOS.getNumber() + 2;
-            lastPage = boardDTOS.getTotalPages();
-        }
-
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("prevPage", prevPage);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("lastPage", lastPage);
-
-        log.info("getTotalPages : " + boardDTOS.getTotalPages());
-        log.info("startPage : " + startPage);
-        log.info("endPage : " + endPage);
-        log.info("prevPage : " + prevPage);
-        log.info("currentPage : " + currentPage);
-        log.info("nextPage : " + nextPage);
-        log.info("lastPage : " + lastPage);
-
-        model.addAttribute("categoryTypeDesc", BoardCategoryType.BTYPE_NOTIFY.getDescription());
-        model.addAttribute("type", type);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("boardDTOS", boardDTOS);
-
-        for (BoardDTO dto : boardDTOS) {
-            log.info(dto);
-        }
-
-        return "board/notify/list";
-    }
-     */
-
-    @GetMapping("/board_notify_register")
-    public String registerForm(Model model) throws Exception {
-
-        BoardDTO boardDTO = new BoardDTO();
-
-        boardDTO.setCategoryType(BoardCategoryType.BTYPE_NOTIFY);
-        log.info(boardDTO.getCategoryType().name());
-        log.info(boardDTO.getCategoryType().getDescription());
-
-        model.addAttribute("boardDTO", boardDTO);
-
-        return "board/notify/register";
-    }
-
-    @PostMapping("/board_notify_register")
-    public String registerProc(@Valid BoardDTO boardDTO,
-                               BindingResult bindingResult,
-                               List<MultipartFile> imgFiles,
-                               Principal principal,
-                               HttpServletRequest request,
-                               Model model) throws Exception {
-
-        log.info(boardDTO.getCategoryType().name());
-        for (MultipartFile imgFile : imgFiles) {
-            log.info(imgFile);
-        }
-        if (bindingResult.hasErrors()) {
-            return "board/tip/register";
-        }
-        boardService.register(boardDTO, imgFiles, request, principal);
-
-        return "redirect:/board_notify_list";
-    }
 
     @GetMapping("/board_notify_detail")
     public String detailForm(Integer id,
@@ -172,14 +82,6 @@ public class NotifyBoardController extends BoardBaseController {
 
         return "board/notify/detail";
     }
-    @RequestMapping(value = "/test_10", method = RequestMethod.GET)
-    public String rateHandler(HttpServletRequest request,
-                              Model model) {
-        //your controller code
-
-        String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
-    }
 
     @GetMapping("/board_notify_reload")
     public String reloadForm(Integer id,
@@ -208,41 +110,7 @@ public class NotifyBoardController extends BoardBaseController {
         return "board/notify/detail";
     }
 
-    @GetMapping("/board_notify_modify")
-    public String modifyForm(Integer id,
-                             Integer boardUserId,
-                             HttpServletRequest request,
-                             Principal principal,
-                             Model model) throws Exception {
 
-        if(boardUserId != commentService.userId(request, principal) ) {
-            return "redirect:/";
-        }
-
-        BoardDTO boardDTO = boardService.detail(id, false, request, principal);
-
-        model.addAttribute("boardDTO", boardDTO);
-        model.addAttribute("bucket", bucket);
-        model.addAttribute("region", region);
-        model.addAttribute("folder", folder);
-
-        return "board/notify/modify";
-    }
-
-    @PostMapping("/board_notify_modify")
-    public String modifyProc(@Valid BoardDTO boardDTO,
-                             BindingResult bindingResult,
-                             List<MultipartFile> imgFiles,
-                             Model model) throws Exception {
-
-        if (bindingResult.hasErrors()) {
-            return "board/notify/modify";
-        }
-
-        boardService.modify(boardDTO, imgFiles);
-
-        return "redirect:/board_notify_list";
-    }
 
     @GetMapping("/board_notify_delete")
     public String deleteProc(Integer id,

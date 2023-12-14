@@ -102,14 +102,14 @@
                         </div>
                         <!--이전 페이지-->
                         <div class="prev" th:unless="${currentPage==1}">
-                            <a th:href="@{/machine_info_detail(page=${prevPage})}">
+                            <a th:href="@{/machine_info_detail(page=${prevPage}, id=${machineInfoDTO.id})}">
                                 <
                             </a>
                         </div>
                         <span th:each="page:${#numbers.sequence(startPage, endPage)}">
                                             <!--현재페이지 아닐시-->
                                             <div th:unless="${page==currentPage}">
-                                                <a th:href="@{/machine_info_detail(page=${page})}">
+                                                <a th:href="@{/machine_info_detail(page=${page},id=${machineInfoDTO.id})}">
                                                     [[${page}]]
                                                 </a>
                                             </div>
@@ -120,13 +120,13 @@
                                         </span>
                         <!--다음페이지-->
                         <div class="next" th:unless="${currentPage==lastPage}">
-                            <a th:href="@{/machine_info_detail(page=${nextPage})}">
+                            <a th:href="@{/machine_info_detail(page=${nextPage}, id=${machineInfoDTO.id})}">
                                 >
                             </a>
                         </div>
                         <!--마지막 페이지-->
                         <div class="last" th:unless="${endPage==lastPage}">
-                            <a th:href="@{/machine_info_detail(page=${lastPage})}">
+                            <a th:href="@{/machine_info_detail(page=${lastPage}, id=${machineInfoDTO.id})}">
                                 >>
                             </a>
                         </div>

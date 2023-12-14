@@ -93,7 +93,7 @@
                                 <div class="col-lg-4 mt-2"></div>
                                 <div class="col-lg-4 mt-2" style="text-align: right">
                                     <button class="btn btn-outline-primary" type="button"
-                                            th:onclick="|location.href='@{/board_notify_modify(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"
+                                            th:onclick="|location.href='@{/admin_notify_modify(id=${boardDTO.id})}'|"
                                             th:if="${boardDTO.userId}==${loginUserId}">
                                         수정
                                     </button>

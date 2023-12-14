@@ -22,18 +22,19 @@
                                 <p class="mt-1" style="text-align: center;">내 정보수정</p>
                             </div>
                             <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
-                                 th:onclick="|location.href='@{/admin_contact}'|">
+                                th:onclick="|location.href='@{/admin_notify_list}'|">
                                 <p class="mt-1" style="text-align: center;">회원관리</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                                 th:onclick="|location.href='@{/admin_contact}'|">
                                 <p class="mt-1" style="text-align: center;">문의내역</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey;  border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-right: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
                                  th:onclick="|location.href='@{/admin_machine_list}'|">
                                 <p class="mt-1" style="text-align: center;">운동 기구 관리</p>
                             </div>
-                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-left: none; height: 40px; background-color: #f2f2f2; cursor: pointer"
-                                th:onclick="|location.href='@{/admin_notify_list}'|">
+                            <div class="col-lg-2" style=" border: 2px solid lightgrey; border-bottom: none ;height: 40px;"
+                                 th:onclick="|location.href='@{/admin_notify_list}'|">
                                 <p class="mt-1" style="text-align: center;">공지사항</p>
                             </div>
                             <div class="col-lg-2" style=" border-bottom: 2px solid lightgrey;  height: 40px; ">
@@ -43,30 +44,47 @@
                         </div>
 
                         <div class="row">
-                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 200px">
-
+                            <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 600px">
+                                <p></p>
+                                <div class="row mb-3">
+                                    <div class="col-lg-8">
+                                        <h4 class="mt-2" style="margin-bottom: 0;">
+                                            ※ 공지사항은 최신 5개만 표시됩니다.
+                                        </h4>
+                                    </div>
+                                    <div class="col-lg-4" style="text-align: right">
+                                        <button class="btn btn-dark" type="button"
+                                        th:onclick="|location.href='@{/admin_notify_register}'|">등록하기</button>
+                                    </div>
+                                </div>
                                 <table class="table table-bordered mt-2">
                                     <thead>
                                     <tr>
-                                        <th style="width: 10%;">번호</th>
-                                        <th style="width: 15%;">유저닉네임</th>
-                                        <th style="width: 40%;">문의 제목</th>
-                                        <th style="width: 15%;">답변 여부</th>
-                                        <th style="width: 20%;">상세보기</th>
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>조회수</th>
+                                        <th>등록일</th>
+                                        <th style="text-align: center">수정</th>
+                                        <th style="text-align: center">삭제</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="data:${contactDTOS}">
+                                    <tr th:each="data:${boardDTOS}">
                                         <td th:text="${data.id}"></td>
-                                        <td th:text="${data.userNickname}">1</td>
-                                        <td>
-                                            <span class="d-inline-block text-truncate" style="max-width: 250px" th:text="${data.title}"></span>
+                                        <td class="align-text-top">
+                                            <a class="d-inline-block text-truncate" th:href="@{/board_notify_detail(id=${data.id})}" th:text="${data.title}"  style="max-width: 240px;"></a>&nbsp;&nbsp;
+                                            <span class="d-inline-block text-truncate" style=" color: #ff4930" th:text="${data.commentCount}">9</span>
                                         </td>
-                                        <td>
-                                            <span class="badge rounded-pill bg-success" th:if="${data.is_answer}==true">답변 완료</span>
-                                            <span class="badge rounded-pill bg-danger" th:if="${data.is_answer}==false">답변 미완료</span>
+                                        <td style="text-align: center" th:text="${data.viewCnt}">21</td>
+                                        <td th:text="${#temporals.format(data.regDate, 'yyyy-MM-dd HH:mm:ss')}">2023-09-05</td>
+                                        <td style="text-align: center">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                    th:onclick="|location.href='@{/admin_notify_modify(id=${data.id})}'|">수정</button>
                                         </td>
-                                        <td><button type="button" class="btn btn-dark" th:onclick="|location.href='@{/admin_contact_detail(id=${data.id})}'|">상세보기</button></td>
+                                        <td style="text-align: center">
+                                            <button type="button" class="btn btn-outline-danger"
+                                                    th:onclick="|location.href='@{/admin_notify_delete(id=${data.id})}'|">삭제</button>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -76,20 +94,20 @@
                                         <div class="custom-pagination py-4" th:if="${lastPage>0}"><!-- Paging -->
                                             <!--시작 페이지-->
                                             <div class="start" th:unless="${startPage==1}">
-                                                <a th:href="@{/admin_contact(page=1)}">
+                                                <a th:href="@{/admin_notify_list(page=1)}">
                                                     <<
                                                 </a>
                                             </div>
                                             <!--이전 페이지-->
                                             <div class="prev" th:unless="${currentPage==1}">
-                                                <a th:href="@{admin_contact(page=${prevPage})}">
+                                                <a th:href="@{admin_notify_list(page=${prevPage})}">
                                                     <
                                                 </a>
                                             </div>
                                             <span th:each="page:${#numbers.sequence(startPage, endPage)}">
                                             <!--현재페이지 아닐시-->
                                             <div th:unless="${page==currentPage}">
-                                                <a th:href="@{/admin_contact(page=${page})}">
+                                                <a th:href="@{/admin_notify_list(page=${page})}">
                                                     [[${page}]]
                                                 </a>
                                             </div>
@@ -100,13 +118,13 @@
                                         </span>
                                             <!--다음페이지-->
                                             <div class="next" th:unless="${currentPage==lastPage}">
-                                                <a th:href="@{/admin_contact(page=${nextPage})}">
+                                                <a th:href="@{/admin_notify_list(page=${nextPage})}">
                                                     >
                                                 </a>
                                             </div>
                                             <!--마지막 페이지-->
                                             <div class="last" th:unless="${endPage==lastPage}">
-                                                <a th:href="@{/admin_contact(page=${lastPage})}">
+                                                <a th:href="@{/admin_notify_list(page=${lastPage})}">
                                                     >>
                                                 </a>
                                             </div>
@@ -114,7 +132,6 @@
                                     </div>
                                     <div class="col-lg-3"></div>
                                 </div>
-
                             </div>
                         </div>
 
