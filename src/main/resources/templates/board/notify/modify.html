@@ -46,7 +46,7 @@
                         <div class="row">
                             <div style="border: 2px solid lightgrey; border-top: none; height: auto;min-height: 550px">
                                 <div class="mt-4">
-                                    <form th:action="@{/board_notify_modify}" method="post"
+                                    <form th:action="@{/admin_notify_modify}" method="post"
                                           enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 수정폼 -->
                                         <input type="hidden" name="id" th:field="*{id}">
                                         <h3 class="text-center">공지사항 수정</h3>
