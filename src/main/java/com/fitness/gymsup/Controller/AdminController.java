@@ -348,6 +348,7 @@ public class AdminController extends BoardBaseController {
         return "admin/notify_list";
     }
 
+    //관리자 페이지 - 공지사항 수정 폼
     @GetMapping("/admin_notify_modify")
     public String modifyForm(Integer id,
                              HttpServletRequest request,
@@ -365,6 +366,7 @@ public class AdminController extends BoardBaseController {
         return "board/notify/modify";
     }
 
+    //관리자 페이지 - 공지사항 수정
     @PostMapping("/admin_notify_modify")
     public String modifyProc(@Valid BoardDTO boardDTO,
                              BindingResult bindingResult,
