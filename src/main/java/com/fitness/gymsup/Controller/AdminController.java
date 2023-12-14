@@ -194,11 +194,19 @@ public class AdminController extends BoardBaseController {
         return "redirect:/admin_user_modify";
     }
 
-    //전체 게시글 삭제
+    //관리자페이지 - 공지사항 게시글 삭제
+    @GetMapping("/admin_notify_delete")
+    public String notifyDeleteProc(Integer id)throws Exception{
+        boardService.delete(id);
+
+        return "";
+    }
+
+    //전체 게시판 - 게시글 삭제
     @GetMapping("/admin_board_delete")
     public String boardDeleteProc(Integer id,
-                                Integer page,
-                                RedirectAttributes redirectAttributes)throws Exception{
+                                  Integer page,
+                                  RedirectAttributes redirectAttributes)throws Exception{
 
         boardService.delete(id);
         redirectAttributes.addAttribute("page",page);
@@ -206,19 +214,7 @@ public class AdminController extends BoardBaseController {
         return "redirect:/board_list";
     }
 
-    //팁 게시글 삭제
-    @GetMapping("/admin_tip_delete")
-    public String tipDeleteProc(Integer id,
-                                Integer page,
-                                RedirectAttributes redirectAttributes)throws Exception{
-
-        boardService.delete(id);
-        redirectAttributes.addAttribute("page",page);
-
-        return "redirect:/board_tip_list";
-    }
-
-    //자유게시판 삭제
+    //자유 게시판 - 게시글 삭제
     @GetMapping("/admin_free_delete")
     public String freeDeleteProc(Integer id,
                                  Integer page,
@@ -230,7 +226,19 @@ public class AdminController extends BoardBaseController {
         return "redirect:/board_free_list";
     }
 
-    //관리자 일기 삭제
+    //운동 팁 게시판 - 게시글 삭제
+    @GetMapping("/admin_tip_delete")
+    public String tipDeleteProc(Integer id,
+                                Integer page,
+                                RedirectAttributes redirectAttributes)throws Exception{
+
+        boardService.delete(id);
+        redirectAttributes.addAttribute("page",page);
+
+        return "redirect:/board_tip_list";
+    }
+
+    //운동+식단 일기 게시판 - 게시글 삭제
     @GetMapping("/admin_diary_delete")
     public String diaryDeleteProc(Integer id,
                                   Integer page,
@@ -241,7 +249,7 @@ public class AdminController extends BoardBaseController {
         return "redirect:/board_diary_list";
     }
 
-    //관리자 고민나눔 삭제
+    //고민나눔 게시판 - 게시글 삭제
     @GetMapping("/admin_qna_delete")
     public String qnaDeleteProc(Integer id,
                                 Integer page,
@@ -253,17 +261,12 @@ public class AdminController extends BoardBaseController {
         return "redirect:/board_qna_list";
     }
 
-    //공지사항 삭제
-    @GetMapping("/admin_notify_delete")
-    public String notifyDeleteProc(Integer id)throws Exception{
-        boardService.delete(id);
-
-        return "";
-    }
-
     //댓글 삭제
     @GetMapping("/admin_comment_delete")
-    public String commentDeleteProc(Integer bid, Integer id, String categoryType, RedirectAttributes redirectAttributes)throws Exception{
+    public String commentDeleteProc(Integer bid,
+                                    Integer id,
+                                    String categoryType,
+                                    RedirectAttributes redirectAttributes)throws Exception{
         commentService.delete(id);
         redirectAttributes.addAttribute("id",bid);
 
