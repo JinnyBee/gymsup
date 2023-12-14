@@ -90,12 +90,13 @@ public class AllBoardController extends BoardBaseController {
     @GetMapping("/board_detail")
     public String detailForm(Integer id,
                              String categoryType,
+                             Integer page,
                              RedirectAttributes redirectAttributes,
                              Model model) throws Exception {
 
         log.info(categoryType);
         redirectAttributes.addAttribute("id", id);
-
+        redirectAttributes.addAttribute("page",1);
         return "redirect:" + getDetailRedirectUrl(categoryType);
     }
 }
