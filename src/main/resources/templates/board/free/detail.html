@@ -179,6 +179,7 @@
                                             <input type="hidden" name="id" th:value="*{data.id}">
                                             <input type="hidden" name="goodCnt" th:value="*{data.goodCnt}">
                                             <input type="hidden" name="boardId" th:value="*{data.boardId}">
+                                            <input type="hidden" name="commentUserId" th:value="*{data.userId}">
                                             <input type="hidden" name="categoryType" th:value="${boardDTO.categoryType.name()}">
                                             <div class="col-lg-11" style="float: left">
                                             <textarea class="form-control" name="comment" rows="3"
@@ -267,6 +268,7 @@
                                                         <input type="hidden" name="id" th:value="*{replyDTO.id}">
                                                         <input type="hidden" name="commentId" th:value="*{replyDTO.commentId}">
                                                         <input type="hidden" name="boardId" th:value="*{replyDTO.boardId}">
+                                                        <input type="hidden" name="replyUserId" th:value="*{replyDTO.userId}">
                                                         <input type="hidden" name="categoryType"
                                                                th:value="${boardDTO.categoryType.name()}">
                                                         <div class="col-lg-11" style="float: left">

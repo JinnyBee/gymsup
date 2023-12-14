@@ -215,8 +215,7 @@ public class NotifyBoardController extends BoardBaseController {
                              Principal principal,
                              Model model) throws Exception {
 
-        if( boardUserId == null ||
-                !boardService.userConfirm(id, request, principal) ) {
+        if(boardUserId != commentService.userId(request, principal) ) {
             return "redirect:/";
         }
 
@@ -252,8 +251,7 @@ public class NotifyBoardController extends BoardBaseController {
                              Principal principal,
                              Model model) throws Exception {
 
-        if( boardUserId == null ||
-                !boardService.userConfirm(id, request, principal) ) {
+        if(boardUserId != commentService.userId(request, principal) ) {
             return "redirect:/";
         }
         boardService.delete(id);

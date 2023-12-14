@@ -134,7 +134,7 @@ public class ReplyService {
         replyRepository.deleteAllByUserEntity(writer);
     }
 
-    //게시판유저아이디와 로그인한 유저 아이디 비교
+    /*//게시판유저아이디와 로그인한 유저 아이디 비교
     public boolean userConfirm(Integer id,
                                HttpServletRequest request,
                                Principal principal) throws Exception {
@@ -159,5 +159,18 @@ public class ReplyService {
         }
 
         return userLoginConfirm;
+    }*/
+
+    public Integer userId(HttpServletRequest request,
+                          Principal principal) throws Exception {
+
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+
+        return user.getId();
     }
 }

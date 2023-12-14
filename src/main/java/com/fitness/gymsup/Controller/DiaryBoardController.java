@@ -244,9 +244,7 @@ public class DiaryBoardController {
                              Principal principal,
                              Model model) throws Exception {
 
-        log.info("id: "+ id + ", boardUserId:"+boardUserId);
-        if( boardUserId == null ||
-                boardUserId != boardService.userId(request, principal) ) {
+        if(boardUserId != commentService.userId(request, principal) ) {
             return "redirect:/";
         }
 
@@ -286,8 +284,7 @@ public class DiaryBoardController {
                              Principal principal,
                              Model model) throws Exception {
 
-        if( boardUserId == null ||
-                !boardService.userConfirm(id, request, principal) ) {
+        if(boardUserId != commentService.userId(request, principal) ) {
             return "redirect:/";
         }
 
