@@ -3,6 +3,7 @@ package com.fitness.gymsup.DTO;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,6 +22,7 @@ public class ContactDTO {
     private String title;                           //문의 제목
 
     @NotEmpty(message = "내용을 적어주세요.")
+    @Size(min = 1, max = 5000)
     private String content;                         //문의 내용
 
     private String answer;                          //답변
