@@ -15,7 +15,7 @@
                         <form th:action="@{/board_qna_modify}" method="post"
                               enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 수정폼 -->
                             <input type="hidden" name="id" th:field="*{id}">
-                            <h3 class="text-center">[팁] 글 수정</h3>
+                            <h3 class="text-center">[고민나눔] 글 수정</h3>
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
                                 <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
