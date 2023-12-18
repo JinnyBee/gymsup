@@ -25,7 +25,8 @@ public class BoardDTO {
     private String  title;                      //게시글 제목
 
     @NotEmpty(message = "내용을 적어주세요.")
-    @Size(min = 1, max = 5000)
+    //@Size(min = 1, max = 5000)
+    @Size(min = 1, max = 100000000)
     private String  content;                    //게시글 내용
 
     private List<String> imgFileList;           //게시글 첨부 이미지파일 리스트

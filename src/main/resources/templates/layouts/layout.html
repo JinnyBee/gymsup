@@ -49,12 +49,17 @@
             src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=fmzziwzoty&callback=initMap"></script>
     <!--js 끝-->
 
+    <!-- summernote-lite JS/CSS Files -->
+    <script src="assets/js/summernote/summernote-lite.js"></script>
+    <script src="assets/js/summernote/lang/summernote-ko-KR.js"></script>
+    <link rel="stylesheet" href="assets/css/summernote/summernote-lite.css">
+
     <script type="text/javascript">
         //errorMessage 를 입력 받아서 출력하는 스크립트
-        $(document).ready(function (){
+        $(document).ready(function () {
             var errorMessage = "[[${errorMessage}]]";  //서버로부터 errorMessage값을 받아서
 
-            if (errorMessage != null && errorMessage.length>0){  //전달받은 오류메세지가 있으면
+            if (errorMessage != null && errorMessage.length > 0) {  //전달받은 오류메세지가 있으면
                 alert(errorMessage);    //메세지창
             }
         });

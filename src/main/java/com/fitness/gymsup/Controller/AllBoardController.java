@@ -17,6 +17,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -98,5 +100,20 @@ public class AllBoardController extends BoardBaseController {
         redirectAttributes.addAttribute("id", id);
         redirectAttributes.addAttribute("page",1);
         return "redirect:" + getDetailRedirectUrl(categoryType);
+    }
+
+    @PostMapping("/board_image_upload")
+    public String uploadImageProc(Integer id,
+                                  MultipartFile imgFile,
+                                  HttpServletRequest request,
+                                  Principal principal,
+                                  Model model) throws Exception {
+
+        if(imgFile != null) {
+            log.info(imgFile);
+        }
+        boardService.uploadImage(id, imgFile, request, principal);
+
+        return "redirect:/board_diary_list";
     }
 }

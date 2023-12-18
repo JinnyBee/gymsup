@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -260,7 +261,42 @@ public class BoardService {
         log.info(user.toString());
         log.info(newBoard.toString());
 
-        for(MultipartFile imgFile : imgFiles) {
+        if(imgFiles != null) {
+            for(MultipartFile imgFile : imgFiles) {
+                originalFileName = imgFile.getOriginalFilename();
+
+                //게시글에 첨부된 이미지파일이 존재하면
+                if(originalFileName.length() != 0) {
+                    //이미지파일을 이미지 저장경로에 업로드
+                    newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+                /*newFileName = fileUploader.uploadFile(imgUploadLocation,
+                                                      originalFileName,
+                                                      imgFile.getBytes());*/
+                    log.info("newFileName : "+ newFileName);
+
+                    //board_image 테이블에 이미지파일 정보 저장
+                    BoardImageEntity boardImageEntity = BoardImageEntity.builder()
+                            .boardEntity(newBoard)
+                            .imgFile(newFileName)
+                            .build();
+                    boardImageRepository.save(boardImageEntity);
+
+                    log.info(boardImageEntity);
+                }
+            }
+        }
+    }
+
+    public String uploadImage(@RequestParam("id") Integer id,
+                            @RequestParam("imgFile") MultipartFile imgFile,
+                            HttpServletRequest request,
+                            Principal principal) throws Exception {
+
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow();
+        String originalFileName = "";
+        String newFileName = "";
+
+        if(imgFile != null) {
             originalFileName = imgFile.getOriginalFilename();
 
             //게시글에 첨부된 이미지파일이 존재하면
@@ -274,7 +310,7 @@ public class BoardService {
 
                 //board_image 테이블에 이미지파일 정보 저장
                 BoardImageEntity boardImageEntity = BoardImageEntity.builder()
-                        .boardEntity(newBoard)
+                        .boardEntity(boardEntity)
                         .imgFile(newFileName)
                         .build();
                 boardImageRepository.save(boardImageEntity);
@@ -282,6 +318,7 @@ public class BoardService {
                 log.info(boardImageEntity);
             }
         }
+        return newFileName;
     }
 
     //게시글 상세보기

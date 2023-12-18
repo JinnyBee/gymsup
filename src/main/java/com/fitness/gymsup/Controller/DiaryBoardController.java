@@ -128,10 +128,14 @@ public class DiaryBoardController {
                                Model model) throws Exception {
 
         log.info(boardDTO.getCategoryType().name());
-        for(MultipartFile imgFile : imgFiles) {
-            log.info(imgFile);
+        if(imgFiles != null) {
+            for(MultipartFile imgFile : imgFiles) {
+                log.info(imgFile);
+            }
         }
+        log.info("content's length : " + boardDTO.getContent().length());
         if(bindingResult.hasErrors()) {
+            log.info(bindingResult.getAllErrors());
             return "board/diary/register";
         }
         boardService.register(boardDTO, imgFiles, request, principal);
