@@ -1,8 +1,8 @@
 /*
     파일명 : CalorieService.java
-    기 능 :
-    작성일 : 2023.12.08
-    작성자 :
+    기 능 : 검색한 음식 목록 조회(식품영양 DB OpenAPI 요청 및 응답), 검색한 운동 목록 조회(내부 DB)
+    작성일 : 2023.12.15
+    작성자 : 전현진, 김진영
 */
 package com.fitness.gymsup.Service;
 
@@ -24,22 +24,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +50,7 @@ public class CalorieService {
     @Value("${fooddb.Server.Url}")
     private String fooddbServerUrl;
 
-    public void myBMICalculate(Integer userId, Integer boardId) throws Exception{
-        //bookmark 테이블에서 해당 북마크 삭제
-        //bookmarkRepository.deleteAllByUserIdAndBoardId(userId, boardId);
-    }
-
+    //검색 keyword로 음식 목록 조회 (식품영양 DB OpenAPI 요청 및 응답)
     public List<FoodCalorieDTO> requestToFoodDB(String keyword) throws Exception {
         StringBuffer response = new StringBuffer();
 
@@ -131,6 +118,7 @@ public class CalorieService {
         return foodCalorieDTOS;
     }
 
+    //검색어 keyword로 운동 목록 조회
     public Page<ExerciseDTO> list(int page,
                                   String keyword) throws Exception {
         int pageLimit = 10;

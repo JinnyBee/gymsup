@@ -1,8 +1,8 @@
 /*
     파일명 : CommentService.java
-    기 능 :
+    기 능 : 댓글 전체목록 조회(각 댓글의 답글목록 포함), 댓글 등록/수정/삭제, 유저 댓글 모두 삭제
     작성일 : 2023.12.08
-    작성자 :
+    작성자 : 전현진
 */
 package com.fitness.gymsup.Service;
 
@@ -147,6 +147,39 @@ public class CommentService {
         //comment 테이블에서 해당 댓글 삭제
         commentRepository.deleteById(id);
     }
+
+    //유저 댓글 모두 삭제
+    public void userCommentDelete(HttpServletRequest request,
+                                  Principal principal) throws Exception {
+
+        HttpSession session = request.getSession();
+        UserEntity writer = (UserEntity) session.getAttribute("user");
+        if(writer == null) {
+            String email = principal.getName();
+            writer = userRepository.findByEmail(email);
+        }
+
+        List<CommentEntity> commentEntities = commentRepository.findAllByUserEntity(writer);
+        for(CommentEntity commentEntity : commentEntities){
+            replyRepository.deleteAllByCommentId(commentEntity.getId());
+        }
+
+        commentRepository.deleteAllByUserEntity(writer);
+    }
+
+    public Integer userId(HttpServletRequest request,
+                          Principal principal) throws Exception {
+
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if(user == null) {
+            String email = principal.getName();
+            user = userRepository.findByEmail(email);
+        }
+
+        return user.getId();
+    }
+
     /*//게시판유저아이디와 로그인한 유저 아이디 비교
     public boolean userConfirm(Integer id,
                                HttpServletRequest request,
@@ -173,35 +206,4 @@ public class CommentService {
 
         return userLoginConfirm;
     }*/
-
-    public Integer userId(HttpServletRequest request,
-                          Principal principal) throws Exception {
-
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        if(user == null) {
-            String email = principal.getName();
-            user = userRepository.findByEmail(email);
-        }
-
-        return user.getId();
-    }
-
-    public void userCommentDelete(HttpServletRequest request,
-                                  Principal principal) throws Exception {
-
-        HttpSession session = request.getSession();
-        UserEntity writer = (UserEntity) session.getAttribute("user");
-        if(writer == null) {
-            String email = principal.getName();
-            writer = userRepository.findByEmail(email);
-        }
-
-        List<CommentEntity> commentEntities = commentRepository.findAllByUserEntity(writer);
-        for(CommentEntity commentEntity : commentEntities){
-            replyRepository.deleteAllByCommentId(commentEntity.getId());
-        }
-
-        commentRepository.deleteAllByUserEntity(writer);
-    }
 }

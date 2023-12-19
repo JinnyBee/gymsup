@@ -1,8 +1,8 @@
 /*
     파일명 : CalorieController.java
-    기 능 :
+    기 능 : BMI 계산, 음식칼로리 검색, 운동칼로리 검색
     작성일 : 2023.12.08
-    작성자 :
+    작성자 : 전현진, 김진영
 */
 package com.fitness.gymsup.Controller;
 
@@ -104,73 +104,12 @@ public class CalorieController {
         return "calorie/food_detail";
     }
 
-    //나의 음식칼로리 등록 메인
-    @GetMapping("/myfood_calorie_main")
-    public String myfoodCalorieMain(Model model) throws Exception {
-
-        return "calorie/myfood_main";
-    }
-
-    //나의 음식칼로리 검색 폼
-    @GetMapping("/myfood_calorie_calc")
-    public String myfoodCalorieCalcForm(String foodtype,
-                                        Model model) throws Exception {
-
-        log.info(foodtype);
-        model.addAttribute("foodtype", foodtype);
-
-        return "calorie/myfood_calc";
-    }
-
-    //나의 음식칼로리 검색 처리
-    @GetMapping("/myfood_calorie_search")
-    public String myfoodCalorieSearch(String foodtype,
-                                      String keyword,
-                                      Model model) throws Exception {
-
-        log.info("foodtype : " + foodtype);
-        log.info("keyword : " + keyword);
-        List<FoodCalorieDTO> myfoodCalorieDTOS = calorieService.requestToFoodDB(keyword);
-
-        model.addAttribute("foodtype", foodtype);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("myfoodCalorieDTOS", myfoodCalorieDTOS);
-
-        return "calorie/myfood_list";
-    }
-
-    //나의 음식칼로리 상세보기
-    //@PostMapping("/myfood_calorie_register")
-    @GetMapping("/myfood_calorie_register")
-    public String myfoodCalorieRegister(String foodType,
-                                        String makerName,
-                                        String foodName,
-                                        String calorie,
-                                        Model model) throws Exception {
-
-        log.info(foodType);
-        log.info(makerName);
-        log.info(foodName);
-        log.info(calorie);
-        /*FoodDiaryDTO foodDiaryDTO = new FoodDiaryDTO();
-        foodDiaryDTO.setFoodType(foodType);
-        foodDiaryDTO.setMakerName(makerName);
-        foodDiaryDTO.setFoodName(foodName);
-        foodDiaryDTO.setCalorie(calorie);*/
-
-        //model.addAttribute("foodDiaryDTO", foodDiaryDTO);
-        //log.info(foodCalorieDTO);
-
-        //model.addAttribute("keyword", keyword);
-        //model.addAttribute("foodCalorieDTO", foodCalorieDTO);
-        return "/board_diary_register";
-    }
-
     //운동칼로리 검색 폼 및 결과
     @GetMapping("/exercise_calorie_calc")
     public String exerciseCalorieCalcForm(@RequestParam(value = "page", defaultValue = "1") int page,
                                           @RequestParam(value = "keyword", defaultValue = "")String keyword,
                                           Model model) throws Exception {
+
         Page<ExerciseDTO> exerciseDTOS = calorieService.list(page, keyword);
 
         model.addAttribute("keyword", keyword);                 // 검색 키워드

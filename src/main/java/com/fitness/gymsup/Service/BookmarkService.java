@@ -1,8 +1,8 @@
 /*
     파일명 : BookmarkService.java
-    기 능 :
+    기 능 : 북마크 전체목록 조회, 북마크 설정/해제, 좋아요 설정, 유저의 전체 북마크 삭제
     작성일 : 2023.12.08
-    작성자 :
+    작성자 : 전현진
 */
 package com.fitness.gymsup.Service;
 
@@ -78,7 +78,7 @@ public class BookmarkService {
         return bookmarkDTOS;
     }
 
-    //북마크(북마크|좋아요) 등록
+    //북마크(북마크|좋아요) 등록(설정)
     public void register(Integer boardId,
                          BookmarkType bookmarkType,
                          HttpServletRequest request,
@@ -118,7 +118,7 @@ public class BookmarkService {
         }
     }
 
-    //북마크(북마크) 삭제
+    //북마크(북마크) 삭제(해제)
     public void delete(Integer boardId,
                        BookmarkType bookmarkType,
                        HttpServletRequest request,
@@ -150,6 +150,7 @@ public class BookmarkService {
         }
     }
 
+    //유저의 전체 북마크 삭제 (회원탈퇴 시 사용)
     public void  userBookmarkDelete(HttpServletRequest request,
                                     Principal principal) throws Exception {
 

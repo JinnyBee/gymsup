@@ -1,8 +1,8 @@
 /*
     파일명 : MachineInfoService.java
-    기 능 :
+    기 능 : 운동기구 정보 전체목록, 운동기구 정보 상세보기, 운동기구 정보 찾기, 운동기구 정보 등록/수정
     작성일 : 2023.12.08
-    작성자 :
+    작성자 : 이민호, 전현진
 */
 package com.fitness.gymsup.Service;
 
@@ -42,6 +42,7 @@ public class MachineInfoService {
     private final ModelMapper modelMapper = new ModelMapper();
     private final FileUploader fileUploader;
 
+    //운동기구 정보 전체목록 (각 운동기구에 등록되어 있는 영상법 목록도 포함)
     public List<MachineInfoDTO> list() throws Exception {
 
         List<MachineInfoEntity> machineInfoEntities = machineInfoRepository.findAll();
@@ -81,6 +82,7 @@ public class MachineInfoService {
         return machineInfoDTOS;
     }
 
+    //운동기구 정보 상세보기
     public MachineInfoDTO detail(Integer id) throws Exception {
 
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findById(id).orElseThrow();
@@ -89,7 +91,7 @@ public class MachineInfoService {
         return machineInfoDTO;
     }
 
-    //운동 기구 정보 상세조회 (machine_info 테이블의 result 값 중 플라스크 AI 서버로부터 응답받은 class 값이 있는지 조회)
+    //운동 기구 정보 찾기 (machine_info 테이블의 result 값 중 플라스크 AI 서버로부터 응답받은 class 값이 있는지 조회)
     public MachineInfoDTO find(String className) throws Exception {
 
         MachineInfoEntity machineInfoEntity = machineInfoRepository.findByResult(className);
@@ -104,6 +106,7 @@ public class MachineInfoService {
         return machineInfoDTO;
     }
 
+    //운동기구 정보 등록
     public void register(MachineInfoDTO machineInfoDTO,
                          MultipartFile imgFile) throws Exception {
 
@@ -120,6 +123,7 @@ public class MachineInfoService {
         machineInfoRepository.save(machineInfoEntity);
     }
 
+    //운동기구 정보 수정
     public void modify(MachineInfoDTO machineInfoDTO,
                        MultipartFile imgFile) throws Exception {
 

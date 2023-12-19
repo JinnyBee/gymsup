@@ -1,8 +1,8 @@
 /*
     파일명 : ReplyService.java
-    기 능 :
+    기 능 : 답글 전체목록 조회, 답글 등록/수정/삭제, 유저 답글 모두 삭제
     작성일 : 2023.12.08
-    작성자 :
+    작성자 : 전현진
 */
 package com.fitness.gymsup.Service;
 

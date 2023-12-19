@@ -1,8 +1,8 @@
 /*
     파일명 : MachineUsageService.java
-    기 능 :
+    기 능 : 운동기구 영상 전체목록/부분목록, 운동기구 영상 등록/상세보기/수정/삭제
     작성일 : 2023.12.08
-    작성자 :
+    작성자 : 이민호
 */
 package com.fitness.gymsup.Service;
 
@@ -40,26 +40,7 @@ public class MachineUsageService {
     private final FileUploader fileUploader;
     private ModelMapper modelMapper = new ModelMapper();
 
-    //운동 기구 영상 등록
-    public void register(MachineUsageDTO machineUsageDTO,
-                         MultipartFile imgFile) throws Exception {
-
-        String originalFileName = imgFile.getOriginalFilename();
-        String newFileName = "";
-
-        if(originalFileName !=null) {
-            newFileName = s3Uploader.upload(imgFile,imgUploadLocation);
-        }
-        machineUsageDTO.setThumbnail(newFileName);
-        MachineInfoEntity machineInfo = machineInfoRepository.findById(machineUsageDTO.getMachineInfoId()).orElseThrow();
-
-        MachineUsageEntity machineUsageEntity = modelMapper.map(machineUsageDTO, MachineUsageEntity.class);
-        machineUsageEntity.setMachineInfoEntity(machineInfo);
-
-        machineUsageRepository.save(machineUsageEntity);
-    }
-
-    //운동 기구 영상 전체목록
+    //운동기구 영상 전체목록
     public Page<MachineUsageDTO> listAll(Pageable page) throws Exception {
 
         int curPage = page.getPageNumber()-1;
@@ -85,7 +66,7 @@ public class MachineUsageService {
         return machineUsageDTOS;
     }
 
-    //운동 기구 영상 부분 목록
+    //운동기구 영상 부분 목록
     public Page<MachineUsageDTO> partList(int id,
                                           Pageable page) throws Exception {
 
@@ -113,7 +94,26 @@ public class MachineUsageService {
         return machineUsageDTOS;
     }
 
-    //운동 기구 영상 상세보기
+    //운동기구 영상 등록
+    public void register(MachineUsageDTO machineUsageDTO,
+                         MultipartFile imgFile) throws Exception {
+
+        String originalFileName = imgFile.getOriginalFilename();
+        String newFileName = "";
+
+        if(originalFileName !=null) {
+            newFileName = s3Uploader.upload(imgFile,imgUploadLocation);
+        }
+        machineUsageDTO.setThumbnail(newFileName);
+        MachineInfoEntity machineInfo = machineInfoRepository.findById(machineUsageDTO.getMachineInfoId()).orElseThrow();
+
+        MachineUsageEntity machineUsageEntity = modelMapper.map(machineUsageDTO, MachineUsageEntity.class);
+        machineUsageEntity.setMachineInfoEntity(machineInfo);
+
+        machineUsageRepository.save(machineUsageEntity);
+    }
+
+    //운동기구 영상 상세보기
     public MachineUsageDTO detail(int id,
                                   boolean isFirst) throws Exception {
 
@@ -126,7 +126,7 @@ public class MachineUsageService {
         return machineUsageDTO;
     }
 
-    //운동 기구 영상 수정
+    //운동기구 영상 수정
     public void modify(MachineUsageDTO machineUsageDTO,
                        MultipartFile imgFile) throws Exception {
 
@@ -152,7 +152,7 @@ public class MachineUsageService {
         machineUsageRepository.save(data);
     }
 
-    //운동 기구 영상 삭제
+    //운동기구 영상 삭제
     public void delete(Integer id) throws Exception {
 
         MachineUsageEntity machineUsageEntity = machineUsageRepository.findById(id).orElseThrow();
