@@ -70,7 +70,7 @@
                                     <div class="row">
                                         <div class="col-lg-12"> <h4>닉네임 변경</h4></div>
                                     </div>
-                                    <form action="/user_nickname_dup" method="post">
+                                    <form th:action="@{/user_nickname_dup}" method="post">
 
                                         <div class="row gap-0">
                                             <div class="col-lg-8">
@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <button class="btn btn-dark" type="button" th:if="${userEntity.oauthType}==null" onclick="location.href='/user_password_Confirm'">비밀번호 변경 하러가기</button>
+                                            <button class="btn btn-dark" type="button" th:if="${userEntity.oauthType}==null" th:onclick="|location.href='@{/user_password_confirm}'|">비밀번호 변경 하러가기</button>
                                         </div>
                                     </div>
                                 </div>
