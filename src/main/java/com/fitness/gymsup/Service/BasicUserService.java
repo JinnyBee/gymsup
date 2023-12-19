@@ -72,6 +72,7 @@ public class BasicUserService implements UserDetailsService {
         }
     }
 
+    //간편로그인 관련
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(email);
