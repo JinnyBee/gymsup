@@ -83,7 +83,8 @@
                                         </td>
                                         <td style="text-align: center">
                                             <button type="button" class="btn btn-outline-danger"
-                                                    th:onclick="|location.href='@{/admin_notify_delete(id=${data.id})}'|">삭제</button>
+                                                    th:onclick="boardDeleteConfirm([[${data.id}]], [[${data.userId}]], 'admin_notify')">삭제</button>
+                                                    <!--th:onclick="|location.href='@{/admin_notify_delete(id=${data.id})}'|">삭제</button>-->
                                         </td>
                                     </tr>
                                     </tbody>

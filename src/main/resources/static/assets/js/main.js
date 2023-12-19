@@ -175,6 +175,10 @@ function boardDeleteConfirm(id, boardUserId, type){
     if(confirm("삭제하시겠습니까?")){
       location.href='/board_free_delete?id=' + id + '&boardUserId='+ boardUserId;
     }
+  }else if(type==='admin_notify') {
+    if (confirm("삭제하시겠습니까?")) {
+      location.href = '/admin_notify_delete?id=' + id;
+    }
   }
 }
 
