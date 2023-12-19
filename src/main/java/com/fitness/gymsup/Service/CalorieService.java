@@ -78,7 +78,11 @@ public class CalorieService {
         } catch (Exception e) {
             log.info(e.toString());
         }
+
         log.info("RES : " + response.toString());
+        if(response.toString().contains("alert")) {
+            return null;
+        }
 
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(response.toString());
