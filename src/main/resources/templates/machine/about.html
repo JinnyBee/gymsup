@@ -19,7 +19,11 @@
                                 <div class="col-lg-4">
                                     <div class="row">
                                         <div class="card text-center"  th:onclick="|location.href='@{/machine_info_detail(id=${foamRoller.id})}'|" style="width:300px;cursor:pointer;">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${foamRoller.img}|">
+                                            -->
+                                            <img th:src="|/images/@{${foamRoller.img}}|">
+
                                             <div class="card-body">
                                                 <h4 class="card-title" th:text="${foamRoller.name}">John Doe</h4>
                                             </div>
@@ -30,7 +34,11 @@
                                 <div class="col-lg-4">
                                     <div class="row">
                                         <div class="card text-center" th:onclick="|location.href='@{/machine_info_detail(id=${dumbBell.id})}'|" style="width:300px;cursor:pointer;">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${dumbBell.img}|">
+                                            -->
+                                            <img th:src="|/images/@{${dumbBell.img}}|">
+
                                             <div class="card-body">
                                                 <h4 class="card-title" th:text="${dumbBell.name}">John Doe</h4>
                                             </div>
@@ -41,7 +49,10 @@
                                 <div class="col-lg-4">
                                     <div class="row">
                                         <div class="card text-center" th:onclick="|location.href='@{/machine_info_detail(id=${kettleBell.id})}'|" style="width:300px;cursor:pointer;">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${kettleBell.img}|">
+                                            -->
+                                            <img th:src="|/images/@{${kettleBell.img}}|">
                                             <div class="card-body">
                                                 <h4 class="card-title" th:text="${kettleBell.name}">John Doe</h4>
                                             </div>
@@ -54,7 +65,11 @@
                                 <div class="col-lg-4">
                                     <div class="row">
                                         <div class="card text-center" th:onclick="|location.href='@{/machine_info_detail(id=${babel.id})}'|" style="width:300px;cursor:pointer;">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${babel.img}|">
+                                            -->
+                                            <img th:src="|/images/@{${babel.img}}|">
+
                                             <div class="card-body">
                                                 <h4 class="card-title" th:text="${babel.name}">John Doe</h4>
                                             </div>
@@ -64,7 +79,11 @@
                                 <div class="col-lg-4">
                                     <div class="row">
                                         <div class="card text-center" th:onclick="|location.href='@{/machine_info_detail(id=${shoulderPress.id})}'|" style="width:300px;cursor:pointer;">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${shoulderPress.img}|">
+                                            -->
+                                            <img th:src="|/images/@{${shoulderPress.img}}|">
+
                                             <div class="card-body">
                                                 <h4 class="card-title" th:text="${shoulderPress.name}">John Doe</h4>
                                             </div>
