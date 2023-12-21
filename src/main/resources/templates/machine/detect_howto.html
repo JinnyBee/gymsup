@@ -34,8 +34,10 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-6 text-center">
-                                        <!--<img th:src="|/images/temp/@{${flaskResponseDTO.resultFilename}}|" alt="결과 이미지">-->
+                                        <img th:src="|/images/temp/@{${flaskResponseDTO.resultFilename}}|" style="max-width: 50%; height: auto">
+                                        <!--
                                         <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${flaskResponseDTO.resultFilename}|" style="max-width: 50%; height: auto">
+                                        -->
                                     </div>
                                     <div class="col-lg-6">
                                         <h3>이 기구는 [[${machineInfoDTO.name}]]입니다.</h3><br>
