@@ -15,7 +15,7 @@ import javax.persistence.*;
 @SequenceGenerator(
         name = "user_SEQ",
         sequenceName = "user_SEQ",
-        initialValue = 1,
+        initialValue = 46,
         allocationSize = 1
 )
 @Table(name = "user")

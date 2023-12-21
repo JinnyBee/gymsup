@@ -14,7 +14,7 @@ import javax.persistence.*;
 @SequenceGenerator(
         name = "exercise_SEQ",
         sequenceName = "exercise_SEQ",
-        initialValue = 1,
+        initialValue = 40,
         allocationSize = 1
 )
 @Table(name = "exercise")

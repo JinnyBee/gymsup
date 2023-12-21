@@ -16,7 +16,7 @@ import java.util.List;
 @SequenceGenerator(
         name = "comment_SEQ",
         sequenceName = "comment_SEQ",
-        initialValue = 1,
+        initialValue = 134,
         allocationSize = 1
 )
 @Table(name = "comment")

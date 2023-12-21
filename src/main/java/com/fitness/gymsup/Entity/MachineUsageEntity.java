@@ -15,7 +15,7 @@ import javax.persistence.*;
 @SequenceGenerator(
         name = "machine_usage_SEQ",
         sequenceName = "machine_usage_SEQ",
-        initialValue = 1,
+        initialValue = 33,
         allocationSize = 1
 )
 

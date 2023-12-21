@@ -14,7 +14,7 @@ import javax.persistence.*;
 @SequenceGenerator(
         name = "contact_SEQ",
         sequenceName = "contact_SEQ",
-        initialValue = 1,
+        initialValue = 33,
         allocationSize = 1
 )
 @Table(name = "contact")

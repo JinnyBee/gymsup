@@ -15,7 +15,7 @@ import javax.persistence.*;
 @SequenceGenerator(
         name = "bookmark_SEQ",
         sequenceName = "bookmark_SEQ",
-        initialValue = 1,
+        initialValue = 80,
         allocationSize = 1
 )
 @Table(name = "bookmark")
