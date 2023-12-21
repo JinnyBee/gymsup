@@ -363,8 +363,8 @@ public class BoardService {
             //기존 이미지파일 삭제
             for (BoardImageEntity boardImageEntity : boardImageEntities) {
                 log.info(boardImageEntity);
-                //fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
-                s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
+                fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
+                //s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
             }
             //board_image 테이블에 저장된 기존 이미지파일 데이터 모두 삭제
             boardImageRepository.deleteAllByBoardId(boardDTO.getId());
@@ -374,10 +374,10 @@ public class BoardService {
                 originalFileName = imgFile.getOriginalFilename();
                 if(originalFileName.length() != 0) {
                     //이미지파일을 이미지 저장경로에 업로드
-                    newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
-                    /*newFileName = fileUploader.uploadFile(imgUploadLocation,
+                    //newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+                    newFileName = fileUploader.uploadFile(imgUploadLocation,
                                                           originalFileName,
-                                                          imgFile.getBytes());*/
+                                                          imgFile.getBytes());
                     log.info(newFileName);
 
                     //board_image 테이블에 이미지파일 데이터 저장
