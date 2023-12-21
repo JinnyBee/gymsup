@@ -27,8 +27,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Log4j2
 public class Flask {
-    //S3 업로드
-    private final S3Uploader s3Uploader;
+    private final FileUploader fileUploader;    //로컬 파일업로드
+    private final S3Uploader s3Uploader;        //S3 파일업로드
     //플라스크 서버로부터 응답 온 결과 이미지 파일이 저장된 S3 업로드 경로
     @Value("${imgUploadLocation}")
     private String imgUploadLocation;
@@ -96,14 +96,18 @@ public class Flask {
 
         //플라스크에서 전달받은 파일을 임시저장
         byte[] decodedImageDate = Base64.getDecoder().decode((String)(jsonobject.get("image")));
-        String outputFilePath = tempFolder + UUID.randomUUID() + "_result.jpg"; //AI결과 임시저장 파일명
+        String outputFileName = UUID.randomUUID() + "_result.jpg"; //AI결과 임시저장 파일명
+        String outputFilePath = tempFolder + outputFileName;
         log.info("AI result temp filename : " + outputFilePath);
 
         try(FileOutputStream fos = new FileOutputStream(outputFilePath)) {
             fos.write(decodedImageDate);
         }
-        String newFileName = s3Uploader.upload(new File(outputFilePath), imgUploadLocation);
-        log.info("s3Uploader newFileName : " + newFileName);
+        //String newFileName = s3Uploader.upload(new File(outputFilePath), imgUploadLocation);
+        //newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+        //log.info("s3Uploader newFileName : " + newFileName);
+        String newFileName = outputFileName;
+        log.info("flask result newFileName : " + newFileName);
 
         //분류내용 처리
         //JSONObject jo =(JSONObject)jsonobject.get("class");
