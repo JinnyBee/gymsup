@@ -102,7 +102,8 @@ public class MachineUsageService {
         String newFileName = "";
 
         if(originalFileName !=null) {
-            newFileName = s3Uploader.upload(imgFile,imgUploadLocation);
+            //newFileName = s3Uploader.upload(imgFile,imgUploadLocation);
+            newFileName = fileUploader.uploadFile(imgUploadLocation, originalFileName, imgFile.getBytes());
         }
         machineUsageDTO.setThumbnail(newFileName);
         MachineInfoEntity machineInfo = machineInfoRepository.findById(machineUsageDTO.getMachineInfoId()).orElseThrow();

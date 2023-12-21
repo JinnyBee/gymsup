@@ -97,26 +97,27 @@ public class MachineController {
     @GetMapping("/machine_about")
     public String aboutForm(Model model) throws Exception {
 
-        int id1 = 1; // html 디자인을 위해 별도로 아이디 값을 불러옴
-        int id2 = 2;
-        int id3 = 3;
-        int id4 = 4;
-        int id5 = 5;
+        int foamRoller_id = 1; // html 디자인을 위해 별도로 아이디 값을 불러옴
+        int dumbBell_id = 2;
+        int kettleBell_id = 3;
+        int babel_id = 4;
+        int shoulderPress_id = 5;
 
-        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
-        MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
-        MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);
-        MachineInfoDTO machineInfoDTOid4 = machineInfoService.detail(id4);
-        MachineInfoDTO machineInfoDTOid5 = machineInfoService.detail(id5);
+        MachineInfoDTO machineInfoDTO_foamRoller = machineInfoService.detail(foamRoller_id);
+        MachineInfoDTO machineInfoDTO_dumbBell = machineInfoService.detail(dumbBell_id);
+        MachineInfoDTO machineInfoDTO_kettleBell = machineInfoService.detail(kettleBell_id);
+        MachineInfoDTO machineInfoDTO_babel = machineInfoService.detail(babel_id);
+        MachineInfoDTO machineInfoDTO_shoulderPress = machineInfoService.detail(shoulderPress_id);
 
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
-        model.addAttribute("foamRoller", machineInfoDTO);
-        model.addAttribute("dumbBell", machineInfoDTOid2);
-        model.addAttribute("kettleBell", machineInfoDTOid3);
-        model.addAttribute("babel", machineInfoDTOid4);
-        model.addAttribute("shoulderPress", machineInfoDTOid5);
+
+        model.addAttribute("foamRoller", machineInfoDTO_foamRoller);
+        model.addAttribute("dumbBell", machineInfoDTO_dumbBell);
+        model.addAttribute("kettleBell", machineInfoDTO_kettleBell);
+        model.addAttribute("babel", machineInfoDTO_babel);
+        model.addAttribute("shoulderPress", machineInfoDTO_shoulderPress);
 
         return "machine/about";
     }

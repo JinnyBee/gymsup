@@ -79,9 +79,11 @@
                                     </div>
                                     <div th:unless="${#lists.isEmpty(data.imgFileList)}">
                                         <a th:href="@{/board_tip_detail(id=${data.id})}">
-                                            <!--<img th:src="|images/@{${data.imgFileList[0]}}|" alt="" class="img-fluid">-->
+                                            <img th:src="|images/@{${data.imgFileList[0]}}|" alt="" class="img-fluid">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.imgFileList[0]}|"
                                                  alt="" class="img-fluid">
+                                             -->
                                         </a>
                                     </div>
                                     <div class="post-meta">
@@ -107,9 +109,11 @@
                                     </div>
                                     <div th:unless="${#lists.isEmpty(data.imgFileList)}">
                                         <a th:href="@{/board_diary_detail(id=${data.id})}">
-                                            <!--<img th:src="|images/@{${data.imgFileList[0]}}|" alt="" class="img-fluid">-->
+                                            <img th:src="|images/@{${data.imgFileList[0]}}|" alt="" class="img-fluid">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.imgFileList[0]}|"
                                                  alt="" class="img-fluid">
+                                             -->
                                         </a>
                                     </div>
                                     <div class="post-meta">

@@ -71,8 +71,12 @@
                                             <span class="badge bg-dark" th:if="${data.machineInfoId}==5">숄더프레스</span>
                                         </td>
                                         <td th:if="${machineUsageDTO.id}==${data.id}">
+                                            <!--
                                             <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
-                                                 alt="" height="125px" width="210px"></td>
+                                                 alt="" height="125px" width="210px">
+                                             -->
+                                            <img th:src="|/images/@{${data.thumbnail}}|" alt="" height="125px" width="210px">
+                                        </td>
                                         <td th:if="${machineUsageDTO.id}==${data.id}">
                                             <a th:text="${data.title}"></a></td>
                                         <td th:if="${machineUsageDTO.id}==${data.id}" th:text="${data.viewCnt}">john@example.com</td>
@@ -90,8 +94,13 @@
                                             <span class="badge bg-dark" th:if="${data.machineInfoId}==5">숄더프레스</span>
                                         </td>
                                         <td th:unless="${machineUsageDTO.id}==${data.id}">
-                                            <a th:href="@{/machine_usage_detail(id=${data.id}, infoId=${data.machineInfoId})}"><img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|"
-                                                 alt="" height="125px" width="210px"></a></td>
+                                            <a th:href="@{/machine_usage_detail(id=${data.id}, infoId=${data.machineInfoId})}">
+                                                <!--
+                                                <img th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data.thumbnail}|" alt="" height="125px" width="210px">
+                                                -->
+                                                <img th:src="|/images/@{${data.thumbnail}}|" alt="" height="125px" width="210px">
+                                            </a>
+                                        </td>
                                         <td th:unless="${machineUsageDTO.id}==${data.id}">
                                             <a th:href="@{/machine_usage_detail(id=${data.id}, infoId=${data.machineInfoId})}"  th:text="${data.title}"></a></td>
                                         <td th:unless="${machineUsageDTO.id}==${data.id}" th:text="${data.viewCnt}">john@example.com</td>

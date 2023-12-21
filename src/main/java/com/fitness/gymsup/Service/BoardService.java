@@ -267,10 +267,10 @@ public class BoardService {
                 //게시글에 첨부된 이미지파일이 존재하면
                 if(originalFileName.length() != 0) {
                     //이미지파일을 이미지 저장경로에 업로드
-                    newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
-                /*newFileName = fileUploader.uploadFile(imgUploadLocation,
-                                                      originalFileName,
-                                                      imgFile.getBytes());*/
+                    //newFileName = s3Uploader.upload(imgFile, imgUploadLocation);
+                    newFileName = fileUploader.uploadFile(imgUploadLocation,
+                                                          originalFileName,
+                                                          imgFile.getBytes());
                     log.info("newFileName : "+ newFileName);
 
                     //board_image 테이블에 이미지파일 정보 저장
