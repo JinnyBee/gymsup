@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MachineInfoRepository extends JpaRepository<MachineInfoEntity, Integer> {
     MachineInfoEntity findByResult(String result);
+
 }

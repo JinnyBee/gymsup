@@ -91,6 +91,14 @@ public class MachineInfoService {
         return machineInfoDTO;
     }
 
+    public MachineInfoDTO resultDetail(String result) throws Exception {
+
+        MachineInfoEntity machineInfoEntity = machineInfoRepository.findByResult(result);
+        MachineInfoDTO machineInfoDTO = modelMapper.map(machineInfoEntity, MachineInfoDTO.class);
+
+        return machineInfoDTO;
+    }
+
     //운동 기구 정보 찾기 (machine_info 테이블의 result 값 중 플라스크 AI 서버로부터 응답받은 class 값이 있는지 조회)
     public MachineInfoDTO find(String className) throws Exception {
 

@@ -97,17 +97,17 @@ public class MachineController {
     @GetMapping("/machine_about")
     public String aboutForm(Model model) throws Exception {
 
-        int foamRoller_id = 1; // html 디자인을 위해 별도로 아이디 값을 불러옴
-        int dumbBell_id = 2;
-        int kettleBell_id = 3;
-        int babel_id = 4;
-        int shoulderPress_id = 5;
+        String foamroller= "foamroller"; // html 디자인을 위해 별도로 아이디 값을 불러옴
+        String dumbbell = "dumbbell";
+        String kettlebell = "kettlebell";
+        String babell = "babell";
+        String shoulder_press = "shoulder_press";
 
-        MachineInfoDTO machineInfoDTO_foamRoller = machineInfoService.detail(foamRoller_id);
-        MachineInfoDTO machineInfoDTO_dumbBell = machineInfoService.detail(dumbBell_id);
-        MachineInfoDTO machineInfoDTO_kettleBell = machineInfoService.detail(kettleBell_id);
-        MachineInfoDTO machineInfoDTO_babel = machineInfoService.detail(babel_id);
-        MachineInfoDTO machineInfoDTO_shoulderPress = machineInfoService.detail(shoulderPress_id);
+        MachineInfoDTO machineInfoDTO_foamRoller = machineInfoService.resultDetail(foamroller);
+        MachineInfoDTO machineInfoDTO_dumbBell = machineInfoService.resultDetail(dumbbell);
+        MachineInfoDTO machineInfoDTO_kettleBell = machineInfoService.resultDetail(kettlebell);
+        MachineInfoDTO machineInfoDTO_babel = machineInfoService.resultDetail(babell);
+        MachineInfoDTO machineInfoDTO_shoulderPress = machineInfoService.resultDetail(shoulder_press);
 
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
@@ -308,58 +308,27 @@ public class MachineController {
     //(관리자페이지 - 운동기구 관리) 운동기구 전체목록
     @GetMapping("/admin_machine_list")
     public String listForm(Model model) throws Exception {
-        /*Page<MachineUsageDTO> machineUsageDTOS = machineUsageService.listAll(pageable);
-        int blockLimit = 5;
-        int startPage, endPage, prevPage, currentPage, nextPage, lastPage;
 
-        if(machineUsageDTOS.isEmpty()) {
-            startPage = 0;
-            endPage = 0;
-            prevPage = 0;
-            currentPage = 0;
-            nextPage = 0;
-            lastPage = 0;
-        } else {
-            startPage = (((int)(Math.ceil((double) pageable.getPageNumber()/blockLimit)))-1) * blockLimit + 1;
-            //endPage = Math.min(startPage+blockLimit-1, machineUsageDTOS.getTotalPages());
-            endPage = ((startPage+blockLimit-1)<machineUsageDTOS.getTotalPages()) ? startPage+blockLimit-1 : machineUsageDTOS.getTotalPages();
+        String foamroller= "foamroller"; // html 디자인을 위해 별도로 아이디 값을 불러옴
+        String dumbbell = "dumbbell";
+        String kettlebell = "kettlebell";
+        String babell = "babell";
+        String shoulder_press = "shoulder_press";
 
-            prevPage = machineUsageDTOS.getNumber();
-            currentPage = machineUsageDTOS.getNumber() + 1;
-            nextPage = machineUsageDTOS.getNumber() + 2;
-            lastPage = machineUsageDTOS.getTotalPages();
-        }
-
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("prevPage", prevPage);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("lastPage", lastPage);
-
-        model.addAttribute("machineUsageDTOS",machineUsageDTOS);
-
-        return "machine/alllist";*/
-        int id1 = 1;
-        int id2 = 2;
-        int id3 = 3;
-        int id4 = 4;
-        int id5 = 5;
-
-        MachineInfoDTO machineInfoDTO = machineInfoService.detail(id1);
-        MachineInfoDTO machineInfoDTOid2 = machineInfoService.detail(id2);
-        MachineInfoDTO machineInfoDTOid3 = machineInfoService.detail(id3);
-        MachineInfoDTO machineInfoDTOid4 = machineInfoService.detail(id4);
-        MachineInfoDTO machineInfoDTOid5 = machineInfoService.detail(id5);
+        MachineInfoDTO machineInfoDTO_foamRoller = machineInfoService.resultDetail(foamroller);
+        MachineInfoDTO machineInfoDTO_dumbBell = machineInfoService.resultDetail(dumbbell);
+        MachineInfoDTO machineInfoDTO_kettleBell = machineInfoService.resultDetail(kettlebell);
+        MachineInfoDTO machineInfoDTO_babel = machineInfoService.resultDetail(babell);
+        MachineInfoDTO machineInfoDTO_shoulderPress = machineInfoService.resultDetail(shoulder_press);
 
         model.addAttribute("bucket", bucket);
         model.addAttribute("region", region);
         model.addAttribute("folder", folder);
-        model.addAttribute("foamRoller", machineInfoDTO);
-        model.addAttribute("dumbBell", machineInfoDTOid2);
-        model.addAttribute("kettleBell", machineInfoDTOid3);
-        model.addAttribute("babel", machineInfoDTOid4);
-        model.addAttribute("shoulderPress", machineInfoDTOid5);
+        model.addAttribute("foamRoller", machineInfoDTO_foamRoller);
+        model.addAttribute("dumbBell", machineInfoDTO_dumbBell);
+        model.addAttribute("kettleBell", machineInfoDTO_kettleBell);
+        model.addAttribute("babel", machineInfoDTO_babel);
+        model.addAttribute("shoulderPress", machineInfoDTO_shoulderPress);
         return "machine/alllist";
     }
 
