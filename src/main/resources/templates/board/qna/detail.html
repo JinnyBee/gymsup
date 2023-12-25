@@ -43,7 +43,7 @@
                                     <!--
                                     <img style="max-width: 50%; height: auto" th:src="|https://${bucket}.s3.${region}.amazonaws.com/${folder}/${data}|" alt="상품 이미지">
                                     -->
-                                    <img th:src="|/images/@{${data}}|" alt="게시판 이미지">
+                                    <img style="max-width: 50%; height: auto" th:src="|/images/@{${data}}|">
                                 </div>
                             </div>
                             <div class="row"> <!-- 게시판 내용 -->
