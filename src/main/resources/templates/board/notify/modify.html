@@ -49,7 +49,7 @@
                                     <form th:action="@{/admin_notify_modify}" method="post"
                                           enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 수정폼 -->
                                         <input type="hidden" name="id" th:field="*{id}">
-                                        <h3 class="text-center">공지사항 수정</h3>
+                                        <h3 class="text-center">[공지사항] 글 수정</h3>
                                         <div class="mb-3 mt-3">
                                             <label for="title" class="form-label">제목:</label>
                                             <input type="text" class="form-control" id="title" name="title" th:field="*{title}">

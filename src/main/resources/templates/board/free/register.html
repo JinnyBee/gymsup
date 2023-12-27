@@ -14,7 +14,7 @@
                     <div class="col-md-9"> <!-- 작업공간 -->
                         <form th:action="@{/board_free_register}" method="post"
                               enctype="multipart/form-data" th:object="${boardDTO}"> <!-- 가입폼 -->
-                            <h3 class="text-center" th:text="*{getCategoryType().getDescription()}"></h3>
+                            <h3 class="text-center" th:text="'[' + *{getCategoryType().getDescription()} + ']' + ' 글 쓰기'"></h3>
                             <div class="mb-3 mt-3">
                                 <label for="title" class="form-label">제목:</label>
                                 <input type="text" class="form-control" id="title" name="title" th:field="*{title}">
