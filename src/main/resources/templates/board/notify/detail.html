@@ -103,7 +103,7 @@
 
                                     <!--th:onclick="|location.href='@{/board_notify_delete(id=${boardDTO.id}, boardUserId=${boardDTO.userId})}'|"-->
                                     <button class="btn btn-outline-danger" type="button"
-                                            th:onclick="boardDeleteConfirm([[${boardDTO.id}]], [[${boardDTO.userId}]], 'notify')"
+                                            th:onclick="adminNotifyDelete([[${boardDTO.id}]], [[${boardDTO.userId}]], [[${Url}]])"
                                             th:if="${boardDTO.userId}==${loginUserId}">
                                         삭제
                                     </button>

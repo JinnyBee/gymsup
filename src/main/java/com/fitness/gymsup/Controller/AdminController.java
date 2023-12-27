@@ -384,10 +384,15 @@ public class AdminController extends BoardBaseController {
 
     //관리자페이지 - 공지사항 게시글 삭제
     @GetMapping("/admin_notify_delete")
-    public String notifyDeleteProc(Integer id)throws Exception{
+    public String notifyDeleteProc(Integer id, String Url, RedirectAttributes redirectAttributes)throws Exception{
         boardService.delete(id);
+        if (Url == null){
+            return "redirect:/admin_notify_list";
+        }else {
+            redirectAttributes.addAttribute("Url", Url);
+            return "redirect:/board_notify_list";
+        }
 
-        return "redirect:/admin_notify_list";
     }
 
     //관리자페이지 - 공지사항 등록 폼

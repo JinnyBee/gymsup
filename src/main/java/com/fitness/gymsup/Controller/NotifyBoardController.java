@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -110,20 +111,4 @@ public class NotifyBoardController extends BoardBaseController {
         return "board/notify/detail";
     }
 
-
-
-    @GetMapping("/board_notify_delete")
-    public String deleteProc(Integer id,
-                             Integer boardUserId,
-                             HttpServletRequest request,
-                             Principal principal,
-                             Model model) throws Exception {
-
-        if(boardUserId != commentService.userId(request, principal) ) {
-            return "redirect:/";
-        }
-        boardService.delete(id);
-
-        return "redirect:/board_notify_list";
-    }
 }

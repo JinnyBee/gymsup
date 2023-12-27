@@ -182,6 +182,12 @@ function boardDeleteConfirm(id, boardUserId, type){
   }
 }
 
+function adminNotifyDelete(id, boardUserId, Url){
+  if(confirm("삭제하시겠습니까?")){
+    location.href='/admin_notify_delete?id=' + id + '&Url=' + Url;
+  }
+}
+
 function commentDeleteConfirm(bid, id, userId, categoryType){
   if(confirm("삭제하시겠습니까?")){
     location.href='/comment_delete?bid='+ bid + '&id=' + id +'&commentUserId=' + userId+ '&categoryType=' + categoryType;
