@@ -355,7 +355,7 @@ public class BoardService {
             if( !imgFile.isEmpty() ) existUploadImgFile = true;
         }
 
-        log.info("existUploadImgFile : "+existUploadImgFile);
+        log.info("existUploadImgFile : " + existUploadImgFile);
         //새로 업로드할 이미지파일이 존재한다면 기존 이미지파일을 삭제 후 새 이미지파일 업로드
         if( existUploadImgFile ) {
             //board_image 테이블에 저장된 기존 이미지파일 데이터 모두 조회
@@ -405,12 +405,14 @@ public class BoardService {
         List<BoardImageEntity> boardImageEntities = boardImageRepository.findAllByBoardId(id);
         log.info("boardImageEntities.size() : " + boardImageEntities.size());
 
-        for(BoardImageEntity boardImageEntity : boardImageEntities) {
-            log.info(boardImageEntity.getImgFile());
-            //이미지파일 삭제
-            s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
-            /*fileUploader.deleteFile(imgUploadLocation,
-                                    boardImageEntity.getImgFile());*/
+        if(boardImageEntities != null) {
+            for(BoardImageEntity boardImageEntity : boardImageEntities) {
+                log.info(boardImageEntity.getImgFile());
+                //이미지파일 삭제
+                /*s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);*/
+                fileUploader.deleteFile(imgUploadLocation,
+                                        boardImageEntity.getImgFile());
+            }
         }
         //board_image 테이블에서 해당 게시글에 등록된 모든 이미지파일 데이터 삭제
         boardImageRepository.deleteAllByBoardId(id);
@@ -492,7 +494,8 @@ public class BoardService {
             for(BoardImageEntity boardImageEntity : boardImageEntities) {
                 log.info(boardImageEntity.getImgFile());
                 //이미지파일 삭제
-                s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);
+                /*s3Uploader.deleteFile(boardImageEntity.getImgFile(), imgUploadLocation);*/
+                fileUploader.deleteFile(imgUploadLocation, boardImageEntity.getImgFile());
             }
 
             boardImageRepository.deleteAllByBoardId(id);
